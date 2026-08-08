@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f2eadf">
+  <meta name="description" content="Shop the fictional Aureve luxury perfume collection.">
+  <title>La Collection — AURÈVE</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body class="shop-page">
+  <div class="grain" aria-hidden="true"></div>
+  <div class="announcement">Complimentary engraving on 100 ml bottles <span>·</span> Discover</div>
+  <header class="site-header shop-header">
+    <button class="icon-button menu-trigger" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+    <a class="wordmark" href="index.html" aria-label="Aureve home">AURÈVE</a>
+    <nav class="desktop-nav" aria-label="Main navigation"><a href="index.html#maison">Maison</a><a href="index.html#collection">Collection</a><a href="shop.html" class="active">Shop</a></nav>
+    <div class="header-actions"><button class="text-button search-trigger" aria-label="Search">Search</button><button class="bag-trigger" aria-label="Open shopping bag">Bag <span class="bag-count">0</span></button></div>
+  </header>
+
+  <div class="menu-overlay" aria-hidden="true">
+    <div class="menu-visual" aria-hidden="true"><div class="menu-bottle perfume-bottle bottle-ruby"><i></i><b>A</b></div></div>
+    <nav class="menu-links"><a href="index.html"><span>01</span>Home</a><a href="shop.html"><span>02</span>La Collection</a><a href="index.html#maison"><span>03</span>La Maison</a><a href="index.html#journal"><span>04</span>Journal</a></nav>
+    <div class="menu-meta">Paris · Dubai · New York<br>Private client service</div>
+  </div>
+
+  <aside class="search-panel" aria-hidden="true">
+    <button class="panel-close search-close" aria-label="Close search">×</button><p class="eyebrow">Find your fragrance</p><label class="search-label" for="site-search">Search the maison</label>
+    <div class="search-row"><input id="site-search" type="search" placeholder="Try “oud” or “rose”" autocomplete="off"><button class="arrow-button" aria-label="Search">↗</button></div>
+    <div class="search-suggestions"><span>Trending</span><button data-search="rouge">Rouge Royal</button><button data-search="ambre">Ambre Velours</button><button data-search="discovery">Discovery Set</button></div>
+  </aside>
+
+  <main>
+    <section class="shop-hero">
+      <div class="shop-hero-image" role="img" aria-label="Ruby red and gold perfume bottle"></div>
+      <div class="shop-hero-content"><p class="eyebrow gold">The private collection · 8 compositions</p><h1>Find your<br><em>golden trace.</em></h1><a href="#shop-grid" class="luxury-button"><span>Explore fragrances</span><i>↓</i></a></div>
+      <div class="shop-hero-note"><span>Featured</span><strong>ROUGE ROYAL</strong><small>Rose · Saffron · Amber</small></div>
+    </section>
+
+    <section class="shop-shell" id="shop-grid">
+      <header class="shop-title-row">
+        <div><p class="eyebrow gold">La collection</p><h2>Extraits de parfum</h2></div>
+        <p>Rare ingredients. High concentration.<br>Composed to evolve on skin.</p>
+      </header>
+
+      <div class="category-strip" role="tablist" aria-label="Shop by scent family">
+        <button class="category-pill active" data-family="all">All <span>08</span></button>
+        <button class="category-pill" data-family="amber">Amber <span>02</span></button>
+        <button class="category-pill" data-family="floral">Floral <span>02</span></button>
+        <button class="category-pill" data-family="woody">Woody <span>02</span></button>
+        <button class="category-pill" data-family="fresh">Fresh <span>02</span></button>
+      </div>
+
+      <div class="catalog-tools">
+        <button class="filter-mobile">Filter +</button>
+        <span class="result-count">8 fragrances</span>
+        <label class="sort-control">Sort by <select id="sort-select"><option value="featured">Curated</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="newest">Newest</option></select></label>
+      </div>
+
+      <div class="catalog-layout">
+        <aside class="filters">
+          <div class="filter-head"><span>Refine</span><button class="clear-filters">Clear all</button></div>
+          <fieldset><legend>Intensity</legend><label><input type="checkbox" name="intensity" value="Intimate"><span>Intimate</span><b>02</b></label><label><input type="checkbox" name="intensity" value="Radiant"><span>Radiant</span><b>03</b></label><label><input type="checkbox" name="intensity" value="Opulent"><span>Opulent</span><b>03</b></label></fieldset>
+          <fieldset><legend>Principal note</legend><label><input type="checkbox" name="note" value="Rose"><span>Rose</span><b>02</b></label><label><input type="checkbox" name="note" value="Oud"><span>Oud</span><b>02</b></label><label><input type="checkbox" name="note" value="Amber"><span>Amber</span><b>02</b></label><label><input type="checkbox" name="note" value="Iris"><span>Iris</span><b>02</b></label></fieldset>
+          <fieldset><legend>Format</legend><label><input type="checkbox" name="format" value="50 ml"><span>50 ml</span><b>03</b></label><label><input type="checkbox" name="format" value="100 ml"><span>100 ml</span><b>05</b></label></fieldset>
+          <div class="filter-service"><span>✦</span><p><b>Need guidance?</b>Book a private scent consultation with our perfume concierge.</p><a href="#">Begin ↗</a></div>
+        </aside>
+        <div class="product-grid" id="product-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="discovery-banner">
+      <div class="discovery-visual" aria-hidden="true"><div class="sample sample-one">01</div><div class="sample sample-two">02</div><div class="sample sample-three">03</div></div>
+      <div class="discovery-copy"><p class="eyebrow gold">The discovery wardrobe</p><h2>Wear the collection.<br><em>Choose slowly.</em></h2><p>Eight 2 ml extraits presented in a lacquered red case. Your discovery set is redeemable against any full-size fragrance.</p><button class="luxury-button dark-button" data-add="discovery"><span>Add discovery set · €65</span><i>+</i></button></div>
+    </section>
+  </main>
+
+  <footer class="site-footer shop-footer"><div class="footer-top"><div><p class="eyebrow gold">Letters from the maison</p><h2>Enter our <em>private circle.</em></h2></div><form class="newsletter-form"><label class="sr-only" for="email">Email address</label><input id="email" type="email" placeholder="Your email address" required><button type="submit">Join ↗</button></form></div><div class="footer-wordmark">AURÈVE</div><div class="footer-bottom"><span>© 2026 AURÈVE PARIS</span><div><a href="#">Instagram</a><a href="#">Pinterest</a><a href="#">Client care</a></div><span>UI/UX CONCEPT</span></div></footer>
+
+  <aside class="quick-view" aria-hidden="true"><button class="panel-close quick-close" aria-label="Close product">×</button><div class="quick-visual"></div><div class="quick-info"><p class="eyebrow gold quick-family"></p><h2 class="quick-name"></h2><p class="quick-description"></p><div class="quick-notes"></div><div class="size-options"><button class="active">50 ml</button><button>100 ml</button></div><div class="quick-buy"><strong class="quick-price"></strong><button class="checkout-button quick-add">Add to bag <span>+</span></button></div></div></aside>
+  <aside class="cart-drawer" aria-hidden="true"><div class="drawer-head"><div><p class="eyebrow gold">Your selection</p><h2>The Bag <span class="bag-count">0</span></h2></div><button class="panel-close cart-close" aria-label="Close bag">×</button></div><div class="cart-items"></div><div class="cart-empty"><div class="empty-bottle perfume-bottle bottle-ruby"><i></i><b>A</b></div><h3>Your bag is waiting.</h3><p>Discover a fragrance worth remembering.</p><a class="line-link cart-shop-link" href="#shop-grid">Explore the collection <span>↗</span></a></div><div class="cart-summary"><div><span>Subtotal</span><strong class="cart-total">€0</strong></div><p>Complimentary delivery and two samples included.</p><button class="checkout-button">Continue to checkout <span>↗</span></button></div></aside>
+  <div class="backdrop"></div><div class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
