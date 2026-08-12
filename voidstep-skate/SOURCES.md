@@ -6,6 +6,10 @@ All externally sourced images are stored locally in `assets/` for a stable demo.
 
 - `hero-voidstep-generated.png` - original VOIDSTEP hero campaign generated for this project.
 - `remade-decks-generated.png` - original deck-rebuild campaign generated for this project.
+- `board-meeting-generated.png` - original satirical 1990s corporate boardroom campaign with a skateboard deck presented as the chief executive. Generated at 1672 x 941 with the built-in image-generation model; no logos, readable text, beverages, celebrities or existing brand cues.
+- `safety-first-generated.png` - original fisheye campaign image of an absurdly over-padded skateboarder approaching a tiny curb. Generated at 1536 x 1024 with the built-in image-generation model; no logos, readable text, beverages, injury or existing brand cues.
+
+The final generation briefs were: (1) a cinematic fluorescent board meeting in a beige office with violet and acid accents, five serious executives and a scratched deck standing like the CEO; and (2) a deadpan urban fisheye image with excessive pads, pillows and bubble wrap around a rider facing a two-centimetre curb, using acid-lime and hot-pink accents.
 
 ## Unsplash
 

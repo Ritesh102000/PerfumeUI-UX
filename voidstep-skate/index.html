@@ -23,25 +23,25 @@
       <div class="nav-group">
         <button aria-expanded="false">Decks <span>⌄</span></button>
         <div class="mega-menu">
-          <a href="#decks"><b>Shop all decks</b><span>Street, park + shaped</span></a>
-          <a href="#decks"><b>8.0 - 8.25</b><span>Quick and technical</span></a>
-          <a href="#decks"><b>8.3 - 8.5</b><span>Stable all-terrain</span></a>
-          <a href="#decks"><b>Shaped</b><span>Curbs and transition</span></a>
-          <a href="#rebuild"><b>Rebuilt</b><span>Second-run maple</span></a>
+          <a href="decks.html"><b>Shop all decks</b><span>Street, park + shaped</span></a>
+          <a href="decks.html#street"><b>8.0 - 8.25</b><span>Quick and technical</span></a>
+          <a href="decks.html#all-terrain"><b>8.3 - 8.5</b><span>Stable all-terrain</span></a>
+          <a href="decks.html#shaped"><b>Shaped</b><span>Curbs and transition</span></a>
+          <a href="rebuild.html"><b>Rebuilt</b><span>Second-run maple</span></a>
         </div>
       </div>
       <div class="nav-group">
         <button aria-expanded="false">Hardware <span>⌄</span></button>
         <div class="mega-menu hardware-menu">
-          <a href="#hardware"><b>Trucks</b><span>Low, mid + hollow</span></a>
-          <a href="#hardware"><b>Wheels</b><span>Street to rough ground</span></a>
-          <a href="#hardware"><b>Grip + tools</b><span>Build it yourself</span></a>
+          <a href="decks.html#hardware"><b>Trucks</b><span>Low, mid + hollow</span></a>
+          <a href="decks.html#hardware"><b>Wheels</b><span>Street to rough ground</span></a>
+          <a href="decks.html#hardware"><b>Grip + tools</b><span>Build it yourself</span></a>
         </div>
       </div>
-      <a href="#setup">Build a Setup</a>
-      <a href="#rebuild">Rebuild Program</a>
-      <a href="#crew">Crew</a>
-      <a href="#footer">After Dark</a>
+      <a href="product.html">New Drop</a>
+      <a href="rebuild.html">Rebuild</a>
+      <a href="crew.html">Crew</a>
+      <a class="bad-ideas-nav" href="bad-ideas.html">Bad Ideas <i>New</i></a>
     </nav>
     <div class="header-icons">
       <button class="account-button" aria-label="Open rider profile"><span></span></button>
@@ -52,11 +52,11 @@
   <aside class="mobile-menu" aria-hidden="true">
     <div class="mobile-menu-top"><span>Menu</span><button class="mobile-menu-close" aria-label="Close menu">×</button></div>
     <nav>
-      <a href="#decks"><span>01</span>Decks</a>
-      <a href="#hardware"><span>02</span>Hardware</a>
-      <a href="#setup"><span>03</span>Build a Setup</a>
-      <a href="#rebuild"><span>04</span>Rebuild</a>
-      <a href="#crew"><span>05</span>Crew</a>
+      <a href="decks.html"><span>01</span>Decks + Hardware</a>
+      <a href="product.html"><span>02</span>New Drop</a>
+      <a href="bad-ideas.html"><span>03</span>Bad Ideas</a>
+      <a href="rebuild.html"><span>04</span>Rebuild</a>
+      <a href="crew.html"><span>05</span>Crew</a>
     </nav>
     <p>Made for ledges, late nights and learning the hard way.</p>
   </aside>
@@ -105,7 +105,7 @@
         </div>
         <button class="product-arrow product-next" aria-label="Next decks">›</button>
       </div>
-      <button class="void-button black-button shop-all">See every deck</button>
+      <a class="void-button black-button shop-all" href="decks.html">See every deck</a>
     </section>
 
     <section class="rebuild-section reveal" id="rebuild">
@@ -125,16 +125,21 @@
       </div>
     </section>
 
+    <section class="bad-ideas-teaser reveal">
+      <a class="bad-ideas-teaser-image" href="bad-ideas.html"><img src="assets/board-meeting-generated.png" alt="A serious office board meeting centered on a skateboard"><span class="teaser-play">▶</span></a>
+      <div class="bad-ideas-teaser-copy"><p class="section-kicker">Not shopping? Excellent.</p><h2>Enter the<br>Bad Ideas<br>Department.</h2><p>Fake films, public apologies, curb journalism and other extremely necessary ways to waste company time.</p><a class="void-button black-button" href="bad-ideas.html">Waste time responsibly</a></div>
+    </section>
+
     <section class="culture-grid reveal" id="crew">
-      <article id="setup"><img src="assets/skater-portrait-pexels.jpg" alt="Skater holding a board in an urban setting"><div><p>Answer six questions</p><h2>Build Your<br>Whole Setup</h2><button class="void-button light-button">Start the builder</button></div></article>
-      <article><img src="assets/skate-community-pexels.jpg" alt="A community of skateboarders at a city park"><div><p>Spot checks + night sessions</p><h2>Join The<br>Field Unit</h2><button class="void-button light-button">Find a session</button></div></article>
+      <article id="setup"><img src="assets/skater-portrait-pexels.jpg" alt="Skater holding a board in an urban setting"><div><p>One board. Too many opinions.</p><h2>Meet The<br>New Drop</h2><a class="void-button light-button" href="product.html">Inspect it</a></div></article>
+      <article><img src="assets/skate-community-pexels.jpg" alt="A community of skateboarders at a city park"><div><p>Spot checks + night sessions</p><h2>Join The<br>Field Unit</h2><a class="void-button light-button" href="crew.html">Find a session</a></div></article>
     </section>
   </main>
 
   <footer class="void-footer" id="footer">
     <div class="footer-social"><p>Signal check:</p><a href="#">418K <span>@voidstep</span></a><a href="#">92K <span>@voidstep.fieldunit</span></a></div>
     <form class="void-newsletter"><label for="void-email">After dark only</label><div><input id="void-email" type="email" placeholder="ENTER EMAIL" required><button type="submit" aria-label="Submit email">→</button></div><label class="opt-in"><input type="checkbox"> Send me drops, spot checks and questionable night plans.</label></form>
-    <div class="footer-links"><div><h3>Ride</h3><a href="#decks">Decks</a><a href="#hardware">Hardware</a><a href="#setup">Setup Builder</a><a href="#rebuild">Rebuild Program</a></div><div><h3>VOIDSTEP</h3><a href="#crew">Field Unit</a><a href="#">Film Archive</a><a href="#">Workshop</a><a href="#">Contact</a></div></div>
+    <div class="footer-links"><div><h3>Ride</h3><a href="decks.html">Decks + Hardware</a><a href="product.html">New Drop</a><a href="rebuild.html">Rebuild Program</a><a href="crew.html">Field Unit</a></div><div><h3>Waste Time</h3><a href="bad-ideas.html">Bad Ideas Department</a><a href="bad-ideas.html#forge">Meme Forge</a><a href="bad-ideas.html#archive">Film Archive</a><a href="../index.html">Catalogue</a></div></div>
     <div class="footer-bottom"><span>© 2026 VOIDSTEP Workshop</span><span>Original UI/UX showcase concept</span><a href="../index.html">Back to catalogue ↗</a></div>
     <div class="footer-logo">VOID/STEP</div>
   </footer>

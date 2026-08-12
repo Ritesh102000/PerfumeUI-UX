@@ -6,7 +6,7 @@ A framework-free catalogue of independent, interactive website concepts for clie
 
 - `index.html` - neutral catalogue landing page
 - `aureve/` - standalone luxury perfume storefront concept
-- `voidstep-skate/` - standalone high-energy skate commerce concept
+- `voidstep-skate/` - standalone six-page skate commerce, culture and meme-media concept
 
 Every concept owns its HTML, CSS, JavaScript, assets, README and client PDF. A concept can be opened, hosted or handed over without depending on another concept folder.
 

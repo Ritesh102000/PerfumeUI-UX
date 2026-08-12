@@ -1,5 +1,5 @@
-const $ = (selector, scope = document) => scope.querySelector(selector);
-const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
+const $ = (selector, scope = document) => scope?.querySelector(selector) || null;
+const $$ = (selector, scope = document) => scope ? [...scope.querySelectorAll(selector)] : [];
 
 const slides = $$(".hero-slide");
 const pagination = $(".hero-pagination");
@@ -22,15 +22,17 @@ function startCarousel() {
   slideTimer = setInterval(() => showSlide(activeSlide + 1, false), 6200);
 }
 
-slides.forEach((_, index) => {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.setAttribute("aria-label", `Go to slide ${index + 1}`);
-  button.addEventListener("click", () => showSlide(index));
-  pagination.append(button);
-});
-showSlide(0, false);
-if (!reduceMotion) startCarousel();
+if (slides.length && pagination) {
+  slides.forEach((_, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.setAttribute("aria-label", `Go to slide ${index + 1}`);
+    button.addEventListener("click", () => showSlide(index));
+    pagination.append(button);
+  });
+  showSlide(0, false);
+  if (!reduceMotion) startCarousel();
+}
 
 $(".hero-prev")?.addEventListener("click", () => showSlide(activeSlide - 1));
 $(".hero-next")?.addEventListener("click", () => showSlide(activeSlide + 1));
@@ -39,7 +41,7 @@ $(".hero-carousel")?.addEventListener("mouseleave", () => !reduceMotion && start
 
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) clearInterval(slideTimer);
-  else if (!reduceMotion) startCarousel();
+  else if (!reduceMotion && slides.length) startCarousel();
 });
 
 function initDragScroller(element) {
@@ -68,22 +70,23 @@ const productTrack = $(".product-track");
 const hardwareTrack = $(".hardware-track");
 initDragScroller(productTrack);
 initDragScroller(hardwareTrack);
-$(".product-prev")?.addEventListener("click", () => productTrack.scrollBy({ left: -360, behavior: "smooth" }));
-$(".product-next")?.addEventListener("click", () => productTrack.scrollBy({ left: 360, behavior: "smooth" }));
+$(".product-prev")?.addEventListener("click", () => productTrack?.scrollBy({ left: -360, behavior: "smooth" }));
+$(".product-next")?.addEventListener("click", () => productTrack?.scrollBy({ left: 360, behavior: "smooth" }));
 
 const backdrop = $(".void-backdrop");
 const mobileMenu = $(".mobile-menu");
 const cartDrawer = $(".cart-drawer");
+const videoModal = $(".video-modal");
 const menuTrigger = $(".mobile-menu-trigger");
 
 function syncBackdrop() {
-  const open = [mobileMenu, cartDrawer].some(panel => panel?.classList.contains("open"));
-  backdrop.classList.toggle("open", open);
+  const open = [mobileMenu, cartDrawer, videoModal].some(panel => panel?.classList.contains("open"));
+  backdrop?.classList.toggle("open", open);
   document.body.classList.toggle("locked", open);
 }
 
 function closePanels() {
-  [mobileMenu, cartDrawer].forEach(panel => {
+  [mobileMenu, cartDrawer, videoModal].forEach(panel => {
     panel?.classList.remove("open");
     panel?.setAttribute("aria-hidden", "true");
   });
@@ -141,6 +144,9 @@ const itemPrices = {
   "split-signal": 4900,
   "pink-noise": 5300,
   "wrong-way": 5900,
+  "rough-cut": 3200,
+  "low-signal": 5800,
+  "one-tool": 1450,
   "Rough Cut 54s": 3200,
   "Low Signal Trucks": 5800,
   "Noise Sheet Grip": 950,
@@ -174,16 +180,17 @@ function removeCartItem(id) {
 function renderCart() {
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  $(".cart-count").textContent = count;
+  if ($(".cart-count")) $(".cart-count").textContent = count;
+  if (!$(".cart-lines")) return;
   $(".cart-lines").innerHTML = cart.map(item => `
     <div class="cart-line">
       <div class="mini-mark">//</div>
       <div><h3>${item.name}</h3><p>Quantity ${item.quantity}</p><button data-remove="${item.id}">Remove</button></div>
       <strong>${money(item.price * item.quantity)}</strong>
     </div>`).join("");
-  $(".cart-empty").classList.toggle("hidden", cart.length > 0);
-  $(".cart-summary").classList.toggle("visible", cart.length > 0);
-  $(".cart-total").textContent = money(total);
+  $(".cart-empty")?.classList.toggle("hidden", cart.length > 0);
+  $(".cart-summary")?.classList.toggle("visible", cart.length > 0);
+  if ($(".cart-total")) $(".cart-total").textContent = money(total);
 }
 
 $$('.void-product .quick-add').forEach(button => button.addEventListener("click", () => {
@@ -197,14 +204,114 @@ $$('.hardware-track article > button').forEach((button, index) => button.addEven
   addCartItem(`hardware-${index}`, name);
 }));
 
+$$('[data-shop-add]').forEach(button => button.addEventListener("click", () => {
+  addCartItem(button.dataset.shopAdd, button.dataset.name);
+}));
+
+$("[data-product-add]")?.addEventListener("click", event => {
+  const button = event.currentTarget;
+  const size = $('input[name="size"]:checked')?.value;
+  const baseName = button.dataset.name.replace(/\s8\.25$/, "");
+  addCartItem(button.dataset.productAdd, size ? `${baseName} ${size}` : button.dataset.name);
+});
+
 $(".cart-lines")?.addEventListener("click", event => {
   const button = event.target.closest("[data-remove]");
   if (button) removeCartItem(button.dataset.remove);
 });
 renderCart();
 
+// Collection filters and sorting.
+const shopGrid = $(".shop-grid");
+const shopCards = $$(".shop-card");
+shopCards.forEach((card, index) => card.dataset.order = index);
+
+function filterShop(category) {
+  $$('[data-shop-filter]').forEach(button => button.classList.toggle("active", button.dataset.shopFilter === category));
+  shopCards.forEach(card => card.classList.toggle("hidden", category !== "all" && card.dataset.category !== category));
+  $(".shop-empty")?.toggleAttribute("hidden", shopCards.some(card => !card.classList.contains("hidden")));
+}
+
+$$('[data-shop-filter]').forEach(button => button.addEventListener("click", () => filterShop(button.dataset.shopFilter)));
+$(".shop-sort")?.addEventListener("change", event => {
+  if (!shopGrid) return;
+  const mode = event.target.value;
+  [...shopCards].sort((a, b) => mode === "low" ? Number(a.dataset.price) - Number(b.dataset.price) : mode === "high" ? Number(b.dataset.price) - Number(a.dataset.price) : Number(a.dataset.order) - Number(b.dataset.order)).forEach(card => shopGrid.append(card));
+});
+
+// Bad Ideas media archive, modal and filters.
+function openVideo(title) {
+  if (!videoModal) return;
+  closePanels();
+  if ($(".fake-video-title")) $(".fake-video-title").textContent = title;
+  videoModal.classList.add("open");
+  videoModal.setAttribute("aria-hidden", "false");
+  syncBackdrop();
+}
+
+$$('[data-video-title]').forEach(card => card.addEventListener("click", () => openVideo(card.dataset.videoTitle)));
+$(".video-close")?.addEventListener("click", closePanels);
+$$('[data-idea-filter]').forEach(button => button.addEventListener("click", () => {
+  const category = button.dataset.ideaFilter;
+  $$('[data-idea-filter]').forEach(item => item.classList.toggle("active", item === button));
+  $$(".idea-card").forEach(card => card.classList.toggle("hidden", category !== "all" && card.dataset.category !== category));
+}));
+
+const memeStageImage = $(".meme-stage img");
+const memeTop = $(".meme-top");
+const memeBottom = $(".meme-bottom");
+const memeTopInput = $(".meme-top-input");
+const memeBottomInput = $(".meme-bottom-input");
+const memePhrases = [
+  ["ONE MORE TRY", "A DOCUMENTARY IN 47 PARTS"],
+  ["WHEN THE SPOT IS PERFECT", "BUT SECURITY HAS FEELINGS"],
+  ["NEW DECK ENERGY", "OLD TRICK SELECTION"],
+  ["CALL IT A LINE", "SO THE FALL LOOKS INTENTIONAL"],
+  ["THE GROUP CHAT SAID 7", "EVERYONE ARRIVED AT 9:40"]
+];
+
+function updateMeme() {
+  if (memeTop && memeTopInput) memeTop.textContent = memeTopInput.value || " ";
+  if (memeBottom && memeBottomInput) memeBottom.textContent = memeBottomInput.value || " ";
+}
+memeTopInput?.addEventListener("input", updateMeme);
+memeBottomInput?.addEventListener("input", updateMeme);
+$$('[data-meme-img]').forEach(button => button.addEventListener("click", () => {
+  $$('[data-meme-img]').forEach(item => item.classList.toggle("active", item === button));
+  if (memeStageImage) memeStageImage.src = button.dataset.memeImg;
+}));
+$(".meme-randomize")?.addEventListener("click", () => {
+  const [top, bottom] = memePhrases[Math.floor(Math.random() * memePhrases.length)];
+  memeTopInput.value = top;
+  memeBottomInput.value = bottom;
+  updateMeme();
+});
+$(".meme-copy")?.addEventListener("click", async () => {
+  const caption = `${memeTopInput?.value || ""} / ${memeBottomInput?.value || ""}`;
+  try { await navigator.clipboard.writeText(caption); toast("Caption copied. Reputation not included."); }
+  catch { toast(caption); }
+});
+$(".idea-submit")?.addEventListener("click", () => toast("Bad idea received. Standards remain low."));
+
+// Mission and community prototype actions.
+$(".return-form")?.addEventListener("submit", event => {
+  event.preventDefault();
+  const selected = $('input[name="damage"]:checked')?.value;
+  const result = $(".return-result");
+  if (result) result.textContent = selected === "lost" ? "Result: technically difficult to return. Check under the bed again." : "Result: eligible for a fictional ₹600 credit. No printer required.";
+});
+$(".rebuild-start")?.addEventListener("click", () => toast("Return portal opened in a more expensive prototype"));
+$$('.session-list button').forEach(button => button.addEventListener("click", () => {
+  button.textContent = button.textContent === "Saved" ? "Save spot" : "Saved";
+  toast(button.textContent === "Saved" ? "Spot saved to this browser" : "Spot removed");
+}));
+$(".crew-form")?.addEventListener("submit", event => {
+  event.preventDefault(); event.currentTarget.reset(); toast("Field Unit application misplaced successfully");
+});
+
 function toast(message) {
   const element = $(".void-toast");
+  if (!element) return;
   element.textContent = message;
   element.classList.add("show");
   clearTimeout(toast.timer);
@@ -243,7 +350,7 @@ const rebuildSection = $(".rebuild-section");
 let ticking = false;
 function updateScrollEffects() {
   const scrollY = window.scrollY;
-  header.classList.toggle("sticky", scrollY > 620);
+  header?.classList.toggle("sticky", scrollY > 620);
   if (rebuildSection && !reduceMotion) {
     const rect = rebuildSection.getBoundingClientRect();
     if (rect.bottom > 0 && rect.top < innerHeight) {
