@@ -4,6 +4,109 @@
   gap: 6px;
 }
 
+/* Brand loading and internal-page transition */
+.site-loader {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--forest);
+  color: var(--ivory);
+  transform: translateY(0);
+  visibility: visible;
+  transition: transform 0.68s cubic-bezier(0.76, 0, 0.24, 1), visibility 0s;
+}
+
+.loader-lockup {
+  width: min(430px, calc(100% - 64px));
+  text-align: center;
+}
+
+.loader-lockup span {
+  display: block;
+  font: 400 clamp(64px, 9vw, 132px)/0.82 var(--serif);
+  letter-spacing: 0.08em;
+}
+
+.loader-lockup small {
+  display: block;
+  margin-top: 13px;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+.loader-lockup i {
+  position: relative;
+  display: block;
+  height: 1px;
+  margin-top: 28px;
+  overflow: hidden;
+  background: rgba(246, 241, 231, 0.24);
+}
+
+.loader-lockup i::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ivory);
+  transform-origin: left;
+  animation: koshra-load 1.15s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+.site-loader.is-leaving {
+  pointer-events: none;
+  transform: translateY(-100%);
+  visibility: hidden;
+  transition: transform 0.68s cubic-bezier(0.76, 0, 0.24, 1), visibility 0s 0.68s;
+}
+
+body:not(.page-ready),
+body.page-exit {
+  overflow: hidden;
+}
+
+body:not(.page-ready) #site-shell,
+body:not(.page-ready) main,
+body:not(.page-ready) #overlay-root {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+#site-shell,
+main,
+#overlay-root {
+  transition: opacity 0.45s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.page-exit .site-loader.is-leaving {
+  pointer-events: auto;
+  transform: translateY(0);
+  visibility: visible;
+  transition: transform 0.43s cubic-bezier(0.76, 0, 0.24, 1), visibility 0s;
+}
+
+body.page-exit #site-shell,
+body.page-exit main,
+body.page-exit #overlay-root {
+  opacity: 0.25;
+  transform: translateY(10px);
+}
+
+@keyframes koshra-load {
+  0% { transform: translateX(-105%) scaleX(0.35); }
+  55% { transform: translateX(0) scaleX(0.72); }
+  100% { transform: translateX(105%) scaleX(0.35); }
+}
+
+/* Keep the editorial headline tight without letting adjacent lines collide. */
+.hero-copy .display {
+  line-height: 0.97;
+}
+
 /* Shared structural safeguards */
 [hidden] {
   display: none !important;
@@ -192,6 +295,13 @@
 }
 
 @media (max-width: 760px) {
+  .loader-lockup span {
+    font-size: clamp(58px, 21vw, 86px);
+  }
+
+  .hero-copy .display {
+    line-height: 0.98;
+  }
   .announcement {
     height: 34px;
   }
@@ -285,5 +395,21 @@
   .footer-col a,
   .footer-bottom span {
     overflow-wrap: anywhere;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-lockup i::after {
+    animation: none;
+    transform: none;
+  }
+
+  .site-loader,
+  .site-loader.is-leaving,
+  body.page-exit .site-loader.is-leaving,
+  #site-shell,
+  main,
+  #overlay-root {
+    transition-duration: 0.01ms;
   }
 }
