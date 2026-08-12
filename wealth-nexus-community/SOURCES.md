@@ -4,6 +4,8 @@
 
 - Current website, public offer, FAQ, founder details, member roster and claims: https://wealthnx.com/
 - Official application: https://apply.wealthnx.com/
+- Official Terms of Membership: https://wealthnx.com/terms
+- Official Privacy Policy: https://wealthnx.com/privacy
 - Founder identified publicly as Zaid Chakir: https://zaidchakir.com/
 - Public proof assets reused from the current website with user permission:
   - `assets/proof-firdaws.webp` — https://wealthnx.com/proof/firdaws-best-decision.webp

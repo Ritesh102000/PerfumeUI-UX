@@ -1,6 +1,6 @@
 # Wealth Nexus — The Digital Majlis
 
-This is an independent four-page creative redesign concept for [Wealth Nexus](https://wealthnx.com). It uses Wealth Nexus's public name, founder information, offer, member descriptions and proof with the user's permission.
+This is an independent six-page creative redesign concept for [Wealth Nexus](https://wealthnx.com). It uses Wealth Nexus's public name, founder information, offer, member descriptions, proof and public legal policies with the user's permission.
 
 ## The concept
 
@@ -21,6 +21,8 @@ Wealth Nexus is presented as a **digital majlis** rather than another paid commu
 - `brotherhood.html` — **The Circle:** orbiting member map, stamped member passports and the operational value of proximity
 - `membership.html` — **The Treasury:** interactive ten-volume business library, shared AI workshop and founding-member exchange
 - `apply.html` — **The Door:** a three-step, non-submitting fit ritual before the official Wealth Nexus application
+- `terms.html` — **Terms of Membership:** all ten public terms presented in a readable editorial legal layout
+- `privacy.html` — **Privacy Policy:** all eight public privacy sections presented in the same visual system
 
 ## Why this is more distinctive
 
