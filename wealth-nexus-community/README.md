@@ -1,6 +1,6 @@
 # Wealth Nexus — The Digital Majlis
 
-This is an independent six-page creative redesign concept for [Wealth Nexus](https://wealthnx.com). It uses Wealth Nexus's public name, founder information, offer, member descriptions, proof and public legal policies with the user's permission.
+This is an independent seven-page creative redesign concept for [Wealth Nexus](https://wealthnx.com). It uses Wealth Nexus's public name, founder information, offer, member descriptions, proof and public legal policies with the user's permission.
 
 ## The concept
 
@@ -21,8 +21,11 @@ Wealth Nexus is presented as a **digital majlis** rather than another paid commu
 - `brotherhood.html` — **The Circle:** orbiting member map, stamped member passports and the operational value of proximity
 - `membership.html` — **The Treasury:** interactive ten-volume business library, shared AI workshop and founding-member exchange
 - `apply.html` — **The Door:** a three-step, non-submitting fit ritual before the official Wealth Nexus application
+- `checkout.html` — **The Founding Covenant:** the complete $5,000-to-$2,500 lifetime offer, founding bonuses and three payment rhythms, linking to the official secure checkout
 - `terms.html` — **Terms of Membership:** all ten public terms presented in a readable editorial legal layout
 - `privacy.html` — **Privacy Policy:** all eight public privacy sections presented in the same visual system
+
+The homepage proof section includes Magnus's public results list with a separate successful $2,500 client payment visible. It is clearly distinguished from the membership price. The non-submitting Door also mirrors the original application's $1,000–$2,500 and $2,500–$5,000 monthly-income ranges.
 
 ## Why this is more distinctive
 

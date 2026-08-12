@@ -37,15 +37,15 @@ c=canvas.Canvas(str(OUT),pagesize=A4);c.setTitle('Wealth Nexus — Community Red
 c.setFillColor(PAPER);c.rect(0,0,W,H,fill=1,stroke=0);cover_img(c,ROOT/'assets'/'brothers-business.jpg',W*.48,0,W*.52,H);c.setFillColor(FOREST);c.rect(0,H-56,W*.48,56,fill=1,stroke=0)
 c.setFillColor(INK);c.setFont('Times-Bold',20);c.drawString(42,H-104,'WEALTH');c.setFillColor(RED);c.drawString(125,H-104,'NEXUS');label(c,'Faith-led community redesign',42,H-143)
 y=title(c,'Build with brothers. Keep your deen close.',42,H-185,W*.37,38,FOREST)
-txt(c,'A radical six-page digital majlis where Muslim brotherhood becomes the interface, not a decorative theme.',42,y-22,W*.35,11,17,'Helvetica',INK)
+txt(c,'A radical seven-page digital majlis where Muslim brotherhood becomes the interface, not a decorative theme.',42,y-22,W*.35,11,17,'Helvetica',INK)
 c.setFillColor(BRASS);c.rect(42,78,176,55,fill=1,stroke=0);c.setFillColor(INK);c.setFont('Helvetica-Bold',9);c.drawString(55,111,'CLIENT DESIGN GUIDE');c.setFont('Helvetica',7.5);c.drawString(55,94,'WHY · WHEN · RETENTION · TRUST');footer(c,1);c.showPage()
 # Problem and strategy
 c.setFillColor(PAPER);c.rect(0,0,W,H,fill=1,stroke=0);label(c,'01 · The redesign decision',42,H-60);y=title(c,'The offer is strong. The first visit asks too much.',42,H-98,W-84,37,FOREST)
 txt(c,'The existing page explains the brotherhood, ten systems, shared AI, mechanism, members, proof, referrals, qualification, offer stack and FAQ in one continuous sales journey. The result is comprehensive, but the emotional promise competes with the amount of reading.',42,y-18,W-84,10.5,16)
 y-=105
-items=[('THE MAJLIS','Prayer-led work rhythm, Exchange Board and Amanah Code.'),('THE CIRCLE','Orbiting member map, stamped passports and inspectable proof.'),('THE TREASURY','Ten business systems become an interactive library.'),('THE DOOR','Application becomes a deliberate knock, never a checkout.'),('THE TERMS','Ten membership clauses in a readable editorial structure.'),('PRIVACY','Eight public privacy sections with a clear data trail.')]
+items=[('THE MAJLIS','Prayer-led rhythm, Exchange Board and Story-style proof.'),('THE CIRCLE','Orbiting member map and stamped passports.'),('THE TREASURY','Ten readable, interactive business volumes.'),('THE DOOR','Application becomes a deliberate knock.'),('FOUNDING OFFER','$5,000 anchor, $2,500 founding price and payment plans.'),('THE TERMS','Ten clauses in a readable editorial structure.'),('PRIVACY','Eight public privacy sections with a clear data trail.')]
 for i,(a,b) in enumerate(items):
-    yy=y-i*78;c.setFillColor(FOREST if i%2==0 else SAND);c.rect(42,yy-61,W-84,61,fill=1,stroke=0);c.setFillColor(BRASS if i%2==0 else RED);c.setFont('Times-Bold',16);c.drawString(58,yy-23,f'0{i+1}');c.setFillColor(white if i%2==0 else FOREST);c.setFont('Helvetica-Bold',9);c.drawString(105,yy-22,a);txt(c,b,105,yy-39,W-175,8.5,11,'Helvetica',white if i%2==0 else INK)
+    yy=y-i*66;c.setFillColor(FOREST if i%2==0 else SAND);c.rect(42,yy-51,W-84,51,fill=1,stroke=0);c.setFillColor(BRASS if i%2==0 else RED);c.setFont('Times-Bold',15);c.drawString(58,yy-20,f'0{i+1}');c.setFillColor(white if i%2==0 else FOREST);c.setFont('Helvetica-Bold',8.5);c.drawString(105,yy-19,a);txt(c,b,105,yy-35,W-175,8,10,'Helvetica',white if i%2==0 else INK)
 footer(c,2);c.showPage()
 # Visual
 c.setFillColor(FOREST);c.rect(0,0,W,H,fill=1,stroke=0);label(c,'02 · Visual language',42,H-60,BRASS);y=title(c,'Islamic belonging without decorative cliché.',42,H-98,W-84,37,white)

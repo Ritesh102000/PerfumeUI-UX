@@ -4,6 +4,7 @@
 
 - Current website, public offer, FAQ, founder details, member roster and claims: https://wealthnx.com/
 - Official application: https://apply.wealthnx.com/
+- Official founding-membership checkout and canonical $2,500 offer: https://join.wealthnx.com/checkout
 - Official Terms of Membership: https://wealthnx.com/terms
 - Official Privacy Policy: https://wealthnx.com/privacy
 - Founder identified publicly as Zaid Chakir: https://zaidchakir.com/
@@ -11,6 +12,7 @@
   - `assets/proof-firdaws.webp` — https://wealthnx.com/proof/firdaws-best-decision.webp
   - `assets/proof-rayan.webp` — https://wealthnx.com/proof/rayan-acquisition-os.webp
   - `assets/proof-magnus.webp` — https://wealthnx.com/proof/magnus-pre-call-flow.webp
+  - `assets/proof-magnus-payouts.webp` — https://wealthnx.com/proof/magnus-payouts.webp
 - `assets/original-og.png` — archived current Wealth Nexus social-preview image: https://wealthnx.com/og-image.png
 
 ## Free stock photography
