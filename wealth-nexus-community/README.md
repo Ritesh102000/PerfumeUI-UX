@@ -17,7 +17,7 @@ Wealth Nexus is presented as a **digital majlis** rather than another paid commu
 
 ## Pages
 
-- `index.html` — **The Majlis:** opening portal, prayer-led rhythm, interactive gathering agenda, Exchange Board, Amanah Code and proof ribbon
+- `index.html` — **The Majlis:** opening portal, prayer-led rhythm, interactive gathering agenda, Exchange Board, Amanah Code, official VSL and a 19-frame Story proof viewer
 - `brotherhood.html` — **The Circle:** orbiting member map, stamped member passports and the operational value of proximity
 - `membership.html` — **The Treasury:** interactive ten-volume business library, shared AI workshop and founding-member exchange
 - `apply.html` — **The Door:** a three-step, non-submitting fit ritual before the official Wealth Nexus application

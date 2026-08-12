@@ -24,6 +24,14 @@
 
 Images were downloaded at 1800 px for this prototype. Wealth Nexus should verify the current licence and any required model/property releases before commercial use.
 
+## Official video
+
+- Public Wealth Nexus introduction VSL, embedded from the official Vidalytics player: https://fast.vidalytics.com/embeds/chXSsHKk/qG_szjV6jkCHVUaY/
+
+## Complete public proof library
+
+The Story viewer includes all 19 public proof images currently exposed by the original Wealth Nexus homepage. Each additional local filename matches its source filename under `https://wealthnx.com/proof/`.
+
 ## Religious-language note
 
 Arabic content is limited to widely used greetings and the basmala. The concept does not make a religious ruling or present a Qur'anic translation. Any expanded religious teaching should be reviewed by a qualified scholar chosen by Wealth Nexus.
