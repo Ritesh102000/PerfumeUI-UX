@@ -1,30 +1,30 @@
-# AURÈVE — Luxury Perfume UI/UX Concept
+# UI/UX Website Catalogue
 
-An original, frontend-only showcase site for a fictional luxury perfume house.
+A framework-free catalogue of independent, interactive website concepts for client presentations.
 
-## Pages
+## Structure
 
-- `index.html` — cinematic brand landing page
-- `shop.html` — interactive fragrance catalog
+- `index.html` - neutral catalogue landing page
+- `aureve/` - standalone luxury perfume storefront concept
+- `voidstep-skate/` - standalone high-energy skate commerce concept
 
-## Included interactions
-
-- Responsive navigation and full-screen menu
-- Search panel
-- Scent-family, intensity, note, and format filters
-- Product sorting and quick view
-- Wishlist and cart state saved in `localStorage`
-- Quantity controls and frontend-only concept checkout
-- Responsive desktop and mobile layouts
+Every concept owns its HTML, CSS, JavaScript, assets, README and client PDF. A concept can be opened, hosted or handed over without depending on another concept folder.
 
 ## Run locally
 
-From this folder:
+From the catalogue root:
 
 ```bash
 python3 -m http.server 4173
 ```
 
-Then open `http://127.0.0.1:4173`.
+Open `http://127.0.0.1:4173`.
 
-This is a UI/UX showcase concept. No payment or backend service is connected.
+## Adding another concept
+
+1. Create a new self-contained subfolder.
+2. Keep all of that concept's assets and code inside it.
+3. Add its card to the root `index.html`.
+4. Include a `README.md` and `output/pdf/` client guide in the concept folder.
+
+All concepts are front-end demonstrations. Checkout, account, email and other backend actions are intentionally non-production unless stated otherwise.

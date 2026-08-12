@@ -3,154 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#250006">
-  <meta name="description" content="Aureve — fictional luxury perfume house and UI/UX showcase.">
-  <title>AURÈVE — Scent After Dark</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta name="description" content="A curated catalogue of interactive website UI and UX concepts.">
+  <meta name="theme-color" content="#0c0c0c">
+  <title>Site Form — UI/UX Catalogue</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="catalogue.css">
 </head>
-<body class="home-page">
-  <div class="page-loader" aria-hidden="true">
-    <span class="loader-mark">A</span>
-    <span class="loader-line"></span>
-  </div>
-  <div class="grain" aria-hidden="true"></div>
-
-  <header class="site-header header-on-dark">
-    <button class="icon-button menu-trigger" aria-label="Open menu" aria-expanded="false">
-      <span></span><span></span>
-    </button>
-    <a class="wordmark" href="index.html" aria-label="Aureve home">AURÈVE</a>
-    <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="#maison">Maison</a>
-      <a href="#collection">Collection</a>
-      <a href="shop.html">Shop</a>
-    </nav>
-    <div class="header-actions">
-      <button class="text-button search-trigger" aria-label="Search">Search</button>
-      <button class="bag-trigger" aria-label="Open shopping bag">Bag <span class="bag-count">0</span></button>
-    </div>
+<body>
+  <header class="catalogue-header">
+    <a class="catalogue-logo" href="index.html">SITE / FORM</a>
+    <p>Interactive website directions for brands ready to look unmistakable.</p>
+    <span>Catalogue 001</span>
   </header>
 
-  <div class="menu-overlay" aria-hidden="true">
-    <div class="menu-visual" aria-hidden="true">
-      <div class="menu-bottle perfume-bottle bottle-ruby"><i></i><b>A</b></div>
-    </div>
-    <nav class="menu-links">
-      <a href="index.html"><span>01</span>Home</a>
-      <a href="shop.html"><span>02</span>La Collection</a>
-      <a href="#maison"><span>03</span>La Maison</a>
-      <a href="#journal"><span>04</span>Journal</a>
-    </nav>
-    <div class="menu-meta">Paris · Dubai · New York<br>Private client service</div>
-  </div>
-
-  <aside class="search-panel" aria-hidden="true">
-    <button class="panel-close search-close" aria-label="Close search">×</button>
-    <p class="eyebrow">Find your fragrance</p>
-    <label class="search-label" for="site-search">Search the maison</label>
-    <div class="search-row">
-      <input id="site-search" type="search" placeholder="Try “oud” or “rose”" autocomplete="off">
-      <a class="arrow-button" href="shop.html" aria-label="Go to shop">↗</a>
-    </div>
-    <div class="search-suggestions">
-      <span>Trending</span><a href="shop.html#rouge-royal">Rouge Royal</a><a href="shop.html#ambre-velours">Ambre Velours</a><a href="shop.html">Discovery Set</a>
-    </div>
-  </aside>
-
   <main>
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-bg" role="img" aria-label="Ruby perfume bottle framed by flowing gold"></div>
-      <div class="hero-shade"></div>
-      <div class="hero-kicker">Maison de Haute Parfumerie · Paris</div>
-      <div class="hero-copy">
-        <p class="eyebrow">Extrait de parfum · No. 01</p>
-        <h1 id="hero-title"><span>Scent</span><em>after dark.</em></h1>
-        <p class="hero-intro">A nocturnal composition of Damask rose, saffron and molten amber—made to leave a golden trace.</p>
-        <a class="luxury-button" href="shop.html#rouge-royal"><span>Discover Rouge Royal</span><i>↗</i></a>
-      </div>
-      <div class="hero-edition"><span>ÉDITION</span><b>01</b><small>2026</small></div>
-      <div class="scroll-cue"><span>Scroll to enter</span><i></i></div>
-    </section>
-
-    <section class="manifesto" id="maison">
-      <div class="section-number">01 / LA MAISON</div>
-      <div class="manifesto-copy reveal">
-        <p class="eyebrow gold">The art of the invisible</p>
-        <h2>Not simply worn.<br><em>Remembered.</em></h2>
-        <p>AURÈVE composes perfume as wearable architecture. Precious naturals, unexpected tension, and an exceptional concentration create a signature that develops intimately on skin.</p>
-        <a class="line-link" href="#ritual">Enter the atelier <span>↗</span></a>
-      </div>
-      <div class="scent-orbit reveal" aria-label="Perfume note composition">
-        <div class="orbit-ring ring-one"></div>
-        <div class="orbit-ring ring-two"></div>
-        <div class="note note-rose"><b>01</b><span>Damask<br>Rose</span></div>
-        <div class="note note-saffron"><b>02</b><span>Golden<br>Saffron</span></div>
-        <div class="note note-oud"><b>03</b><span>Smoked<br>Oud</span></div>
-        <div class="orbit-core">A</div>
+    <section class="catalogue-intro">
+      <p class="kicker">Choose a visual direction</p>
+      <h1>Two worlds.<br><em>One standard.</em></h1>
+      <div class="intro-note">
+        <span>Live, responsive concepts</span>
+        <p>Open a direction to experience the layout, movement, navigation and product interactions as your customer would.</p>
       </div>
     </section>
 
-    <section class="collection" id="collection">
-      <header class="section-heading reveal">
-        <div><p class="eyebrow gold">The private collection</p><h2>Three moods.<br><em>One obsession.</em></h2></div>
-        <p>Each fragrance is built around a rare material, amplified beyond expectation.</p>
-      </header>
-      <div class="featured-grid" id="featured-grid" aria-live="polite"></div>
-      <div class="collection-cta reveal"><a class="luxury-button dark-button" href="shop.html"><span>Shop all fragrances</span><i>↗</i></a></div>
-    </section>
+    <section class="concept-grid" aria-label="Website concepts">
+      <article class="concept-card concept-luxury">
+        <a class="concept-preview" href="aureve/index.html" aria-label="Open the AURÈVE luxury fragrance concept">
+          <img src="assets/aureve-hero.png" alt="A ruby perfume bottle in flowing gold fabric">
+          <span class="open-mark">Open concept ↗</span>
+          <div class="preview-wordmark">AURÈVE</div>
+        </a>
+        <div class="concept-meta">
+          <div><span>01</span><p>Quiet luxury / Editorial commerce</p></div>
+          <h2>AURÈVE</h2>
+          <p>A cinematic, refined storefront for premium products where atmosphere, craft and considered detail create desire.</p>
+          <div class="concept-actions"><a href="aureve/index.html">Experience site</a><a href="aureve/output/pdf/aureve-design-guide.pdf">Client guide</a></div>
+        </div>
+      </article>
 
-    <section class="ritual" id="ritual">
-      <div class="ritual-visual reveal" aria-hidden="true">
-        <div class="atomizer-mist"></div>
-        <div class="ritual-bottle perfume-bottle bottle-garnet"><i></i><b>AURÈVE</b><small>PARIS</small></div>
-        <div class="gold-halo"></div>
-      </div>
-      <div class="ritual-copy reveal">
-        <p class="eyebrow gold">The ritual</p>
-        <h2>A drop of<br><em>pure presence.</em></h2>
-        <p>Apply where the pulse lives. Allow the extrait to warm, unfold and become entirely your own.</p>
-        <dl>
-          <div><dt>Concentration</dt><dd>30% Extrait</dd></div>
-          <div><dt>Wear</dt><dd>12+ Hours</dd></div>
-          <div><dt>Crafted in</dt><dd>Grasse, France</dd></div>
-        </dl>
-      </div>
-    </section>
-
-    <section class="scent-finder" id="journal">
-      <div class="finder-card reveal">
-        <p class="eyebrow">Private consultation</p>
-        <h2>Which scent<br><em>follows you?</em></h2>
-        <p>Answer three questions and meet the fragrance composed for your atmosphere.</p>
-        <a class="luxury-button" href="shop.html"><span>Find your signature</span><i>↗</i></a>
-      </div>
-      <div class="finder-notes" aria-hidden="true">
-        <span>Rose</span><span>Oud</span><span>Saffron</span><span>Amber</span><span>Iris</span>
-      </div>
+      <article class="concept-card concept-brutal">
+        <a class="concept-preview" href="voidstep-skate/index.html" aria-label="Open the VOIDSTEP skate gear concept">
+          <img src="voidstep-skate/assets/hero-voidstep-generated.png" alt="Skate shoes suspended above a violet-lit concrete bowl">
+          <span class="open-mark">Open concept ↗</span>
+          <div class="preview-wordmark brutal-wordmark">VOID/STEP</div>
+        </a>
+        <div class="concept-meta">
+          <div><span>02</span><p>Brutalist energy / Skate commerce</p></div>
+          <h2>VOIDSTEP SKATE</h2>
+          <p>A loud, fast product experience for a fictional skate brand that sells decks, hardware, community and attitude in one flow.</p>
+          <div class="concept-actions"><a href="voidstep-skate/index.html">Experience site</a><a href="voidstep-skate/output/pdf/voidstep-design-guide.pdf">Client guide</a></div>
+        </div>
+      </article>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-top">
-      <div><p class="eyebrow gold">Letters from the maison</p><h2>Enter our <em>private circle.</em></h2></div>
-      <form class="newsletter-form"><label class="sr-only" for="email">Email address</label><input id="email" type="email" placeholder="Your email address" required><button type="submit">Join ↗</button></form>
-    </div>
-    <div class="footer-wordmark">AURÈVE</div>
-    <div class="footer-bottom"><span>© 2026 AURÈVE PARIS</span><div><a href="#">Instagram</a><a href="#">Pinterest</a><a href="#">Client care</a></div><span>UI/UX CONCEPT</span></div>
+  <footer class="catalogue-footer">
+    <p>More directions can be added to this catalogue without changing the individual concepts.</p>
+    <span>UI/UX Showcase · 2026</span>
   </footer>
-
-  <aside class="cart-drawer" aria-hidden="true">
-    <div class="drawer-head"><div><p class="eyebrow gold">Your selection</p><h2>The Bag <span class="bag-count">0</span></h2></div><button class="panel-close cart-close" aria-label="Close bag">×</button></div>
-    <div class="cart-items"></div>
-    <div class="cart-empty"><div class="empty-bottle perfume-bottle bottle-ruby"><i></i><b>A</b></div><h3>Your bag is waiting.</h3><p>Discover a fragrance worth remembering.</p><a class="line-link cart-shop-link" href="shop.html">Explore the collection <span>↗</span></a></div>
-    <div class="cart-summary"><div><span>Subtotal</span><strong class="cart-total">€0</strong></div><p>Complimentary delivery and two samples included.</p><button class="checkout-button">Continue to checkout <span>↗</span></button></div>
-  </aside>
-  <div class="backdrop"></div>
-  <div class="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
