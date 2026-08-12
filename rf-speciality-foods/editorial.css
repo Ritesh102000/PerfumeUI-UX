@@ -81,11 +81,20 @@ main::before {
 .hero-copy { padding: 6vw 4vw; border-right: var(--hard-rule); }
 .hero-copy h1 {
   max-width: 760px;
-  font: 800 clamp(68px,8.7vw,140px)/.72 var(--sans);
+  font: 800 clamp(68px,8.7vw,140px)/.78 var(--sans);
   letter-spacing: -.08em;
   text-transform: uppercase;
 }
-.hero-copy h1 em { padding: 0 .07em; background: var(--pink); color: var(--ink); font: inherit; }
+.hero-copy h1 em {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-top: .03em;
+  padding: .02em .07em .08em;
+  background: var(--pink);
+  color: var(--ink);
+  font: inherit;
+}
 .hero-copy > p:not(.eyebrow) { max-width: 620px; margin: 32px 0; font-size: 13px; }
 .hero-proof { gap: 0; border: var(--hard-rule); background: #fff; }
 .hero-proof div { flex: 1; min-width: 145px; padding: 17px; border-left: 0; border-right: var(--hard-rule); }
