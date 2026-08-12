@@ -37,26 +37,26 @@ c=canvas.Canvas(str(OUT),pagesize=A4);c.setTitle('Wealth Nexus — Community Red
 c.setFillColor(PAPER);c.rect(0,0,W,H,fill=1,stroke=0);cover_img(c,ROOT/'assets'/'brothers-business.jpg',W*.48,0,W*.52,H);c.setFillColor(FOREST);c.rect(0,H-56,W*.48,56,fill=1,stroke=0)
 c.setFillColor(INK);c.setFont('Times-Bold',20);c.drawString(42,H-104,'WEALTH');c.setFillColor(RED);c.drawString(125,H-104,'NEXUS');label(c,'Faith-led community redesign',42,H-143)
 y=title(c,'Build with brothers. Keep your deen close.',42,H-185,W*.37,38,FOREST)
-txt(c,'A shorter, warmer four-page experience designed to feel like home for ambitious Muslim men.',42,y-22,W*.35,11,17,'Helvetica',INK)
+txt(c,'A radical four-page digital majlis where Muslim brotherhood becomes the interface, not a decorative theme.',42,y-22,W*.35,11,17,'Helvetica',INK)
 c.setFillColor(BRASS);c.rect(42,78,176,55,fill=1,stroke=0);c.setFillColor(INK);c.setFont('Helvetica-Bold',9);c.drawString(55,111,'CLIENT DESIGN GUIDE');c.setFont('Helvetica',7.5);c.drawString(55,94,'WHY · WHEN · RETENTION · TRUST');footer(c,1);c.showPage()
 # Problem and strategy
 c.setFillColor(PAPER);c.rect(0,0,W,H,fill=1,stroke=0);label(c,'01 · The redesign decision',42,H-60);y=title(c,'The offer is strong. The first visit asks too much.',42,H-98,W-84,37,FOREST)
 txt(c,'The existing page explains the brotherhood, ten systems, shared AI, mechanism, members, proof, referrals, qualification, offer stack and FAQ in one continuous sales journey. The result is comprehensive, but the emotional promise competes with the amount of reading.',42,y-18,W-84,10.5,16)
 y-=105
-items=[('HOME','One feeling, three advantages, one action.'),('BROTHERHOOD','Belonging, trust, public members and inspectable proof.'),('MEMBERSHIP','Systems, AI and referral terms for serious evaluation.'),('APPLY','A calm fit-check before the official application.')]
+items=[('THE MAJLIS','Prayer-led work rhythm, Exchange Board and Amanah Code.'),('THE CIRCLE','Orbiting member map, stamped passports and inspectable proof.'),('THE TREASURY','Ten business systems become an interactive library.'),('THE DOOR','Application becomes a deliberate knock, never a checkout.')]
 for i,(a,b) in enumerate(items):
     yy=y-i*112;c.setFillColor(FOREST if i%2==0 else SAND);c.rect(42,yy-82,W-84,82,fill=1,stroke=0);c.setFillColor(BRASS if i%2==0 else RED);c.setFont('Times-Bold',18);c.drawString(58,yy-29,f'0{i+1}');c.setFillColor(white if i%2==0 else FOREST);c.setFont('Helvetica-Bold',10);c.drawString(105,yy-28,a);txt(c,b,105,yy-48,W-175,9,13,'Helvetica',white if i%2==0 else INK)
 footer(c,2);c.showPage()
 # Visual
 c.setFillColor(FOREST);c.rect(0,0,W,H,fill=1,stroke=0);label(c,'02 · Visual language',42,H-60,BRASS);y=title(c,'Islamic belonging without decorative cliché.',42,H-98,W-84,37,white)
-txt(c,'The design uses the visual memory of home, masjid and majlis: warm limestone, deep green, brass line work, arches, calm Arabic greetings and documentary community photography.',42,y-20,W-84,10.5,17,'Helvetica',HexColor('#d5d6cf'))
+txt(c,'The design uses the visual memory of home, masjid and majlis: opening doors, a vertical corridor, prayer-led time, stamped passports, warm limestone, deep green, brass line work and documentary photography.',42,y-20,W-84,10.5,17,'Helvetica',HexColor('#d5d6cf'))
 cols=[(FOREST,'MASJID GREEN','Trust + home'),(SAND,'WARM LIMESTONE','Hospitality'),(BRASS,'MUTED BRASS','Craft + dignity'),(RED,'BURGUNDY','Action + conviction')];yy=y-95
 for i,(col,name,use) in enumerate(cols):
     x=42+i*128;c.setFillColor(col);c.rect(x,yy-64,112,64,fill=1,stroke=1);c.setFillColor(white);c.setFont('Helvetica-Bold',7.5);c.drawString(x,yy-80,name);c.setFillColor(HexColor('#bfc7c3'));c.setFont('Helvetica',7);c.drawString(x,yy-92,use)
 cover_img(c,ROOT/'assets'/'brothers-prayer.jpg',42,88,W-84,355);c.setFillColor(FOREST2);c.rect(42,88,220,355,fill=1,stroke=0);label(c,'Faith is structural',62,405,BRASS);title(c,'A place where deen needs no explanation.',62,370,170,27,white);txt(c,'Prayer imagery is used as a sign of shared rhythm and belonging—not as a conversion device or a generic luxury motif.',62,244,170,9,14,'Helvetica',HexColor('#d3d7d2'));footer(c,3,True);c.showPage()
 # Retention
 c.setFillColor(PAPER);c.rect(0,0,W,H,fill=1,stroke=0);label(c,'03 · Retention strategy',42,H-60);y=title(c,'A visitor can understand it before deciding to study it.',42,H-98,W-84,37,FOREST)
-steps=[('00–05 SEC','Identity','A private brotherhood for Muslim men.'),('05–12 SEC','Promise','Build with brothers. Keep your deen close.'),('12–25 SEC','Proof of shape','Brotherhood, systems and shared AI.'),('NEXT CLICK','Self-selection','Meet the brothers, inspect membership or test fit.')]
+steps=[('00–03 SEC','The doors open','The visitor enters a place, not a landing page.'),('03–10 SEC','The declaration','Come as a builder. Leave with brothers.'),('10–25 SEC','The rhythm','Fajr to Isha makes faith part of the operating day.'),('NEXT CLICK','Choose a room','Enter the Circle, Treasury or Door.')]
 yy=y-28
 for i,(t,a,b) in enumerate(steps):
     c.setStrokeColor(BRASS);c.line(70,yy-9,70,yy-107 if i<3 else yy-68);c.setFillColor(RED);c.circle(70,yy-6,5,fill=1,stroke=0);label(c,t,93,yy);c.setFillColor(FOREST);c.setFont('Times-Bold',20);c.drawString(93,yy-28,a);txt(c,b,93,yy-48,W-145,9.5,14);yy-=122

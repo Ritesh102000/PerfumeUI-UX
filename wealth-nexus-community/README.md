@@ -1,39 +1,42 @@
-# Wealth Nexus — Faith-Led Community Redesign Concept
+# Wealth Nexus — The Digital Majlis
 
-This is an independent four-page UI/UX redesign concept for [Wealth Nexus](https://wealthnx.com), created inside the wider website showcase. It uses Wealth Nexus's public name, founder information, offer structure, member descriptions and public proof with the user's permission.
+This is an independent four-page creative redesign concept for [Wealth Nexus](https://wealthnx.com). It uses Wealth Nexus's public name, founder information, offer, member descriptions and proof with the user's permission.
 
-## What changed
+## The concept
 
-The current public website carries substantial detail on one long sales page. This concept gives every visit one clear job:
+Wealth Nexus is presented as a **digital majlis** rather than another paid community website. The interface behaves like a place:
 
-- `index.html` — establish emotional fit quickly: Muslim brotherhood, business ambition and deen in the same place
-- `brotherhood.html` — explain belonging, trust, member profiles and public proof
-- `membership.html` — organise the brotherhood, ten operating systems, shared AI infrastructure and founding referral
-- `apply.html` — a private, non-submitting fit-check before opening the real Wealth Nexus application
+- a pair of doors opens before the first visit;
+- vertical navigation feels like rooms along a corridor;
+- the homepage day moves from Fajr to Isha;
+- the Exchange Board carries real needs, offers, introductions and wins;
+- the Amanah Code makes trust visible through behaviour;
+- member profiles become stamped passports around a shared Circle;
+- ten operating systems become physical volumes in the Treasury;
+- application becomes The Door—not a checkout button.
 
-The homepage deliberately avoids repeating the full offer. A visitor sees the core promise, three membership advantages, one belonging section, three short voices and one application CTA.
+## Pages
 
-## Design direction
+- `index.html` — **The Majlis:** opening portal, prayer-led rhythm, interactive gathering agenda, Exchange Board, Amanah Code and proof ribbon
+- `brotherhood.html` — **The Circle:** orbiting member map, stamped member passports and the operational value of proximity
+- `membership.html` — **The Treasury:** interactive ten-volume business library, shared AI workshop and founding-member exchange
+- `apply.html` — **The Door:** a three-step, non-submitting fit ritual before the official Wealth Nexus application
 
-The visual system uses warm limestone, masjid green, ink, brass and muted burgundy. Islamic belonging is carried through arched photography, geometric line work, Arabic greetings, prayer/community imagery and language around amanah, contribution and deen. It does not rely on generic startup gradients, glass panels, icon cards or excessive rounded containers.
+## Why this is more distinctive
 
-## When to choose this direction
-
-Choose it when Wealth Nexus wants to feel like a trusted Muslim home first and a premium business membership second. It supports selective membership, global community, faith-aligned ambition and a personal application process.
-
-Reconsider it if the primary acquisition model depends on one very long direct-response page where every objection must be answered before the visitor clicks. This concept moves detailed evaluation into separate pages to protect homepage retention.
+The content is not organised as hero + benefits + feature cards + testimonials + FAQ. Every section has a metaphor tied to the actual Muslim community proposition. Arabic greetings, prayer rhythm, arches, amanah and exchange are structural—not surface decoration. The result is still usable, but it is intentionally closer to an editorial exhibition than a SaaS template.
 
 ## Demo boundaries
 
-- The concept does not submit or store personal information.
-- The final button opens the official application at `https://apply.wealthnx.com`.
-- Membership terms, proof and claims belong to Wealth Nexus and must stay verified by its team.
-- Public proof screenshots are preserved as images rather than rewritten into stronger claims.
+- The fit-check stores and transmits nothing.
+- The final action opens `https://apply.wealthnx.com`.
+- Membership claims and proof must remain verified by Wealth Nexus.
+- Expanded religious teaching or Qur'anic quotation should be reviewed by a qualified scholar selected by Wealth Nexus.
 
 ## Local preview
-
-Serve the catalogue root and open `/wealth-nexus-community/`:
 
 ```bash
 python3 -m http.server 4174
 ```
+
+Open `http://127.0.0.1:4174/wealth-nexus-community/`.
