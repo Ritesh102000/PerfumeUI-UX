@@ -45,49 +45,61 @@ export const tierCards = [
 export default function TierOrbit() {
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState<number | null>(null);
-  const [mobile, setMobile] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef(0);
 
   const select = (index: number) => {
     const next = Math.min(Math.max(index, 0), tierCards.length - 1);
     setPlaying(null);
-    if (mobile && carouselRef.current) {
-      setActive(next);
-      activeRef.current = next;
-      carouselRef.current.style.setProperty("--orbit-turn", `${next * -90}deg`);
-    }
-    if (!mobile && sectionRef.current) {
+    if (sectionRef.current) {
       const section = sectionRef.current;
-      const available = section.offsetHeight - window.innerHeight;
+      const stickyHeight = stickyRef.current?.offsetHeight ?? window.innerHeight;
+      const available = section.offsetHeight - stickyHeight;
       const top = window.scrollY + section.getBoundingClientRect().top;
-      window.scrollTo({ top: top + available * (next / (tierCards.length - 1)), behavior: "smooth" });
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: top + available * (next / (tierCards.length - 1)), behavior: reduceMotion ? "auto" : "smooth" });
     }
   };
 
   useEffect(() => {
     const section = sectionRef.current;
+    const sticky = stickyRef.current;
     const carousel = carouselRef.current;
-    if (!section || !carousel) return;
-    const query = window.matchMedia("(max-width: 680px)");
+    if (!section || !sticky || !carousel) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let scrollFrame = 0;
     let motionFrame = 0;
     let currentTurn = activeRef.current * -90;
     let targetTurn = currentTurn;
     let motionRunning = false;
 
+    const syncActiveFace = (turn: number) => {
+      const next = Math.min(Math.max(Math.round(-turn / 90), 0), tierCards.length - 1);
+      if (next !== activeRef.current) {
+        activeRef.current = next;
+        setActive(next);
+        setPlaying(null);
+      }
+    };
+
+    const paintTurn = (turn: number) => {
+      carousel.style.setProperty("--orbit-turn", `${turn}deg`);
+      syncActiveFace(turn);
+    };
+
     const renderTurn = () => {
       const difference = targetTurn - currentTurn;
       if (Math.abs(difference) < 0.025) {
         currentTurn = targetTurn;
-        carousel.style.setProperty("--orbit-turn", `${currentTurn}deg`);
+        paintTurn(currentTurn);
         motionRunning = false;
         return;
       }
 
       currentTurn += difference * 0.24;
-      carousel.style.setProperty("--orbit-turn", `${currentTurn}deg`);
+      paintTurn(currentTurn);
       motionFrame = requestAnimationFrame(renderTurn);
     };
 
@@ -97,7 +109,7 @@ export default function TierOrbit() {
         cancelAnimationFrame(motionFrame);
         currentTurn = turn;
         motionRunning = false;
-        carousel.style.setProperty("--orbit-turn", `${turn}deg`);
+        paintTurn(turn);
         return;
       }
       if (!motionRunning) {
@@ -107,14 +119,8 @@ export default function TierOrbit() {
     };
 
     const update = () => {
-      const isMobile = query.matches;
-      setMobile(isMobile);
-      if (isMobile) {
-        setTurn(activeRef.current * -90, true);
-        return;
-      }
       const rect = section.getBoundingClientRect();
-      const available = section.offsetHeight - window.innerHeight;
+      const available = section.offsetHeight - sticky.offsetHeight;
       const progress = available > 0 ? Math.min(Math.max(-rect.top / available, 0), 1) : 0;
 
       // The card remains flat for a short scroll chapter, then the turn itself
@@ -132,13 +138,7 @@ export default function TierOrbit() {
         facePosition = chapter + easedTurn;
       }
 
-      setTurn(facePosition * -90);
-      const next = Math.min(Math.round(facePosition), tierCards.length - 1);
-      if (next !== activeRef.current) {
-        activeRef.current = next;
-        setActive(next);
-        setPlaying(null);
-      }
+      setTurn(facePosition * -90, reduceMotion.matches);
     };
 
     const requestUpdate = () => {
@@ -146,13 +146,13 @@ export default function TierOrbit() {
       scrollFrame = requestAnimationFrame(update);
     };
     update();
-    query.addEventListener("change", requestUpdate);
+    reduceMotion.addEventListener("change", requestUpdate);
     window.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
     return () => {
       cancelAnimationFrame(scrollFrame);
       cancelAnimationFrame(motionFrame);
-      query.removeEventListener("change", requestUpdate);
+      reduceMotion.removeEventListener("change", requestUpdate);
       window.removeEventListener("scroll", requestUpdate);
       window.removeEventListener("resize", requestUpdate);
     };
@@ -160,7 +160,7 @@ export default function TierOrbit() {
 
   return (
     <section className="orbitSection" id="showcase" ref={sectionRef} aria-labelledby="showcase-title">
-      <div className="orbitSticky">
+      <div className="orbitSticky" ref={stickyRef}>
       <div className="shell orbitLayout">
         <h2 className="srOnly" id="showcase-title">Editing tiers and prices</h2>
 
