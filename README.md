@@ -11,6 +11,7 @@ A framework-free catalogue of independent, interactive website concepts for clie
 - `koshra-gifting/` - standalone premium dry-fruit and corporate-gifting commerce concept
 - `nirnay-institute/` - standalone eleven-page Indian coaching institute and student-practice concept
 - `wealth-nexus-community/` - standalone faith-led Muslim business brotherhood and membership concept
+- `editoverse/` - standalone on-demand video editing service landing page
 
 Every concept owns its HTML, CSS, JavaScript, assets, README and client PDF. A concept can be opened, hosted or handed over without depending on another concept folder.
 
