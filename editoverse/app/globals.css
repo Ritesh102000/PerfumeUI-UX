@@ -244,19 +244,24 @@ main { overflow: clip; }
   .heroActions { width: 100%; flex-direction: column; }
   .button { text-align: center; }
   .proofRow { margin-top: 50px; gap: 10px; }
-  .orbitSection { height: auto; min-height: 0; padding: 90px 0; overflow: hidden; }
-  .orbitSticky { position: relative; height: auto; min-height: 0; display: block; overflow: visible; }
+  .orbitSection { height: 330vh; min-height: 0; padding: 0; overflow: visible; }
+  .orbitSticky { position: sticky; top: 0; height: 100svh; min-height: 620px; display: flex; overflow: hidden; }
   .orbitLayout { grid-template-columns: 1fr; }
   .orbitInteraction { width: 100%; margin-inline: auto; }
-  .orbitScene { height: 605px; margin-top: 55px; }
-  .orbitCarousel { --orbit-depth: min(43vw, 225px); width: min(86vw, 450px); height: 555px; transition: transform .82s cubic-bezier(.22,.8,.2,1); }
+  .orbitScene { height: min(70svh, 555px); min-height: 500px; margin-top: 0; }
+  .orbitCarousel { --orbit-depth: min(43vw, 225px); width: min(86vw, 450px); height: min(64svh, 520px); min-height: 492px; }
   .orbitFloor { width: min(105vw, 610px); }
   .orbitControls { margin-top: 0; }
   .orbitPivotTop { top: 18px; }
   .orbitPivotBottom { bottom: 17px; }
-  .orbitCardTop { min-height: 78px; }
+  .orbitCardTop { min-height: 70px; padding: 16px 18px; }
   .orbitCardTop strong { font-size: 42px; }
-  .orbitCardBody ul { grid-template-columns: 1fr; }
+  .orbitCardBody { padding: 15px 18px 12px; }
+  .orbitCardBody h3 { font-size: 24px; }
+  .orbitCardBody > p { font-size: 11px; line-height: 1.45; }
+  .orbitCardBody ul { margin-top: 10px; grid-template-columns: 1fr; gap: 4px; }
+  .orbitCardBody li { font-size: 9px; }
+  .orbitCardFooter { padding-inline: 18px; }
   .benefitHeader h2 { font-size: 46px; }
   .benefitWindow { width: min(100% - 28px, 1180px); }
   .benefitTrack { --benefit-card-width: 82vw; }
