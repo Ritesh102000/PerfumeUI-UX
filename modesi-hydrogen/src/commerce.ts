@@ -6,6 +6,34 @@ export type CommerceSource = {
   label: string;
 };
 
+export type Promotion = {
+  id: string;
+  title: string;
+  message: string;
+  linkLabel: string;
+  linkUrl: string;
+  image?: string;
+  imageAlt: string;
+};
+
+export const fallbackPromotions: Promotion[] = [{
+  id: "selected-earrings-offer",
+  title: "Selected earrings, half price.",
+  message: "Explore the current marked-down piece in the Modesi collection.",
+  linkLabel: "Shop the offer",
+  linkUrl: "products/earrings-fancy",
+  image: "/modesi-jewellery/assets/products/earrings-fancy.png",
+  imageAlt: "Gold-tone drop earrings with red and crystal-coloured stones",
+}, {
+  id: "current-jhumka-edit",
+  title: "The Jhumka edit.",
+  message: "Discover both current Jhumka designs in the Modesi collection.",
+  linkLabel: "View the edit",
+  linkUrl: "shop?collection=jhumka-navratri-combo-2026",
+  image: "/modesi-jewellery/assets/products/jhumka-01.png",
+  imageAlt: "Gold-tone Jhumka earrings with red beads and iridescent stones",
+}];
+
 type ShopifyProductNode = {
   id: string;
   handle: string;
@@ -72,6 +100,20 @@ const REELS_QUERY = `query ModesiReels {
   }
 }`;
 
+const PROMOTIONS_QUERY = `query ModesiPromotions {
+  metaobjects(type: "announcement", first: 20) {
+    nodes {
+      id handle
+      fields {
+        key value
+        reference {
+          ... on MediaImage { image { url altText } }
+        }
+      }
+    }
+  }
+}`;
+
 type ReelReference = {
   previewImage?: {url: string; altText?: string | null} | null;
   sources?: {url: string; mimeType?: string | null; format?: string | null; height?: number | null; width?: number | null}[];
@@ -82,6 +124,16 @@ type ReelMetaobject = {
   id: string;
   handle: string;
   fields: {key: string; value: string; reference?: ReelReference | null}[];
+};
+
+type PromotionMetaobject = {
+  id: string;
+  handle: string;
+  fields: {
+    key: string;
+    value: string;
+    reference?: {image?: {url: string; altText?: string | null} | null} | null;
+  }[];
 };
 
 async function storefrontRequest<T>(query: string, variables: Record<string, unknown> = {}): Promise<T> {
@@ -176,6 +228,77 @@ export async function loadReels(): Promise<Reel[]> {
     return liveReels.length ? liveReels : fixtureReels;
   } catch {
     return fixtureReels;
+  }
+}
+
+function parseMetaobjectList(value = "") {
+  try {
+    const parsed = JSON.parse(value);
+    if (Array.isArray(parsed)) return parsed.map(String).map((item) => item.trim().toLowerCase()).filter(Boolean);
+  } catch {
+    // Shopify list fields are JSON; comma-separated values remain editor-friendly.
+  }
+  return value.split(",").map((item) => item.trim().toLowerCase()).filter(Boolean);
+}
+
+function safePromotionUrl(value = "") {
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  if (/^https:\/\//i.test(trimmed)) {
+    try {
+      const url = new URL(trimmed);
+      return url.protocol === "https:" ? url.href : "";
+    } catch {
+      return "";
+    }
+  }
+  if (/^[a-z][a-z\d+.-]*:/i.test(trimmed) || trimmed.startsWith("//")) return "";
+  return trimmed;
+}
+
+function validCampaignWindow(startValue: string | undefined, endValue: string | undefined, now: number) {
+  const start = startValue ? Date.parse(startValue) : null;
+  const end = endValue ? Date.parse(endValue) : null;
+  if ((startValue && !Number.isFinite(start)) || (endValue && !Number.isFinite(end))) return false;
+  if (start !== null && now < start) return false;
+  if (end !== null && now >= end) return false;
+  return true;
+}
+
+export async function loadPromotions(): Promise<Promotion[]> {
+  try {
+    const data = await storefrontRequest<{metaobjects: {nodes: PromotionMetaobject[]}}>(PROMOTIONS_QUERY);
+    const nodes = data.metaobjects.nodes;
+    if (!nodes.length) return fallbackPromotions;
+    const now = Date.now();
+    return nodes
+      .map((node) => {
+        const fields = Object.fromEntries(node.fields.map((field) => [field.key, field]));
+        const pageScopes = parseMetaobjectList(fields.page_scopes?.value || "all");
+        if (fields.active?.value === "false") return null;
+        if (!pageScopes.includes("all") && !pageScopes.includes("home")) return null;
+        if (!validCampaignWindow(fields.starts_at?.value, fields.ends_at?.value, now)) return null;
+        const title = fields.title?.value?.trim() || "";
+        const message = fields.message?.value?.trim() || "";
+        if (!title && !message) return null;
+        const imageField = fields.image || fields.poster_image;
+        const promotion: Promotion & {priority: number} = {
+          id: node.id,
+          title: title || message,
+          message: title ? message : "",
+          linkLabel: fields.link_label?.value?.trim() || "",
+          linkUrl: safePromotionUrl(fields.link_url?.value),
+          imageAlt: imageField?.reference?.image?.altText || `${title || message} offer artwork`,
+          priority: fields.priority?.value?.trim() && Number.isFinite(Number(fields.priority.value)) ? Number(fields.priority.value) : 100,
+        };
+        if (imageField?.reference?.image?.url) promotion.image = imageField.reference.image.url;
+        return promotion;
+      })
+      .filter((promotion): promotion is Promotion & {priority: number} => Boolean(promotion))
+      .sort((a, b) => a.priority - b.priority)
+      .map(({priority: _priority, ...promotion}) => promotion);
+  } catch {
+    return fallbackPromotions;
   }
 }
 

@@ -1,14 +1,14 @@
 import {useEffect, useMemo, useState, type FormEvent, type MouseEvent, type ReactNode} from "react";
 import {
   ArrowLeft, ArrowRight, ChevronDown, CircleHelp, Clock3, Grid2X2, Heart, Instagram, List,
-  Mail, MapPin, Menu, Minus, PackageSearch, Phone, Play, Plus, Search, ShieldCheck,
+  Mail, MapPin, Menu, Minus, PackageSearch, Pause, Phone, Play, Plus, Search, ShieldCheck,
   ShoppingBag, SlidersHorizontal, Sparkles, Trash2, UserRound, Volume2, X,
 } from "lucide-react";
 import {
   catalogueCollections, contact, faqs, featuredCollections, megaMenu, products as productFixtures,
   reels as reelFixtures, servicePromises, siteClaims, story, type Product, type ProductAttributeKey, type Reel,
 } from "./data";
-import {createShopifyCheckout, loadProducts, loadReels, type CommerceSource} from "./commerce";
+import {createShopifyCheckout, loadProducts, loadPromotions, loadReels, type Promotion} from "./commerce";
 import {loadWidgets, widgetsFor} from "./widgets";
 
 const BASE = "/modesi-jewellery";
@@ -26,9 +26,10 @@ function handleize(value: string) { return value.toLowerCase().normalize("NFKD")
 function widgetPageForRoute(route: string) { return route.startsWith("products/") ? "product" : ["shop", "new-arrivals", "best-sellers"].includes(route) ? "shop" : route === "home" ? "home" : "all"; }
 
 function Link({to, children, className, onNavigate}: {to: string; children: ReactNode; className?: string; onNavigate?: () => void}) {
-  const href = to.startsWith("http") ? to : pathFor(to === "home" ? "" : to);
+  const external = /^https?:\/\//i.test(to);
+  const href = external ? to : pathFor(to === "home" ? "" : to);
   function onClick(event: MouseEvent<HTMLAnchorElement>) {
-    if (to.startsWith("http") || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (external || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     window.history.pushState({}, "", href);
     window.dispatchEvent(new PopStateEvent("popstate"));
@@ -85,24 +86,129 @@ function ProductRail(props: {products: Product[]; currency: Currency; wishlist: 
   return <div className="product-row">{props.products.map((product) => <ProductCard key={product.id} product={product} currency={props.currency} wishlisted={props.wishlist.includes(product.handle)} onWishlist={() => props.onWishlist(product.handle)} onAdd={() => props.onAdd(product)}/>)}</div>;
 }
 
-function ReelGallery({reels, onPlay}: {reels: Reel[]; onPlay: (reel: Reel) => void}) {
-  return <section className="reel-section"><SectionTitle light index="02 · ORIGINAL MODESI MEDIA" title={`${reels.length} reels.`} accent="One point of view." copy="Every video currently published by Modesi, preserved in the concept storefront."/><div className="reel-run">{reels.map((reel, index) => <button key={reel.id} onClick={() => onPlay(reel)}><img src={reel.poster} alt={`${reel.title} poster`}/><span><b>{String(index + 1).padStart(2, "0")}</b>{reel.title}</span><i><Play/> View</i></button>)}</div></section>;
+function promotionTarget(value: string) {
+  const original = value.trim();
+  let target = original;
+  if (/^https:\/\//i.test(original)) {
+    const url = new URL(original);
+    const merchantHosts = new Set(["modesijewellery.com", "www.modesijewellery.com", "revenuedesk-dev.myshopify.com"]);
+    if (!merchantHosts.has(url.hostname.toLowerCase())) return original;
+    target = `${url.pathname}${url.search}${url.hash}`;
+  }
+  target = target.replace(/^\/+/, "").replace(/^modesi-jewellery\/?/, "");
+  if (!target) return "shop";
+  const collectionMatch = target.match(/^collections\/([^?#/]+)(.*)$/i);
+  if (collectionMatch) return collectionMatch[1] === "all" ? "shop" : `shop?collection=${encodeURIComponent(collectionMatch[1])}${collectionMatch[2].replace(/^\?/, "&")}`;
+  if (target.startsWith("pages/contact")) target = target.replace(/^pages\/contact/, "contact");
+  return target;
 }
 
-function HomePage({products, reels, source, currency, wishlist, onWishlist, onAdd, onPlay}: {products: Product[]; reels: Reel[]; source: CommerceSource; currency: Currency; wishlist: string[]; onWishlist: (handle: string) => void; onAdd: (product: Product) => void; onPlay: (reel: Reel) => void}) {
+function OfferCarousel({offers}: {offers: Promotion[]}) {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [interactionPaused, setInteractionPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  const [announcement, setAnnouncement] = useState("");
+  const [failedImages, setFailedImages] = useState<string[]>([]);
+  const multiple = offers.length > 1;
+
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(query.matches);
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+  useEffect(() => {
+    if (!offers.length) return;
+    setActive((current) => current % offers.length);
+  }, [offers.length]);
+  useEffect(() => {
+    if (!multiple || paused || interactionPaused || reducedMotion) return;
+    const timer = window.setInterval(() => {
+      if (!document.hidden) setActive((current) => (current + 1) % offers.length);
+    }, 6000);
+    return () => window.clearInterval(timer);
+  }, [interactionPaused, multiple, offers.length, paused, reducedMotion]);
+
+  if (!offers.length) return null;
+  const activeIndex = active % offers.length;
+  const offer = offers[activeIndex];
+  const showImage = Boolean(offer.image) && !failedImages.includes(offer.image || "");
+  function select(next: number) {
+    const index = (next + offers.length) % offers.length;
+    setActive(index);
+    setAnnouncement(`Showing offer ${index + 1} of ${offers.length}: ${offers[index].title}`);
+  }
+
+  return <section
+    className="offer-carousel"
+    role="region"
+    aria-roledescription={multiple ? "carousel" : undefined}
+    aria-label={multiple ? "Current Modesi offers" : "Current Modesi offer"}
+    onMouseEnter={() => setInteractionPaused(true)}
+    onMouseLeave={() => setInteractionPaused(false)}
+    onFocusCapture={() => setInteractionPaused(true)}
+    onBlurCapture={(event) => {
+      if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setInteractionPaused(false);
+    }}
+  >
+    <article className="offer-slide" role={multiple ? "group" : undefined} aria-roledescription={multiple ? "slide" : undefined} aria-label={multiple ? `Offer ${activeIndex + 1} of ${offers.length}` : undefined}>
+      <div className={`offer-visual${offer.image?.includes("/assets/products/") ? " product-offer" : ""}${showImage ? "" : " no-image"}`}>
+        {showImage ? <img src={offer.image} alt={offer.imageAlt} onError={() => offer.image && setFailedImages((current) => current.includes(offer.image!) ? current : [...current, offer.image!])}/> : <div className="offer-brand-panel" aria-hidden="true"><b>M</b><small>MODESI · CURRENT NOTE</small></div>}
+        <span>Current offer</span>
+      </div>
+      <div className="offer-content">
+        <Eyebrow light>For the Modesi community</Eyebrow>
+        <h2>{offer.title}</h2>
+        {offer.message && <p>{offer.message}</p>}
+        {offer.linkLabel && offer.linkUrl && <Link to={promotionTarget(offer.linkUrl)} className="offer-link">{offer.linkLabel} <ArrowRight/></Link>}
+        {multiple && <div className="offer-navigation">
+          <div className="offer-controls">
+            <button type="button" onClick={() => select(activeIndex - 1)} aria-label="Previous offer"><ArrowLeft/></button>
+            <span>{String(activeIndex + 1).padStart(2, "0")} / {String(offers.length).padStart(2, "0")}</span>
+            {!reducedMotion && <button type="button" onClick={() => setPaused((value) => !value)} aria-pressed={paused} aria-label={paused ? "Resume automatic offer rotation" : "Pause automatic offer rotation"}>{paused ? <Play/> : <Pause/>}</button>}
+            <button type="button" onClick={() => select(activeIndex + 1)} aria-label="Next offer"><ArrowRight/></button>
+          </div>
+          {offers.length <= 8 && <div className="offer-dots" role="group" aria-label="Choose an offer">{offers.map((item, index) => <button type="button" key={item.id} className={index === activeIndex ? "active" : ""} onClick={() => select(index)} aria-label={`Show offer ${index + 1}`} aria-current={index === activeIndex ? "true" : undefined}/>)}</div>}
+        </div>}
+      </div>
+    </article>
+    <p className="visually-hidden" aria-live="polite">{announcement}</p>
+  </section>;
+}
+
+function PromiseMarquee() {
+  const [paused, setPaused] = useState(false);
+  return <section className={`promise-marquee${paused ? " paused" : ""}`} aria-label="Modesi shopping promises">
+    <div className="promise-track">{[...servicePromises, ...servicePromises].map((promise, index) => {
+      const duplicate = index >= servicePromises.length;
+      return <article key={`${promise.title}-${index}`} aria-hidden={duplicate ? "true" : undefined}>
+        <span>{String((index % servicePromises.length) + 1).padStart(2, "0")}</span>
+        <div><h3>{promise.title}</h3><p>{promise.copy}</p></div>
+      </article>;
+    })}</div>
+    <button type="button" className="promise-toggle" aria-pressed={paused} aria-label={paused ? "Resume moving shopping promises" : "Pause moving shopping promises"} onClick={() => setPaused((value) => !value)}>{paused ? <Play/> : <Pause/>}</button>
+  </section>;
+}
+
+function ReelGallery({reels, onPlay}: {reels: Reel[]; onPlay: (reel: Reel) => void}) {
+  return <section className="reel-section"><SectionTitle light index="02 · ORIGINAL MODESI MEDIA" title={`${reels.length} reels.`} accent="One point of view." copy="See the collection in motion—from everyday styling to statement moments."/><div className="reel-run">{reels.map((reel, index) => <button key={reel.id} onClick={() => onPlay(reel)}><img src={reel.poster} alt={`${reel.title} poster`}/><span><b>{String(index + 1).padStart(2, "0")}</b>{reel.title}</span><i><Play/> View</i></button>)}</div></section>;
+}
+
+function HomePage({products, reels, promotions, currency, wishlist, onWishlist, onAdd, onPlay}: {products: Product[]; reels: Reel[]; promotions: Promotion[] | null; currency: Currency; wishlist: string[]; onWishlist: (handle: string) => void; onAdd: (product: Product) => void; onPlay: (reel: Reel) => void}) {
   const best = products.filter((product) => product.bestseller);
   const newest = products.filter((product) => product.isNew);
   return <>
-    <section className="hero"><picture><source media="(max-width: 700px)" srcSet={`${BASE}/assets/editorial/hero-mobile.webp`}/><img src={`${BASE}/assets/editorial/hero-desktop.webp`} alt="Modesi contemporary Indian jewellery campaign"/></picture><div className="hero-wash"/><div className="hero-copy"><Eyebrow light>Where modern meets desi</Eyebrow><h1>Global style.<br/><em>Desi soul.</em></h1><span>You’re the rhythm of the street and the soul of a temple. Jewellery for dual identities—boldly desi, beautifully modern.</span><Link to="shop">Shop the current collection <ArrowRight/></Link></div><div className="hero-index"><span>01</span><i/><span>MODESI</span></div></section>
-    <section className="identity-line" aria-label="Modesi brand statements"><span>Where Modern Meets Desi</span><strong>Global Style. Desi Soul.</strong><span>Boldly Desi. Beautifully Modern.</span><strong>Crafted for Dual Identities.</strong></section>
-    <section className="facts-band"><div><strong>{products.length}</strong><span>current designs</span></div><div><strong>{reels.length}</strong><span>original reels</span></div><div><strong>47</strong><span>catalogue collections</span></div><div><strong>7</strong><span>day exchange window</span></div><small>{source.label}</small></section>
-    <section className="product-feature"><SectionTitle index="01 · OUR BESTSELLER" title="Most loved by" accent="our customers." copy="The exact bestseller collection currently published on Modesi."/><ProductRail products={best} currency={currency} wishlist={wishlist} onWishlist={onWishlist} onAdd={onAdd}/><Link to="best-sellers" className="text-link">View bestseller collection <ArrowRight/></Link></section>
+    <section className="hero hero-artwork"><h1 className="visually-hidden">Modesi contemporary Indian jewellery</h1><Link to="shop" className="hero-artwork-link"><picture><source media="(max-width: 700px)" srcSet={`${BASE}/assets/editorial/hero-mobile.webp`}/><img src={`${BASE}/assets/editorial/hero-desktop.webp`} alt="Modesi jewellery campaign featuring modern Indian styling"/></picture><span className="visually-hidden">Shop the current Modesi collection</span></Link></section>
+    <section className="identity-line" aria-label="Modesi brand statements"><span>Where Modern Meets Desi</span><strong>Heritage is everyday.</strong><span>Boldly Desi. Beautifully Modern.</span><strong>Made for languages, cities and styles.</strong></section>
+    {promotions && <OfferCarousel offers={promotions}/>}
+    <PromiseMarquee/>
+    <section className="product-feature"><SectionTitle index="01 · OUR BESTSELLER" title="Most loved by" accent="our customers." copy="Timeless design and quiet elegance, made to complement your individuality and everyday style."/><ProductRail products={best} currency={currency} wishlist={wishlist} onWishlist={onWishlist} onAdd={onAdd}/><Link to="best-sellers" className="text-link">View bestseller collection <ArrowRight/></Link></section>
     {widgetsFor("home", "after-hero").some((widget) => widget.component === "reels") && <ReelGallery reels={reels} onPlay={onPlay}/>}
-    <section className="product-feature new-arrivals-panel"><SectionTitle index="03 · NEW ARRIVALS" title="Be the first" accent="to shine." copy="The newest pieces, kept live through the Shopify catalogue adapter."/><ProductRail products={newest} currency={currency} wishlist={wishlist} onWishlist={onWishlist} onAdd={onAdd}/><Link to="new-arrivals" className="text-link">View new arrivals <ArrowRight/></Link></section>
+    <section className="product-feature new-arrivals-panel"><SectionTitle index="03 · NEW ARRIVALS" title="Be the first" accent="to shine." copy="Refined, wearable pieces for everyday moments and meaningful ones."/><ProductRail products={newest} currency={currency} wishlist={wishlist} onWishlist={onWishlist} onAdd={onAdd}/><Link to="new-arrivals" className="text-link">View new arrivals <ArrowRight/></Link></section>
     <section className="collection-section"><SectionTitle index="04 · OUR COLLECTION" title="Crafted with elegance," accent="designed for you."/><div className="collection-run">{featuredCollections.map((collection, index) => <Link key={collection.handle} to={`shop?collection=${collection.handle}`}><img src={collection.image} alt={`${collection.title} collection`}/><span>{String(index + 1).padStart(2, "0")}</span><h3>{collection.title}</h3><b>Explore <ArrowRight/></b></Link>)}</div></section>
     <section className="story-teaser"><div className="story-image"><img src={`${BASE}/assets/editorial/about-heritage.png`} alt="Modesi brand story visual"/></div><div><Eyebrow>05 · MODESI STORY</Eyebrow><h2>You do not have to choose between <em>modern</em> and <em>desi.</em></h2><p>{story.intro}</p><Link to="modesi-story">Read the brand story <ArrowRight/></Link></div></section>
     <section className="claim-ticker">{siteClaims.map((claim, index) => <div key={claim}><span>{String(index + 1).padStart(2, "0")}</span><strong>{claim}</strong></div>)}</section>
-    <section className="service-strip">{servicePromises.map((promise, index) => <div key={promise.title}><span>{String(index + 1).padStart(2, "0")}</span><h3>{promise.title}</h3><p>{promise.copy}</p></div>)}</section>
   </>;
 }
 
@@ -223,7 +329,7 @@ export default function App() {
   const route = location.route;
   const [products, setProducts] = useState(productFixtures);
   const [reels, setReels] = useState(reelFixtures);
-  const [source, setSource] = useState<CommerceSource>({mode: "fixture", storeDomain: "revenuedesk-dev.myshopify.com", label: "Shopify-shaped local data"});
+  const [promotions, setPromotions] = useState<Promotion[] | null>(null);
   const [cart, setCart] = useState<CartLine[]>(() => { try { return JSON.parse(localStorage.getItem("modesi-cart") || "[]"); } catch { return []; } });
   const [wishlist, setWishlist] = useState<string[]>(() => { try { return JSON.parse(localStorage.getItem("modesi-wishlist") || "[]"); } catch { return []; } });
   const [currency, setCurrency] = useState<Currency>("INR");
@@ -233,7 +339,28 @@ export default function App() {
   const [newsletter, setNewsletter] = useState(false);
   const [, setWidgetRevision] = useState(0);
   useEffect(() => { const listener = () => setLocation({route: routeFromLocation(), search: window.location.search}); window.addEventListener("popstate", listener); return () => window.removeEventListener("popstate", listener); }, []);
-  useEffect(() => { loadProducts().then((result) => {setProducts(result.products); setSource(result.source); setCart((current) => current.flatMap((line) => { const currentProduct = result.products.find((product) => product.handle === line.product.handle); return currentProduct ? [{...line, product: currentProduct}] : []; }));}); loadReels().then(setReels); }, []);
+  useEffect(() => {
+    loadProducts().then((result) => {
+      setProducts(result.products);
+      setCart((current) => current.flatMap((line) => {
+        const currentProduct = result.products.find((product) => product.handle === line.product.handle);
+        return currentProduct ? [{...line, product: currentProduct}] : [];
+      }));
+    });
+    loadReels().then(setReels);
+  }, []);
+  useEffect(() => {
+    let mounted = true;
+    const refreshPromotions = () => loadPromotions().then((nextPromotions) => {
+      if (mounted) setPromotions(nextPromotions);
+    });
+    refreshPromotions();
+    const timer = window.setInterval(refreshPromotions, 60000);
+    return () => {
+      mounted = false;
+      window.clearInterval(timer);
+    };
+  }, []);
   useEffect(() => { loadWidgets().then(() => setWidgetRevision((value) => value + 1)); }, []);
   useEffect(() => { localStorage.setItem("modesi-cart", JSON.stringify(cart)); }, [cart]);
   useEffect(() => { localStorage.setItem("modesi-wishlist", JSON.stringify(wishlist)); }, [wishlist]);
@@ -246,7 +373,7 @@ export default function App() {
   function toggleWishlist(handle: string) { setWishlist((current) => current.includes(handle) ? current.filter((item) => item !== handle) : [...current, handle]); }
   const shared = {products, currency, wishlist, onWishlist: toggleWishlist, onAdd: add};
   let page: ReactNode;
-  if (route === "home") page = <HomePage {...shared} reels={reels} source={source} onPlay={setActiveReel}/>;
+  if (route === "home") page = <HomePage {...shared} reels={reels} promotions={promotions} onPlay={setActiveReel}/>;
   else if (route === "shop") page = <ShopPage {...shared}/>;
   else if (route === "new-arrivals") page = <ShopPage {...shared} title="New arrivals" intro="Be the first to shine" products={products.filter((product) => product.isNew)}/>;
   else if (route === "best-sellers") page = <ShopPage {...shared} title="Our bestseller" intro="Most loved by our customers" products={products.filter((product) => product.bestseller)}/>;

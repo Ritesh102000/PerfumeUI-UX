@@ -24,5 +24,6 @@
     {"handle": "modesi-reel-06", "file": "/tmp/modesi-shopify-seed/modesi-reel-06.mp4", "duration": "PT45S"}
   ],
   "widgetMetaobjects": ["storefront_widget", "reel", "faq", "announcement", "social_proof_campaign"],
+  "announcementFields": ["title", "message", "link_label", "link_url", "page_scopes", "starts_at", "ends_at", "priority", "active", "image (optional MediaImage)"],
   "filters": ["availability", "price", "category", "product_type", "base_metal", "plating_finish", "stone", "colour", "style", "occasion", "size", "closure"]
 }
