@@ -29,9 +29,9 @@ The homepage promotion area reads public `announcement` metaobjects, so a mercha
 4. Set `page_scopes` to `home` or `all`, then use `starts_at`, `ends_at`, `priority` and `active` to control when and where it appears.
 5. Save and publish the entry. The storefront picks it up within one minute; no redeploy is required.
 
-The homepage displays only the linked PNG artwork—no duplicated offer heading, description or button. The full PNG is the internal link. One eligible image is static; two or more become a carousel ordered by `priority`. Inactive, out-of-window, non-home, image-free and link-free entries are excluded. If Shopify is unavailable or no announcement has been created yet, the current marked-down earring and Jhumka PNGs are used as demonstration offers.
+The homepage displays only the linked PNG artwork—no duplicated offer heading, description or button. The full PNG is the internal link. One eligible image is static; two or more become a manually controlled carousel ordered by `priority`. Inactive, out-of-window, non-home, image-free and link-free entries are excluded. If Shopify is unavailable or no announcement has been created yet, the current marked-down earring and Jhumka PNGs are used as demonstration offers.
 
-The offer is flanked by two muted preview panes. Each independently cycles through all six reels, showing only a lightweight three-second clip; clicking a preview opens the corresponding full reel.
+The offer is flanked by two continuous bottom-to-top reel streams. Each side contains all six reels and plays only the lightweight, muted three-second previews; clicking a reel opens its full video.
 
 ## Seed material
 

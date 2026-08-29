@@ -1,7 +1,7 @@
 import {useEffect, useMemo, useRef, useState, type FormEvent, type MouseEvent, type ReactNode} from "react";
 import {
   ArrowLeft, ArrowRight, ChevronDown, CircleHelp, Clock3, Grid2X2, Heart, Instagram, List,
-  Mail, MapPin, Menu, Minus, PackageSearch, Pause, Phone, Play, Plus, Search, ShieldCheck,
+  Mail, MapPin, Menu, Minus, PackageSearch, Phone, Play, Plus, Search, ShieldCheck,
   ShoppingBag, SlidersHorizontal, Sparkles, Trash2, UserRound, Volume2, X,
 } from "lucide-react";
 import {
@@ -107,9 +107,8 @@ function promotionTarget(value: string) {
   return target;
 }
 
-function OfferCarousel({offers, paused, reducedMotion}: {offers: Promotion[]; paused: boolean; reducedMotion: boolean}) {
+function OfferCarousel({offers}: {offers: Promotion[]}) {
   const [active, setActive] = useState(0);
-  const [interactionPaused, setInteractionPaused] = useState(false);
   const [announcement, setAnnouncement] = useState("");
   const [failedImages, setFailedImages] = useState<string[]>([]);
   const multiple = offers.length > 1;
@@ -118,14 +117,6 @@ function OfferCarousel({offers, paused, reducedMotion}: {offers: Promotion[]; pa
     if (!offers.length) return;
     setActive((current) => current % offers.length);
   }, [offers.length]);
-  useEffect(() => {
-    if (!multiple || paused || interactionPaused || reducedMotion) return;
-    const timer = window.setInterval(() => {
-      if (!document.hidden) setActive((current) => (current + 1) % offers.length);
-    }, 6000);
-    return () => window.clearInterval(timer);
-  }, [interactionPaused, multiple, offers.length, paused, reducedMotion]);
-
   if (!offers.length) return null;
   const activeIndex = active % offers.length;
   const offer = offers[activeIndex];
@@ -143,12 +134,6 @@ function OfferCarousel({offers, paused, reducedMotion}: {offers: Promotion[]; pa
     role="region"
     aria-roledescription={multiple ? "carousel" : undefined}
     aria-label={multiple ? "Current Modesi offers" : "Current Modesi offer"}
-    onMouseEnter={() => setInteractionPaused(true)}
-    onMouseLeave={() => setInteractionPaused(false)}
-    onFocusCapture={() => setInteractionPaused(true)}
-    onBlurCapture={(event) => {
-      if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setInteractionPaused(false);
-    }}
   >
     <article className="offer-slide offer-artwork-only" role={multiple ? "group" : undefined} aria-roledescription={multiple ? "slide" : undefined} aria-label={multiple ? `Offer ${activeIndex + 1} of ${offers.length}` : undefined}>
       {offerTarget ? <Link to={offerTarget} className="offer-artwork-link" ariaLabel={offerLabel}>
@@ -166,36 +151,39 @@ function OfferCarousel({offers, paused, reducedMotion}: {offers: Promotion[]; pa
           <span>{String(activeIndex + 1).padStart(2, "0")} / {String(offers.length).padStart(2, "0")}</span>
           <button type="button" onClick={() => select(activeIndex + 1)} aria-label="Next offer"><ArrowRight/></button>
         </div>
-        {offers.length <= 8 && <div className="offer-dots" role="group" aria-label="Choose an offer">{offers.map((item, index) => <button type="button" key={item.id} className={index === activeIndex ? "active" : ""} onClick={() => select(index)} aria-label={`Show offer ${index + 1}`} aria-current={index === activeIndex ? "true" : undefined}/>)}</div>}
+        <div className="offer-dots" role="group" aria-label="Choose an offer">{offers.map((item, index) => <button type="button" key={item.id} className={index === activeIndex ? "active" : ""} onClick={() => select(index)} aria-label={`Show offer ${index + 1}`} aria-current={index === activeIndex ? "true" : undefined}/>)}</div>
       </div>}
     </article>
     <p className="visually-hidden" aria-live="polite">{announcement}</p>
   </section>;
 }
 
-function ReelPreview({reels, startIndex, side, paused, reducedMotion, onPlay}: {reels: Reel[]; startIndex: number; side: "left" | "right"; paused: boolean; reducedMotion: boolean; onPlay: (reel: Reel) => void}) {
-  const [active, setActive] = useState(() => reels.length ? startIndex % reels.length : 0);
+function ReelStreamCard({reel, index, paused, reducedMotion, onPlay}: {reel: Reel; index: number; paused: boolean; reducedMotion: boolean; onPlay: (reel: Reel) => void}) {
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [playbackCycle, setPlaybackCycle] = useState(0);
+  const [nearby, setNearby] = useState(false);
+  const cardRef = useRef<HTMLButtonElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const advancedRef = useRef(false);
-  const reelCount = reels.length;
-  const activeIndex = reelCount ? active % reelCount : 0;
-  const reel = reelCount ? reels[activeIndex] : null;
-  const source = reel?.preview || "";
-  const previewUnavailable = failed || !source;
+  const source = reel.preview || "";
 
   useEffect(() => {
-    if (!reelCount) return;
-    setActive((current) => current % reelCount);
-  }, [reelCount]);
-  useEffect(() => {
-    advancedRef.current = false;
     setReady(false);
     setFailed(false);
-    setPlaybackCycle(0);
-  }, [active, source]);
+  }, [source]);
+  useEffect(() => {
+    const card = cardRef.current;
+    const root = card?.closest<HTMLElement>(".reel-stream") || null;
+    if (!card || !("IntersectionObserver" in window)) {
+      setNearby(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => setNearby(entry.isIntersecting), {root, rootMargin: "10% 0px", threshold: .15});
+    observer.observe(card);
+    return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!nearby) setReady(false);
+  }, [nearby]);
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !source) return;
@@ -205,38 +193,20 @@ function ReelPreview({reels, startIndex, side, paused, reducedMotion, onPlay}: {
       video.pause();
       return;
     }
-    void video.play().catch(() => setFailed(true));
-  }, [active, paused, reducedMotion, source]);
-  useEffect(() => {
-    if (!previewUnavailable || paused || reducedMotion || !reelCount) return;
-    const timer = window.setTimeout(() => {
-      if (advancedRef.current) return;
-      advancedRef.current = true;
-      setActive((current) => (current + 1) % reelCount);
-    }, 3000);
-    return () => window.clearTimeout(timer);
-  }, [active, paused, previewUnavailable, reducedMotion, reelCount]);
-  useEffect(() => {
-    if (previewUnavailable || paused || reducedMotion || !reelCount) return;
-    const watchdog = window.setTimeout(() => {
-      if (advancedRef.current) return;
-      advancedRef.current = true;
-      setActive((current) => (current + 1) % reelCount);
-    }, 5000);
-    return () => window.clearTimeout(watchdog);
-  }, [active, paused, playbackCycle, previewUnavailable, reducedMotion, reelCount]);
+    void video.play().catch(() => undefined);
+  }, [nearby, paused, reducedMotion, source]);
 
-  if (!reel) return null;
-  function advance() {
-    if (advancedRef.current || paused || reducedMotion) return;
-    advancedRef.current = true;
-    setActive((current) => (current + 1) % reelCount);
-  }
-
-  return <aside className={`reel-preview reel-preview-${side}`} aria-label={`${side === "left" ? "Left" : "Right"} Modesi reel preview`}>
-    <button type="button" onClick={() => onPlay(reel)} aria-label={`Watch ${reel.title}`}>
+  return <button
+    ref={cardRef}
+    type="button"
+    className="reel-stream-card"
+    onClick={() => onPlay(reel)}
+    aria-label={`Watch ${reel.title}`}
+    aria-hidden={nearby ? undefined : "true"}
+    tabIndex={nearby ? 0 : -1}
+  >
       {reel.poster ? <img src={reel.poster} alt=""/> : <div className="reel-preview-fallback" aria-hidden="true"><b>M</b></div>}
-      {!reducedMotion && !previewUnavailable && <video
+      {!reducedMotion && nearby && source && !failed && <video
         key={source}
         ref={videoRef}
         className={ready ? "ready" : ""}
@@ -244,33 +214,43 @@ function ReelPreview({reels, startIndex, side, paused, reducedMotion, onPlay}: {
         muted
         playsInline
         autoPlay={!paused}
-        preload="auto"
+        loop
+        preload="metadata"
         aria-hidden="true"
         onCanPlay={(event) => {
           event.currentTarget.muted = true;
           event.currentTarget.defaultMuted = true;
-          if (!paused) void event.currentTarget.play().catch(() => setFailed(true));
+          if (!paused) void event.currentTarget.play().catch(() => undefined);
         }}
-        onPlaying={() => {
-          setReady(true);
-          setPlaybackCycle((cycle) => cycle + 1);
-        }}
+        onPlaying={() => setReady(true)}
         onTimeUpdate={(event) => {
-          if (event.currentTarget.currentTime >= 2.95) advance();
+          if (event.currentTarget.currentTime < 2.95) return;
+          event.currentTarget.currentTime = 0;
+          if (!paused) void event.currentTarget.play().catch(() => undefined);
         }}
-        onEnded={advance}
         onError={() => setFailed(true)}
-        onStalled={() => setFailed(true)}
       />}
-      <span><b>REEL {String(activeIndex + 1).padStart(2, "0")} / {String(reelCount).padStart(2, "0")}</b><i><Play/> Watch</i></span>
-    </button>
+      <span><b>REEL {String(index + 1).padStart(2, "0")}</b><i><Play/> View</i></span>
+  </button>;
+}
+
+function ReelStream({reels, side, paused, reducedMotion, onPlay}: {reels: Reel[]; side: "left" | "right"; paused: boolean; reducedMotion: boolean; onPlay: (reel: Reel) => void}) {
+  if (!reels.length) return null;
+  const split = Math.min(3, reels.length);
+  const ordered = side === "right" ? [...reels.slice(split), ...reels.slice(0, split)] : reels;
+  const group = (duplicate: boolean) => <div className="reel-stream-group">
+    {ordered.map((reel, index) => <ReelStreamCard key={`${duplicate ? "copy" : "source"}-${reel.id}`} reel={reel} index={(index + (side === "right" ? split : 0)) % reels.length} paused={paused} reducedMotion={reducedMotion} onPlay={onPlay}/>) }
+  </div>;
+  return <aside className={`reel-stream reel-stream-${side}${paused ? " is-paused" : ""}`} aria-label={`${side === "left" ? "Left" : "Right"} Modesi reel stream`}>
+    <div className="reel-stream-track">
+      {group(false)}
+      {!reducedMotion && group(true)}
+    </div>
   </aside>;
 }
 
 function OfferMediaStage({offers, reels, modalOpen, onPlay}: {offers: Promotion[]; reels: Reel[]; modalOpen: boolean; onPlay: (reel: Reel) => void}) {
   const stageRef = useRef<HTMLElement>(null);
-  const [userPaused, setUserPaused] = useState(false);
-  const [interactionPaused, setInteractionPaused] = useState(false);
   const [inView, setInView] = useState(true);
   const [pageVisible, setPageVisible] = useState(() => !document.hidden);
   const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -295,29 +275,21 @@ function OfferMediaStage({offers, reels, modalOpen, onPlay}: {offers: Promotion[
   }, []);
 
   if (!offers.length) return null;
-  const paused = userPaused || interactionPaused || modalOpen || !inView || !pageVisible || reducedMotion;
+  const paused = modalOpen || !inView || !pageVisible || reducedMotion;
   return <section
     ref={stageRef}
-    className={`offer-media-stage${reels.length < 2 ? " single-reel" : ""}`}
+    className={`offer-media-stage${reels.length ? "" : " no-reels"}`}
     aria-labelledby="offer-media-title"
-    onFocusCapture={(event) => {
-      setInteractionPaused(!(event.target as Element).closest(".stage-motion-toggle"));
-    }}
-    onBlurCapture={(event) => {
-      if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setInteractionPaused(false);
-    }}
   >
-    <h2 id="offer-media-title" className="visually-hidden">Current Modesi offer and reel previews</h2>
-    <OfferCarousel offers={offers} paused={paused} reducedMotion={reducedMotion}/>
-    {!reducedMotion && (reels.length > 1 || offers.length > 1) && <button type="button" className="stage-motion-toggle" aria-pressed={userPaused} aria-label={userPaused ? "Resume offer and reel previews" : "Pause offer and reel previews"} onClick={() => setUserPaused((value) => !value)}>{userPaused ? <Play/> : <Pause/>}<span>{userPaused ? "Play previews" : "Pause previews"}</span></button>}
-    <ReelPreview reels={reels} startIndex={0} side="left" paused={paused} reducedMotion={reducedMotion} onPlay={onPlay}/>
-    {reels.length > 1 && <ReelPreview reels={reels} startIndex={Math.min(3, reels.length - 1)} side="right" paused={paused} reducedMotion={reducedMotion} onPlay={onPlay}/>}
+    <h2 id="offer-media-title" className="visually-hidden">Current Modesi offers with reel previews</h2>
+    <OfferCarousel offers={offers}/>
+    <ReelStream reels={reels} side="left" paused={paused} reducedMotion={reducedMotion} onPlay={onPlay}/>
+    <ReelStream reels={reels} side="right" paused={paused} reducedMotion={reducedMotion} onPlay={onPlay}/>
   </section>;
 }
 
 function PromiseMarquee() {
-  const [paused, setPaused] = useState(false);
-  return <section className={`promise-marquee${paused ? " paused" : ""}`} aria-label="Modesi shopping promises">
+  return <section className="promise-marquee" aria-label="Modesi shopping promises" tabIndex={0}>
     <div className="promise-track">{[...servicePromises, ...servicePromises].map((promise, index) => {
       const duplicate = index >= servicePromises.length;
       return <article key={`${promise.title}-${index}`} aria-hidden={duplicate ? "true" : undefined}>
@@ -325,7 +297,6 @@ function PromiseMarquee() {
         <div><h3>{promise.title}</h3><p>{promise.copy}</p></div>
       </article>;
     })}</div>
-    <button type="button" className="promise-toggle" aria-pressed={paused} aria-label={paused ? "Resume moving shopping promises" : "Pause moving shopping promises"} onClick={() => setPaused((value) => !value)}>{paused ? <Play/> : <Pause/>}</button>
   </section>;
 }
 
