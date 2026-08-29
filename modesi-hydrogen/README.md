@@ -17,20 +17,21 @@ This source builds the `/modesi-jewellery/` concept inside the existing UI/UX sh
 
 Product filter attributes read the public `modesi.*` product metafields first and fall back to conservative audited fixtures while Shopify is unavailable. Site-wide material or finish language is not assigned to a product unless its product metafield confirms it.
 
-The storefront also reads public `reel` metaobjects. A reel can reference a Shopify Video in `video_file`, an optional MediaImage in `poster_image`, and text fields for `title`, `caption`, `alt_text`, `duration`, `active` and `order`. If the metaobjects are absent or unavailable, the six audited Modesi reel URLs and local posters remain the fallback.
+The storefront also reads public `reel` metaobjects. A reel can reference a Shopify Video in `video_file`, an optional three-second Shopify Video in `preview_video`, an optional MediaImage in `poster_image`, and text fields for `title`, `caption`, `alt_text`, `duration`, `active` and `order`. If the metaobjects are absent or unavailable, the six audited Modesi reels, posters and lightweight local preview clips remain the fallback.
 
 ### Homepage offers
 
 The homepage promotion area reads public `announcement` metaobjects, so a merchant manages it without touching the frontend:
 
 1. In Shopify Admin, open **Content → Metaobjects → Announcement**.
-2. Add an entry and fill in `title`, `message`, `link_label` and `link_url`.
-3. Set `page_scopes` to `home` or `all`, then use `starts_at`, `ends_at`, `priority` and `active` to control when and where it appears.
-4. Save and publish the entry. The storefront picks it up within one minute; no redeploy is required.
+2. Add an entry, upload the finished offer PNG to `image` or `poster_image`, and use `title` only to describe the artwork accessibly.
+3. Set `link_url` to an internal Modesi product, collection or page. External destinations are intentionally rejected.
+4. Set `page_scopes` to `home` or `all`, then use `starts_at`, `ends_at`, `priority` and `active` to control when and where it appears.
+5. Save and publish the entry. The storefront picks it up within one minute; no redeploy is required.
 
-One eligible entry displays as a static offer. Two or more eligible entries automatically become an accessible carousel with previous, next, pause and direct-selection controls, ordered by `priority`. Inactive, out-of-window and non-home entries are excluded. If entries exist but none are eligible, the section is hidden. Text-only announcements and failed images use an image-free Modesi brand panel. If Shopify is unavailable or no announcement has been created yet, the current marked-down earring and Jhumka edit are used as audited demonstration offers.
+The homepage displays only the linked PNG artwork—no duplicated offer heading, description or button. The full PNG is the internal link. One eligible image is static; two or more become a carousel ordered by `priority`. Inactive, out-of-window, non-home, image-free and link-free entries are excluded. If Shopify is unavailable or no announcement has been created yet, the current marked-down earring and Jhumka PNGs are used as demonstration offers.
 
-The adapter also accepts a MediaImage field named `image` or `poster_image` whenever the merchant wants a campaign or product visual.
+The offer is flanked by two muted preview panes. Each independently cycles through all six reels, showing only a lightweight three-second clip; clicking a preview opens the corresponding full reel.
 
 ## Seed material
 

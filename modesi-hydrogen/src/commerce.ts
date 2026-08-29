@@ -204,8 +204,13 @@ function mapReel(node: ReelMetaobject, index: number): (Reel & {order: number}) 
   const directVideo = /^https?:\/\//.test(videoField?.value || "") ? videoField.value : "";
   const video = videoSource?.url || directVideo;
   if (!video) return null;
+  const previewField = fields.preview_video || fields.preview;
+  const previewSources = previewField?.reference?.sources || [];
+  const previewSource = previewSources.find((source) => source.mimeType === "video/mp4" || source.format?.toLowerCase() === "mp4") || previewSources[0];
+  const directPreview = /^https?:\/\//.test(previewField?.value || "") ? previewField.value : "";
+  const matchingFixture = fixtureReels.find((reel) => video.includes(reel.id));
   const posterField = fields.poster_image || fields.poster;
-  const poster = posterField?.reference?.image?.url || videoField?.reference?.previewImage?.url || fixtureReels[index]?.poster || "";
+  const poster = posterField?.reference?.image?.url || videoField?.reference?.previewImage?.url || matchingFixture?.poster || "";
   return {
     id: node.id,
     title: fields.title?.value || node.handle,
@@ -213,6 +218,7 @@ function mapReel(node: ReelMetaobject, index: number): (Reel & {order: number}) 
     duration: fields.duration?.value || "",
     poster,
     video,
+    preview: previewSource?.url || directPreview || matchingFixture?.preview,
     order: Number(fields.order?.value) || index + 1,
   };
 }
@@ -225,7 +231,7 @@ export async function loadReels(): Promise<Reel[]> {
       .filter((reel): reel is Reel & {order: number} => Boolean(reel))
       .sort((a, b) => a.order - b.order)
       .map(({order: _order, ...reel}) => reel);
-    return liveReels.length ? liveReels : fixtureReels;
+    return liveReels.length === 6 && liveReels.every((reel) => Boolean(reel.preview)) ? liveReels : fixtureReels;
   } catch {
     return fixtureReels;
   }
@@ -247,7 +253,8 @@ function safePromotionUrl(value = "") {
   if (/^https:\/\//i.test(trimmed)) {
     try {
       const url = new URL(trimmed);
-      return url.protocol === "https:" ? url.href : "";
+      const allowedHosts = new Set([domain.toLowerCase(), "modesijewellery.com", "www.modesijewellery.com"]);
+      return url.protocol === "https:" && allowedHosts.has(url.hostname.toLowerCase()) ? url.href : "";
     } catch {
       return "";
     }
@@ -282,16 +289,19 @@ export async function loadPromotions(): Promise<Promotion[]> {
         const message = fields.message?.value?.trim() || "";
         if (!title && !message) return null;
         const imageField = fields.image || fields.poster_image;
+        const image = imageField?.reference?.image?.url || "";
+        const linkUrl = safePromotionUrl(fields.link_url?.value);
+        if (!image || !linkUrl) return null;
         const promotion: Promotion & {priority: number} = {
           id: node.id,
           title: title || message,
           message: title ? message : "",
           linkLabel: fields.link_label?.value?.trim() || "",
-          linkUrl: safePromotionUrl(fields.link_url?.value),
+          linkUrl,
           imageAlt: imageField?.reference?.image?.altText || `${title || message} offer artwork`,
           priority: fields.priority?.value?.trim() && Number.isFinite(Number(fields.priority.value)) ? Number(fields.priority.value) : 100,
         };
-        if (imageField?.reference?.image?.url) promotion.image = imageField.reference.image.url;
+        promotion.image = image;
         return promotion;
       })
       .filter((promotion): promotion is Promotion & {priority: number} => Boolean(promotion))

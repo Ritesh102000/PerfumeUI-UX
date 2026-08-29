@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState, type FormEvent, type MouseEvent, type ReactNode} from "react";
+import {useEffect, useMemo, useRef, useState, type FormEvent, type MouseEvent, type ReactNode} from "react";
 import {
   ArrowLeft, ArrowRight, ChevronDown, CircleHelp, Clock3, Grid2X2, Heart, Instagram, List,
   Mail, MapPin, Menu, Minus, PackageSearch, Pause, Phone, Play, Plus, Search, ShieldCheck,
@@ -25,7 +25,7 @@ function routeFromLocation() { return window.location.pathname.replace(new RegEx
 function handleize(value: string) { return value.toLowerCase().normalize("NFKD").replace(/[–—]/g, "-").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
 function widgetPageForRoute(route: string) { return route.startsWith("products/") ? "product" : ["shop", "new-arrivals", "best-sellers"].includes(route) ? "shop" : route === "home" ? "home" : "all"; }
 
-function Link({to, children, className, onNavigate}: {to: string; children: ReactNode; className?: string; onNavigate?: () => void}) {
+function Link({to, children, className, onNavigate, ariaLabel}: {to: string; children: ReactNode; className?: string; onNavigate?: () => void; ariaLabel?: string}) {
   const external = /^https?:\/\//i.test(to);
   const href = external ? to : pathFor(to === "home" ? "" : to);
   function onClick(event: MouseEvent<HTMLAnchorElement>) {
@@ -36,7 +36,7 @@ function Link({to, children, className, onNavigate}: {to: string; children: Reac
     window.scrollTo({top: 0, behavior: "smooth"});
     onNavigate?.();
   }
-  return <a href={href} className={className} onClick={onClick}>{children}</a>;
+  return <a href={href} className={className} onClick={onClick} aria-label={ariaLabel}>{children}</a>;
 }
 
 function money(value: number, currency: Currency) {
@@ -90,10 +90,14 @@ function promotionTarget(value: string) {
   const original = value.trim();
   let target = original;
   if (/^https:\/\//i.test(original)) {
-    const url = new URL(original);
-    const merchantHosts = new Set(["modesijewellery.com", "www.modesijewellery.com", "revenuedesk-dev.myshopify.com"]);
-    if (!merchantHosts.has(url.hostname.toLowerCase())) return original;
-    target = `${url.pathname}${url.search}${url.hash}`;
+    try {
+      const url = new URL(original);
+      const merchantHosts = new Set(["modesijewellery.com", "www.modesijewellery.com", "revenuedesk-dev.myshopify.com"]);
+      if (!merchantHosts.has(url.hostname.toLowerCase())) return "";
+      target = `${url.pathname}${url.search}${url.hash}`;
+    } catch {
+      return "";
+    }
   }
   target = target.replace(/^\/+/, "").replace(/^modesi-jewellery\/?/, "");
   if (!target) return "shop";
@@ -103,21 +107,13 @@ function promotionTarget(value: string) {
   return target;
 }
 
-function OfferCarousel({offers}: {offers: Promotion[]}) {
+function OfferCarousel({offers, paused, reducedMotion}: {offers: Promotion[]; paused: boolean; reducedMotion: boolean}) {
   const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
   const [interactionPaused, setInteractionPaused] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const [announcement, setAnnouncement] = useState("");
   const [failedImages, setFailedImages] = useState<string[]>([]);
   const multiple = offers.length > 1;
 
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReducedMotion(query.matches);
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  }, []);
   useEffect(() => {
     if (!offers.length) return;
     setActive((current) => current % offers.length);
@@ -134,6 +130,8 @@ function OfferCarousel({offers}: {offers: Promotion[]}) {
   const activeIndex = active % offers.length;
   const offer = offers[activeIndex];
   const showImage = Boolean(offer.image) && !failedImages.includes(offer.image || "");
+  const offerTarget = promotionTarget(offer.linkUrl);
+  const offerLabel = [offer.title, offer.message, offer.linkLabel].filter(Boolean).join(". ") || "View current Modesi offer";
   function select(next: number) {
     const index = (next + offers.length) % offers.length;
     setActive(index);
@@ -152,28 +150,168 @@ function OfferCarousel({offers}: {offers: Promotion[]}) {
       if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setInteractionPaused(false);
     }}
   >
-    <article className="offer-slide" role={multiple ? "group" : undefined} aria-roledescription={multiple ? "slide" : undefined} aria-label={multiple ? `Offer ${activeIndex + 1} of ${offers.length}` : undefined}>
-      <div className={`offer-visual${offer.image?.includes("/assets/products/") ? " product-offer" : ""}${showImage ? "" : " no-image"}`}>
-        {showImage ? <img src={offer.image} alt={offer.imageAlt} onError={() => offer.image && setFailedImages((current) => current.includes(offer.image!) ? current : [...current, offer.image!])}/> : <div className="offer-brand-panel" aria-hidden="true"><b>M</b><small>MODESI · CURRENT NOTE</small></div>}
-        <span>Current offer</span>
-      </div>
-      <div className="offer-content">
-        <Eyebrow light>For the Modesi community</Eyebrow>
-        <h2>{offer.title}</h2>
-        {offer.message && <p>{offer.message}</p>}
-        {offer.linkLabel && offer.linkUrl && <Link to={promotionTarget(offer.linkUrl)} className="offer-link">{offer.linkLabel} <ArrowRight/></Link>}
-        {multiple && <div className="offer-navigation">
-          <div className="offer-controls">
-            <button type="button" onClick={() => select(activeIndex - 1)} aria-label="Previous offer"><ArrowLeft/></button>
-            <span>{String(activeIndex + 1).padStart(2, "0")} / {String(offers.length).padStart(2, "0")}</span>
-            {!reducedMotion && <button type="button" onClick={() => setPaused((value) => !value)} aria-pressed={paused} aria-label={paused ? "Resume automatic offer rotation" : "Pause automatic offer rotation"}>{paused ? <Play/> : <Pause/>}</button>}
-            <button type="button" onClick={() => select(activeIndex + 1)} aria-label="Next offer"><ArrowRight/></button>
-          </div>
-          {offers.length <= 8 && <div className="offer-dots" role="group" aria-label="Choose an offer">{offers.map((item, index) => <button type="button" key={item.id} className={index === activeIndex ? "active" : ""} onClick={() => select(index)} aria-label={`Show offer ${index + 1}`} aria-current={index === activeIndex ? "true" : undefined}/>)}</div>}
-        </div>}
-      </div>
+    <article className="offer-slide offer-artwork-only" role={multiple ? "group" : undefined} aria-roledescription={multiple ? "slide" : undefined} aria-label={multiple ? `Offer ${activeIndex + 1} of ${offers.length}` : undefined}>
+      {offerTarget ? <Link to={offerTarget} className="offer-artwork-link" ariaLabel={offerLabel}>
+        <div className={`offer-visual${offer.image?.includes("/assets/products/") ? " product-offer" : ""}${showImage ? "" : " no-image"}`}>
+          {showImage ? <img src={offer.image} alt={offer.imageAlt} onError={() => offer.image && setFailedImages((current) => current.includes(offer.image!) ? current : [...current, offer.image!])}/> : <div className="offer-brand-panel" aria-hidden="true"><b>M</b><small>MODESI</small></div>}
+        </div>
+      </Link> : <div className="offer-artwork-link">
+        <div className={`offer-visual${offer.image?.includes("/assets/products/") ? " product-offer" : ""}${showImage ? "" : " no-image"}`}>
+          {showImage ? <img src={offer.image} alt={offer.imageAlt} onError={() => offer.image && setFailedImages((current) => current.includes(offer.image!) ? current : [...current, offer.image!])}/> : <div className="offer-brand-panel" aria-hidden="true"><b>M</b><small>MODESI</small></div>}
+        </div>
+      </div>}
+      {multiple && <div className="offer-navigation">
+        <div className="offer-controls">
+          <button type="button" onClick={() => select(activeIndex - 1)} aria-label="Previous offer"><ArrowLeft/></button>
+          <span>{String(activeIndex + 1).padStart(2, "0")} / {String(offers.length).padStart(2, "0")}</span>
+          <button type="button" onClick={() => select(activeIndex + 1)} aria-label="Next offer"><ArrowRight/></button>
+        </div>
+        {offers.length <= 8 && <div className="offer-dots" role="group" aria-label="Choose an offer">{offers.map((item, index) => <button type="button" key={item.id} className={index === activeIndex ? "active" : ""} onClick={() => select(index)} aria-label={`Show offer ${index + 1}`} aria-current={index === activeIndex ? "true" : undefined}/>)}</div>}
+      </div>}
     </article>
     <p className="visually-hidden" aria-live="polite">{announcement}</p>
+  </section>;
+}
+
+function ReelPreview({reels, startIndex, side, paused, reducedMotion, onPlay}: {reels: Reel[]; startIndex: number; side: "left" | "right"; paused: boolean; reducedMotion: boolean; onPlay: (reel: Reel) => void}) {
+  const [active, setActive] = useState(() => reels.length ? startIndex % reels.length : 0);
+  const [ready, setReady] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [playbackCycle, setPlaybackCycle] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const advancedRef = useRef(false);
+  const reelCount = reels.length;
+  const activeIndex = reelCount ? active % reelCount : 0;
+  const reel = reelCount ? reels[activeIndex] : null;
+  const source = reel?.preview || "";
+  const previewUnavailable = failed || !source;
+
+  useEffect(() => {
+    if (!reelCount) return;
+    setActive((current) => current % reelCount);
+  }, [reelCount]);
+  useEffect(() => {
+    advancedRef.current = false;
+    setReady(false);
+    setFailed(false);
+    setPlaybackCycle(0);
+  }, [active, source]);
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !source) return;
+    video.muted = true;
+    video.defaultMuted = true;
+    if (paused || reducedMotion) {
+      video.pause();
+      return;
+    }
+    void video.play().catch(() => setFailed(true));
+  }, [active, paused, reducedMotion, source]);
+  useEffect(() => {
+    if (!previewUnavailable || paused || reducedMotion || !reelCount) return;
+    const timer = window.setTimeout(() => {
+      if (advancedRef.current) return;
+      advancedRef.current = true;
+      setActive((current) => (current + 1) % reelCount);
+    }, 3000);
+    return () => window.clearTimeout(timer);
+  }, [active, paused, previewUnavailable, reducedMotion, reelCount]);
+  useEffect(() => {
+    if (previewUnavailable || paused || reducedMotion || !reelCount) return;
+    const watchdog = window.setTimeout(() => {
+      if (advancedRef.current) return;
+      advancedRef.current = true;
+      setActive((current) => (current + 1) % reelCount);
+    }, 5000);
+    return () => window.clearTimeout(watchdog);
+  }, [active, paused, playbackCycle, previewUnavailable, reducedMotion, reelCount]);
+
+  if (!reel) return null;
+  function advance() {
+    if (advancedRef.current || paused || reducedMotion) return;
+    advancedRef.current = true;
+    setActive((current) => (current + 1) % reelCount);
+  }
+
+  return <aside className={`reel-preview reel-preview-${side}`} aria-label={`${side === "left" ? "Left" : "Right"} Modesi reel preview`}>
+    <button type="button" onClick={() => onPlay(reel)} aria-label={`Watch ${reel.title}`}>
+      {reel.poster ? <img src={reel.poster} alt=""/> : <div className="reel-preview-fallback" aria-hidden="true"><b>M</b></div>}
+      {!reducedMotion && !previewUnavailable && <video
+        key={source}
+        ref={videoRef}
+        className={ready ? "ready" : ""}
+        src={source}
+        muted
+        playsInline
+        autoPlay={!paused}
+        preload="auto"
+        aria-hidden="true"
+        onCanPlay={(event) => {
+          event.currentTarget.muted = true;
+          event.currentTarget.defaultMuted = true;
+          if (!paused) void event.currentTarget.play().catch(() => setFailed(true));
+        }}
+        onPlaying={() => {
+          setReady(true);
+          setPlaybackCycle((cycle) => cycle + 1);
+        }}
+        onTimeUpdate={(event) => {
+          if (event.currentTarget.currentTime >= 2.95) advance();
+        }}
+        onEnded={advance}
+        onError={() => setFailed(true)}
+        onStalled={() => setFailed(true)}
+      />}
+      <span><b>REEL {String(activeIndex + 1).padStart(2, "0")} / {String(reelCount).padStart(2, "0")}</b><i><Play/> Watch</i></span>
+    </button>
+  </aside>;
+}
+
+function OfferMediaStage({offers, reels, modalOpen, onPlay}: {offers: Promotion[]; reels: Reel[]; modalOpen: boolean; onPlay: (reel: Reel) => void}) {
+  const stageRef = useRef<HTMLElement>(null);
+  const [userPaused, setUserPaused] = useState(false);
+  const [interactionPaused, setInteractionPaused] = useState(false);
+  const [inView, setInView] = useState(true);
+  const [pageVisible, setPageVisible] = useState(() => !document.hidden);
+  const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(query.matches);
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+  useEffect(() => {
+    const update = () => setPageVisible(!document.hidden);
+    document.addEventListener("visibilitychange", update);
+    return () => document.removeEventListener("visibilitychange", update);
+  }, []);
+  useEffect(() => {
+    const node = stageRef.current;
+    if (!node || !("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {rootMargin: "100px 0px", threshold: .05});
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  if (!offers.length) return null;
+  const paused = userPaused || interactionPaused || modalOpen || !inView || !pageVisible || reducedMotion;
+  return <section
+    ref={stageRef}
+    className={`offer-media-stage${reels.length < 2 ? " single-reel" : ""}`}
+    aria-labelledby="offer-media-title"
+    onFocusCapture={(event) => {
+      setInteractionPaused(!(event.target as Element).closest(".stage-motion-toggle"));
+    }}
+    onBlurCapture={(event) => {
+      if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setInteractionPaused(false);
+    }}
+  >
+    <h2 id="offer-media-title" className="visually-hidden">Current Modesi offer and reel previews</h2>
+    <OfferCarousel offers={offers} paused={paused} reducedMotion={reducedMotion}/>
+    {!reducedMotion && (reels.length > 1 || offers.length > 1) && <button type="button" className="stage-motion-toggle" aria-pressed={userPaused} aria-label={userPaused ? "Resume offer and reel previews" : "Pause offer and reel previews"} onClick={() => setUserPaused((value) => !value)}>{userPaused ? <Play/> : <Pause/>}<span>{userPaused ? "Play previews" : "Pause previews"}</span></button>}
+    <ReelPreview reels={reels} startIndex={0} side="left" paused={paused} reducedMotion={reducedMotion} onPlay={onPlay}/>
+    {reels.length > 1 && <ReelPreview reels={reels} startIndex={Math.min(3, reels.length - 1)} side="right" paused={paused} reducedMotion={reducedMotion} onPlay={onPlay}/>}
   </section>;
 }
 
@@ -191,23 +329,18 @@ function PromiseMarquee() {
   </section>;
 }
 
-function ReelGallery({reels, onPlay}: {reels: Reel[]; onPlay: (reel: Reel) => void}) {
-  return <section className="reel-section"><SectionTitle light index="02 · ORIGINAL MODESI MEDIA" title={`${reels.length} reels.`} accent="One point of view." copy="See the collection in motion—from everyday styling to statement moments."/><div className="reel-run">{reels.map((reel, index) => <button key={reel.id} onClick={() => onPlay(reel)}><img src={reel.poster} alt={`${reel.title} poster`}/><span><b>{String(index + 1).padStart(2, "0")}</b>{reel.title}</span><i><Play/> View</i></button>)}</div></section>;
-}
-
-function HomePage({products, reels, promotions, currency, wishlist, onWishlist, onAdd, onPlay}: {products: Product[]; reels: Reel[]; promotions: Promotion[] | null; currency: Currency; wishlist: string[]; onWishlist: (handle: string) => void; onAdd: (product: Product) => void; onPlay: (reel: Reel) => void}) {
+function HomePage({products, reels, promotions, reelModalOpen, currency, wishlist, onWishlist, onAdd, onPlay}: {products: Product[]; reels: Reel[]; promotions: Promotion[] | null; reelModalOpen: boolean; currency: Currency; wishlist: string[]; onWishlist: (handle: string) => void; onAdd: (product: Product) => void; onPlay: (reel: Reel) => void}) {
   const best = products.filter((product) => product.bestseller);
   const newest = products.filter((product) => product.isNew);
   return <>
     <section className="hero hero-artwork"><h1 className="visually-hidden">Modesi contemporary Indian jewellery</h1><Link to="shop" className="hero-artwork-link"><picture><source media="(max-width: 700px)" srcSet={`${BASE}/assets/editorial/hero-mobile.webp`}/><img src={`${BASE}/assets/editorial/hero-desktop.webp`} alt="Modesi jewellery campaign featuring modern Indian styling"/></picture><span className="visually-hidden">Shop the current Modesi collection</span></Link></section>
     <section className="identity-line" aria-label="Modesi brand statements"><span>Where Modern Meets Desi</span><strong>Heritage is everyday.</strong><span>Boldly Desi. Beautifully Modern.</span><strong>Made for languages, cities and styles.</strong></section>
-    {promotions && <OfferCarousel offers={promotions}/>}
+    {promotions && <OfferMediaStage offers={promotions} reels={reels} modalOpen={reelModalOpen} onPlay={onPlay}/>}
     <PromiseMarquee/>
     <section className="product-feature"><SectionTitle index="01 · OUR BESTSELLER" title="Most loved by" accent="our customers." copy="Timeless design and quiet elegance, made to complement your individuality and everyday style."/><ProductRail products={best} currency={currency} wishlist={wishlist} onWishlist={onWishlist} onAdd={onAdd}/><Link to="best-sellers" className="text-link">View bestseller collection <ArrowRight/></Link></section>
-    {widgetsFor("home", "after-hero").some((widget) => widget.component === "reels") && <ReelGallery reels={reels} onPlay={onPlay}/>}
-    <section className="product-feature new-arrivals-panel"><SectionTitle index="03 · NEW ARRIVALS" title="Be the first" accent="to shine." copy="Refined, wearable pieces for everyday moments and meaningful ones."/><ProductRail products={newest} currency={currency} wishlist={wishlist} onWishlist={onWishlist} onAdd={onAdd}/><Link to="new-arrivals" className="text-link">View new arrivals <ArrowRight/></Link></section>
-    <section className="collection-section"><SectionTitle index="04 · OUR COLLECTION" title="Crafted with elegance," accent="designed for you."/><div className="collection-run">{featuredCollections.map((collection, index) => <Link key={collection.handle} to={`shop?collection=${collection.handle}`}><img src={collection.image} alt={`${collection.title} collection`}/><span>{String(index + 1).padStart(2, "0")}</span><h3>{collection.title}</h3><b>Explore <ArrowRight/></b></Link>)}</div></section>
-    <section className="story-teaser"><div className="story-image"><img src={`${BASE}/assets/editorial/about-heritage.png`} alt="Modesi brand story visual"/></div><div><Eyebrow>05 · MODESI STORY</Eyebrow><h2>You do not have to choose between <em>modern</em> and <em>desi.</em></h2><p>{story.intro}</p><Link to="modesi-story">Read the brand story <ArrowRight/></Link></div></section>
+    <section className="product-feature new-arrivals-panel"><SectionTitle index="02 · NEW ARRIVALS" title="Be the first" accent="to shine." copy="Refined, wearable pieces for everyday moments and meaningful ones."/><ProductRail products={newest} currency={currency} wishlist={wishlist} onWishlist={onWishlist} onAdd={onAdd}/><Link to="new-arrivals" className="text-link">View new arrivals <ArrowRight/></Link></section>
+    <section className="collection-section"><SectionTitle index="03 · OUR COLLECTION" title="Crafted with elegance," accent="designed for you."/><div className="collection-run">{featuredCollections.map((collection, index) => <Link key={collection.handle} to={`shop?collection=${collection.handle}`}><img src={collection.image} alt={`${collection.title} collection`}/><span>{String(index + 1).padStart(2, "0")}</span><h3>{collection.title}</h3><b>Explore <ArrowRight/></b></Link>)}</div></section>
+    <section className="story-teaser"><div className="story-image"><img src={`${BASE}/assets/editorial/about-heritage.png`} alt="Modesi brand story visual"/></div><div><Eyebrow>04 · MODESI STORY</Eyebrow><h2>You do not have to choose between <em>modern</em> and <em>desi.</em></h2><p>{story.intro}</p><Link to="modesi-story">Read the brand story <ArrowRight/></Link></div></section>
     <section className="claim-ticker">{siteClaims.map((claim, index) => <div key={claim}><span>{String(index + 1).padStart(2, "0")}</span><strong>{claim}</strong></div>)}</section>
   </>;
 }
@@ -324,6 +457,67 @@ function FloatingWidgets({route, products, currency, onCurrency}: {route: string
   return <>{proof && products[proofIndex] && <aside className="social-proof"><img src={products[proofIndex].image} alt=""/><div><p>From the current Modesi catalogue</p><strong>{products[proofIndex].title}</strong><span>{money(products[proofIndex].price, currency)} · Explore now</span></div></aside>}{showCurrency && <div className="currency-widget"><button onClick={() => setCurrencyOpen((open) => !open)}>{currency}</button>{currencyOpen && <div>{(Object.keys(currencyRates) as Currency[]).map((code) => <button key={code} onClick={() => {onCurrency(code); setCurrencyOpen(false);}}>{code}</button>)}<small>Display estimate</small></div>}</div>}{showConcierge && <button className="concierge" aria-label="Open Modesi concierge" onClick={() => setConcierge(true)}><Sparkles/><span>Ask Modesi</span></button>}{showConcierge && concierge && <div className="concierge-panel"><header><div><Eyebrow>MODESI CONCIERGE</Eyebrow><h2>What do you need?</h2></div><button onClick={() => setConcierge(false)}><X/></button></header>{showTracking && <Link to="track-order" onNavigate={() => setConcierge(false)}><PackageSearch/><span><strong>Track an order</strong>Use email and order number</span><ArrowRight/></Link>}<a href={`https://wa.me/${contact.phone.replace(/\D/g, "")}`}><Phone/><span><strong>WhatsApp</strong>{contact.phone}</span><ArrowRight/></a><Link to="contact" onNavigate={() => setConcierge(false)}><Mail/><span><strong>Contact Modesi</strong>{contact.chatEmail}</span><ArrowRight/></Link><div className="concierge-faq"><CircleHelp/><span><strong>Can I change my order?</strong>Contact the team before it ships.</span></div></div>}</>;
 }
 
+function ReelModal({reel, onClose}: {reel: Reel; onClose: () => void}) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const restoreFocusRef = useRef<HTMLElement | null>(document.activeElement instanceof HTMLElement ? document.activeElement : null);
+
+  useEffect(() => {
+    const modal = modalRef.current;
+    if (!modal) return;
+    const siblings = Array.from(modal.parentElement?.children || []).filter((node): node is HTMLElement => node instanceof HTMLElement && node !== modal);
+    const siblingState = siblings.map((node) => ({node, inert: node.inert, ariaHidden: node.getAttribute("aria-hidden")}));
+    const previousOverflow = document.body.style.overflow;
+    siblings.forEach((node) => {
+      node.inert = true;
+      node.setAttribute("aria-hidden", "true");
+    });
+    document.body.style.overflow = "hidden";
+    closeRef.current?.focus();
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusable = Array.from(modal!.querySelectorAll<HTMLElement>('button:not([disabled]), video[controls], [href], [tabindex]:not([tabindex="-1"])'));
+      if (!focusable.length) {
+        event.preventDefault();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      siblingState.forEach(({node, inert, ariaHidden}) => {
+        node.inert = inert;
+        if (ariaHidden === null) node.removeAttribute("aria-hidden");
+        else node.setAttribute("aria-hidden", ariaHidden);
+      });
+      restoreFocusRef.current?.focus();
+    };
+  }, [reel.id]);
+
+  return <div ref={modalRef} className="reel-modal" role="dialog" aria-modal="true" aria-labelledby="reel-modal-title">
+    <button ref={closeRef} type="button" aria-label="Close reel" onClick={onClose}><X/></button>
+    <video src={reel.video} poster={reel.poster || undefined} controls autoPlay playsInline tabIndex={0}/>
+    <p><span id="reel-modal-title">{reel.title}</span>{reel.sourceLabel}</p>
+  </div>;
+}
+
 export default function App() {
   const [location, setLocation] = useState(() => ({route: routeFromLocation(), search: window.location.search}));
   const route = location.route;
@@ -373,7 +567,7 @@ export default function App() {
   function toggleWishlist(handle: string) { setWishlist((current) => current.includes(handle) ? current.filter((item) => item !== handle) : [...current, handle]); }
   const shared = {products, currency, wishlist, onWishlist: toggleWishlist, onAdd: add};
   let page: ReactNode;
-  if (route === "home") page = <HomePage {...shared} reels={reels} promotions={promotions} onPlay={setActiveReel}/>;
+  if (route === "home") page = <HomePage {...shared} reels={reels} promotions={promotions} reelModalOpen={Boolean(activeReel)} onPlay={setActiveReel}/>;
   else if (route === "shop") page = <ShopPage {...shared}/>;
   else if (route === "new-arrivals") page = <ShopPage {...shared} title="New arrivals" intro="Be the first to shine" products={products.filter((product) => product.isNew)}/>;
   else if (route === "best-sellers") page = <ShopPage {...shared} title="Our bestseller" intro="Most loved by our customers" products={products.filter((product) => product.bestseller)}/>;
@@ -385,7 +579,7 @@ export default function App() {
   else if (route === "checkout") return <CheckoutPage lines={cart} currency={currency}/>;
   else if (route === "track-order") page = <TrackOrderPage/>;
   else page = <NotFound/>;
-  return <div className="modesi-site"><Header page={widgetPage} cartCount={cart.reduce((sum, line) => sum + line.quantity, 0)} wishlistCount={wishlist.length} onCart={() => setCartOpen(true)} onSearch={() => setSearchOpen(true)}/><main>{page}</main><Footer/><CartDrawer open={cartOpen} lines={cart} currency={currency} onClose={() => setCartOpen(false)} onQuantity={updateQuantity} onRemove={remove}/><SearchOverlay open={searchOpen} products={products} onClose={() => setSearchOpen(false)}/><Newsletter open={newsletter} onClose={() => {setNewsletter(false); localStorage.setItem("modesi-newsletter-dismissed", "1");}}/><FloatingWidgets route={route} products={products} currency={currency} onCurrency={setCurrency}/>{activeReel && <div className="reel-modal" role="dialog" aria-modal="true" aria-label={activeReel.title}><button aria-label="Close reel" onClick={() => setActiveReel(null)}><X/></button><video src={activeReel.video} poster={activeReel.poster} controls autoPlay playsInline/><p><span>{activeReel.title}</span>{activeReel.sourceLabel}</p></div>}</div>;
+  return <div className="modesi-site"><Header page={widgetPage} cartCount={cart.reduce((sum, line) => sum + line.quantity, 0)} wishlistCount={wishlist.length} onCart={() => setCartOpen(true)} onSearch={() => setSearchOpen(true)}/><main>{page}</main><Footer/><CartDrawer open={cartOpen} lines={cart} currency={currency} onClose={() => setCartOpen(false)} onQuantity={updateQuantity} onRemove={remove}/><SearchOverlay open={searchOpen} products={products} onClose={() => setSearchOpen(false)}/><Newsletter open={newsletter} onClose={() => {setNewsletter(false); localStorage.setItem("modesi-newsletter-dismissed", "1");}}/><FloatingWidgets route={route} products={products} currency={currency} onCurrency={setCurrency}/>{activeReel && <ReelModal reel={activeReel} onClose={() => setActiveReel(null)}/>}</div>;
 }
 
 function NotFound() { return <div className="empty-state page-empty"><span className="giant-404">404</span><h1>This piece is not here.</h1><p>The route may have moved, but the collection is close by.</p><Link to="home">Return home</Link></div>; }

@@ -16,14 +16,14 @@
   ],
   "productMetafields": {"namespace": "modesi", "definitions": ["base_metal", "plating_finish", "stone", "colour", "style", "occasion", "size", "closure"], "source": "source-verified values only: Everyday occasion on earrings fancy and Jhumka style on JHUMKA 01/02; unknown values remain blank"},
   "reels": [
-    {"handle": "modesi-reel-01", "file": "/tmp/modesi-shopify-seed/modesi-reel-01.mp4", "duration": "PT14S"},
-    {"handle": "reel-ud9imkth", "file": "/tmp/modesi-shopify-seed/modesi-reel-02.mp4", "duration": "PT41S"},
-    {"handle": "modesi-reel-03", "file": "/tmp/modesi-shopify-seed/modesi-reel-03.mp4", "duration": "PT43S"},
-    {"handle": "modesi-reel-04", "file": "/tmp/modesi-shopify-seed/modesi-reel-04.mp4", "duration": "PT38S"},
-    {"handle": "modesi-reel-05", "file": "/tmp/modesi-shopify-seed/modesi-reel-05.mp4", "duration": "PT40S"},
-    {"handle": "modesi-reel-06", "file": "/tmp/modesi-shopify-seed/modesi-reel-06.mp4", "duration": "PT45S"}
+    {"handle": "modesi-reel-01", "file": "/tmp/modesi-shopify-seed/modesi-reel-01.mp4", "preview": "/modesi-jewellery/assets/reels/previews/reel-01.mp4", "duration": "PT14S"},
+    {"handle": "reel-ud9imkth", "file": "/tmp/modesi-shopify-seed/modesi-reel-02.mp4", "preview": "/modesi-jewellery/assets/reels/previews/reel-02.mp4", "duration": "PT41S"},
+    {"handle": "modesi-reel-03", "file": "/tmp/modesi-shopify-seed/modesi-reel-03.mp4", "preview": "/modesi-jewellery/assets/reels/previews/reel-03.mp4", "duration": "PT43S"},
+    {"handle": "modesi-reel-04", "file": "/tmp/modesi-shopify-seed/modesi-reel-04.mp4", "preview": "/modesi-jewellery/assets/reels/previews/reel-04.mp4", "duration": "PT38S"},
+    {"handle": "modesi-reel-05", "file": "/tmp/modesi-shopify-seed/modesi-reel-05.mp4", "preview": "/modesi-jewellery/assets/reels/previews/reel-05.mp4", "duration": "PT40S"},
+    {"handle": "modesi-reel-06", "file": "/tmp/modesi-shopify-seed/modesi-reel-06.mp4", "preview": "/modesi-jewellery/assets/reels/previews/reel-06.mp4", "duration": "PT45S"}
   ],
   "widgetMetaobjects": ["storefront_widget", "reel", "faq", "announcement", "social_proof_campaign"],
-  "announcementFields": ["title", "message", "link_label", "link_url", "page_scopes", "starts_at", "ends_at", "priority", "active", "image (optional MediaImage)"],
+  "announcementFields": ["title (accessibility label only)", "link_url (required internal destination)", "page_scopes", "starts_at", "ends_at", "priority", "active", "image (required offer PNG as MediaImage)"],
   "filters": ["availability", "price", "category", "product_type", "base_metal", "plating_finish", "stone", "colour", "style", "occasion", "size", "closure"]
 }

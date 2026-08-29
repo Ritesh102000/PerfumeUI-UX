@@ -97,6 +97,7 @@ export type Reel = {
   duration: string;
   poster: string;
   video: string;
+  preview?: string;
 };
 
 export const reels: Reel[] = [
@@ -113,6 +114,7 @@ export const reels: Reel[] = [
   duration,
   poster: `/modesi-jewellery/assets/reels/reel-${String(index + 1).padStart(2, "0")}.jpg`,
   video: `https://cdn.shopify.com/videos/c/vp/${id}/${id}.HD-720p-${rate}Mbps-${build}.mp4`,
+  preview: `/modesi-jewellery/assets/reels/previews/reel-${String(index + 1).padStart(2, "0")}.mp4`,
 }));
 
 export const featuredCollections = [
