@@ -1,0 +1,28 @@
+{
+  "sourceSnapshot": "2026-08-29",
+  "storeDomain": "revenuedesk-dev.myshopify.com",
+  "isolation": {"vendor": "Modesi", "tag": "MODESI_IMPORT", "deleteExistingData": false},
+  "productsCsv": "modesi-products.csv",
+  "collections": [
+    {"title": "Bestseller", "handle": "modesi-bestseller", "rule": "tag equals Best Seller"},
+    {"title": "New Arrivals", "handle": "modesi-new-arrivals", "rule": "vendor equals Modesi"},
+    {"title": "Earrings", "handle": "modesi-earrings", "rule": "product type equals Earrings and vendor equals Modesi"},
+    {"title": "JHUMKA NAVRATRI COMBO 2026", "handle": "modesi-jhumka-navratri-combo-2026", "rule": "tag equals JHUMKA"},
+    {"title": "Between 0–500", "handle": "modesi-between-0-500", "rule": "price 0 to 500"},
+    {"title": "500–1200", "handle": "modesi-500-1200", "rule": "price 500 to 1200"}
+  ],
+  "catalogueTaxonomy": [
+    "1 Gram gold jewellery", "500–1200", "925 Silver Jewellery", "Accessories", "Baby Kadli", "Bangles", "Bestseller", "Between 0–500", "Between 1200–2000", "Brooch", "Coins", "Cufflinks", "Earrings", "Everyday Wear", "Gold Plated Jewellery", "Home page", "Idols", "JHUMKA NAVRATRI COMBO 2026", "Kadas", "Kids Anklets", "Kids Bracelet", "Kids Chain Pendant", "Kids Earrings", "Kids Rings", "Men Bracelets", "Men Chain Pendant", "Men Rings", "Minimal", "Money Clips", "Necklaces", "New Arrivals", "Nose Rings", "Office Wear", "Party Wear", "Payal / Anklets", "Pendants", "Premium Gifts", "Stud Earrings", "Temple Wear", "Tie Pin", "Toe Rings", "Vermeil Jewellery", "Waist Belt / Kandora / Juda", "Wedding Wear", "Women Bracelets", "Women Chain Pendant", "Women Rings"
+  ],
+  "productMetafields": {"namespace": "modesi", "definitions": ["base_metal", "plating_finish", "stone", "colour", "style", "occasion", "size", "closure"], "source": "source-verified values only: Everyday occasion on earrings fancy and Jhumka style on JHUMKA 01/02; unknown values remain blank"},
+  "reels": [
+    {"handle": "modesi-reel-01", "file": "/tmp/modesi-shopify-seed/modesi-reel-01.mp4", "duration": "PT14S"},
+    {"handle": "reel-ud9imkth", "file": "/tmp/modesi-shopify-seed/modesi-reel-02.mp4", "duration": "PT41S"},
+    {"handle": "modesi-reel-03", "file": "/tmp/modesi-shopify-seed/modesi-reel-03.mp4", "duration": "PT43S"},
+    {"handle": "modesi-reel-04", "file": "/tmp/modesi-shopify-seed/modesi-reel-04.mp4", "duration": "PT38S"},
+    {"handle": "modesi-reel-05", "file": "/tmp/modesi-shopify-seed/modesi-reel-05.mp4", "duration": "PT40S"},
+    {"handle": "modesi-reel-06", "file": "/tmp/modesi-shopify-seed/modesi-reel-06.mp4", "duration": "PT45S"}
+  ],
+  "widgetMetaobjects": ["storefront_widget", "reel", "faq", "announcement", "social_proof_campaign"],
+  "filters": ["availability", "price", "category", "product_type", "base_metal", "plating_finish", "stone", "colour", "style", "occasion", "size", "closure"]
+}
