@@ -15,6 +15,7 @@ A framework-free catalogue of independent, interactive website concepts for clie
 - `avina-jewellery/` - standalone trilingual B2B jewellery-manufacturing experience
 - `modesi-jewellery/` - built output for the Modesi Shopify/Hydrogen-compatible commerce concept
 - `modesi-hydrogen/` - source, Shopify adapter, widget registry and seed manifests for Modesi
+- `haxxed-grooming-concept/` - built static output for the HAXXED motion-led Indian grooming commerce concept
 
 Every concept owns its HTML, CSS, JavaScript, assets, README and client PDF. A concept can be opened, hosted or handed over without depending on another concept folder.
 
