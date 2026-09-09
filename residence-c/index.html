@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Come inside Residence C. Explore a furnished two-bedroom flat through a continuous walking tour, controlled by your scroll.">
+  <meta name="theme-color" content="#172823">
+  <title>INSIDE — Residence C</title>
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+  <meta property="og:title" content="Come on inside — Residence C">
+  <meta property="og:description" content="A furnished two-bedroom flat. Explore the connected rooms in one continuous walking tour.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://websiteshowcase.catapultaiwork.com/residence-c/assets/living.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body class="tour-pending">
+  <a class="skip" href="#details">Skip the walkthrough</a>
+  <header class="header" id="header">
+    <a class="brand" href="#home" aria-label="Inside home">inside<span>●</span></a>
+    <span class="header-project">RESIDENCE C <i></i> TWO-BEDROOM CONCEPT</span>
+    <nav aria-label="Main navigation"><a href="#tour">The walkthrough</a><a href="#floorplan">The layout</a><button class="visit-trigger button-small">Make it yours <span>↗</span></button></nav>
+  </header>
+  <main>
+    <span id="home" class="home-anchor" aria-hidden="true"></span>
+    <section class="tour" id="tour" aria-label="Continuous walking tour of Residence C">
+      <div class="tour-stage is-arrival awaiting-scene">
+        <canvas id="tour-canvas" aria-label="Live 3D walking tour of Residence C" aria-describedby="tour-status"></canvas>
+        <output id="tour-debug" class="tour-debug" hidden aria-label="3D performance diagnostics"></output>
+        <div class="tour-vignette"></div>
+        <div class="tour-loading" id="tour-loading" role="status"><span class="loading-ring" aria-hidden="true"></span><p id="tour-loading-message">Opening your home in 3D…</p><button id="tour-retry" class="outline-small" hidden>Try again</button></div>
+        <div class="tour-top"><span class="eyebrow">YOUR PRIVATE WALKTHROUGH</span><div class="tour-playback"><button id="tour-play" class="outline-small" disabled>Play tour</button><button id="scroll-toggle" class="outline-small" aria-pressed="true">Scroll linked</button><button id="details-toggle" class="outline-small" aria-label="Room details" aria-controls="room-information tour-position" aria-pressed="true">Details on</button></div></div>
+        <div class="room-information" id="room-information"><span class="room-number" id="room-number">01 / —</span><h1 id="room-title">Come on<br><em>inside.</em></h1><p id="room-description">Welcome to Residence C. Scroll or press Play to walk from the front door through every connected room.</p><div class="room-facts" id="room-facts"><span>Two bedrooms</span><span>One connected home</span></div></div>
+        <div class="tour-position" id="tour-position"><svg viewBox="25 10 500 330" aria-hidden="true"><path d="M40 143L205 143L205 277L40 277Z"/><path d="M115 55L205 55L205 143L115 143Z"/><path d="M205 55L355 55L355 100L205 100Z"/><path d="M355 55L510 55L510 175L430 175L430 165L355 165Z"/><path d="M205 100L355 100L355 165L430 165L430 256L275 256L275 277L205 277Z"/><path d="M430 175L510 175L510 256L430 256Z"/><path d="M205 277L275 277L275 325L205 325Z"/><path d="M275 256L412 256L412 325L275 325Z"/><path d="M412 256L458 256L458 325L412 325Z"/><circle id="plan-dot" cx="242" cy="302" r="8"/></svg><span id="room-location">FOYER</span></div>
+        <div class="tour-bottom"><div class="tour-timeline"><input id="tour-seek" type="range" min="0" max="100" step="any" value="0" aria-label="Tour position" disabled><output id="tour-time" for="tour-seek">0:00 / —</output></div><div class="tour-controls"><button id="previous-room" aria-label="Previous part of the tour" disabled>←</button><div id="room-navigation" role="group" aria-label="Jump to a room"></div><button id="next-room" aria-label="Next part of the tour" disabled>→</button></div><div class="tour-hint"><span id="tour-status" role="status">Loading the 3D walkthrough</span><span id="tour-scroll-hint">SCROLL TO WALK THROUGH ↓</span></div></div>
+      </div>
+    </section>
+
+    <section class="introduction section-pad">
+      <p class="eyebrow">THE FEELING OF HOME</p>
+      <h2>Every room.<br><em>A little possibility.</em></h2>
+      <div class="intro-description"><span class="small-rule"></span><p>Long mornings in the living room. A quiet corner to retreat to. A balcony for a breath of fresh air.</p><p>Explore how the spaces in this two-bedroom flat connect, from the front door to the rooms beyond.</p><a class="text-link" href="#tour">Walk through again <span>↗</span></a></div>
+    </section>
+
+    <section class="details section-pad" id="details">
+      <div class="details-heading"><p class="eyebrow">ROOM FOR YOUR EVERYDAY</p><h2>Considered spaces.<br><em>Connected living.</em></h2></div>
+      <div class="detail-grid">
+        <article><span>01 — UNWIND</span><img src="assets/master.webp" alt="Master bedroom with an upholstered bed and fitted oak wardrobe" loading="lazy" width="800" height="500"><div><h3>Your own<br>quiet corner.</h3><p>Two separate bedrooms, with an ensuite connected to the master bedroom.</p><button class="text-link" data-room="2">Explore the bedrooms <span>↗</span></button></div></article>
+        <article><span>02 — GATHER</span><img src="assets/kitchen.webp" alt="Fitted kitchen with stone worktops, sink and an adjoining utility area" loading="lazy" width="800" height="500"><div><h3>Made for<br>daily rituals.</h3><p>A kitchen beside the dining space, with a separate utility area for the practical things.</p><button class="text-link" data-room="5">Step into the kitchen <span>↗</span></button></div></article>
+        <article><span>03 — EXHALE</span><img src="assets/balcony.webp" alt="Balcony with a timber bench, plants and glass railing" loading="lazy" width="800" height="500"><div><h3>A moment<br>in the open.</h3><p>The living room opens onto a balcony—a natural place to pause.</p><button class="text-link" data-room="8">Find the balcony <span>↗</span></button></div></article>
+      </div>
+    </section>
+
+    <section class="floorplan section-pad" id="floorplan">
+      <div class="floorplan-copy"><p class="eyebrow">THE WHOLE PICTURE</p><h2>See how<br><em>it all fits.</em></h2><p>Two bedrooms. Two bathrooms. And the spaces that bring them together.</p><dl><div><dt>Living</dt><dd>Combined living & dining</dd></div><div><dt>Private spaces</dt><dd>2 bedrooms · 1 ensuite</dd></div><div><dt>Everyday spaces</dt><dd>Kitchen · utility · common bath</dd></div><div><dt>Outdoor space</dt><dd>Balcony off the living room</dd></div></dl><div class="plan-toggle" role="group" aria-label="Choose plan view"><button class="active" data-plan="model" aria-pressed="true">Furnished model</button><button data-plan="source" aria-pressed="false">Original drawing</button></div></div>
+      <div class="plan-image-wrap"><img id="plan-image" src="assets/overview.webp" alt="Cutaway 3D overview of the complete flat" loading="lazy" width="1000" height="750"><span id="plan-caption">RESIDENCE C / FURNISHED CONCEPT</span><p>Illustrative reconstruction from the supplied drawing. Dimensions, finishes and fittings require confirmation.</p></div>
+    </section>
+
+    <section class="visit section-pad" id="visit"><p class="eyebrow">FROM A PLAN TO YOUR PLACE</p><h2>Imagine coming<br><em>home to this.</em></h2><p>Tell us what matters in your next home.<br>Start with a few details.</p><button class="visit-trigger button-large">Make an enquiry <span>↗</span></button><small>Concept showcase · Enquiry details can be saved as a draft.</small></section>
+  </main>
+  <footer><a class="brand" href="#home">inside<span>●</span></a><p>RESIDENCE C — AN ARCHITECTURAL CONCEPT</p><a href="../index.html">Back to the showcase ↗</a><a class="texture-credit" href="https://polyhaven.com">Textures powered by Poly Haven ↗</a><span>© 2026</span></footer>
+
+  <dialog id="enquiry-dialog" aria-labelledby="enquiry-title">
+    <button class="dialog-close" aria-label="Close enquiry">×</button>
+    <div id="enquiry-form-view"><p class="eyebrow">YOUR NEXT CHAPTER</p><h2 id="enquiry-title">Let's talk<br><em>about home.</em></h2><p class="dialog-intro">Save your interest in Residence C. This showcase prepares a draft; it does not send a booking.</p><form id="enquiry-form"><label>Your name<input name="name" autocomplete="name" required maxlength="100" placeholder="Full name"></label><div class="form-row"><label>Email<input type="email" name="email" autocomplete="email" required placeholder="you@example.com"></label><label>Phone <span>(optional)</span><input type="tel" name="phone" autocomplete="tel" maxlength="30" placeholder="Your contact number"></label></div><label>What would you like to know?<select name="interest"><option>Arrange a site visit</option><option>Get property specifications</option><option>Discuss a similar home</option></select></label><label>A little more about your plans<textarea name="message" rows="3" maxlength="1200" placeholder="Preferred area, budget, or the spaces you liked…"></textarea></label><button class="button-large" type="submit">Prepare enquiry <span>↗</span></button><p class="privacy-note">Nothing is submitted to a server. Your details remain in this open form unless you choose to download or copy your draft.</p></form></div>
+    <div id="enquiry-success" hidden><p class="eyebrow">READY WHEN YOU ARE</p><h2>Your enquiry,<br><em>prepared.</em></h2><p>This is a draft, not a confirmed visit. Download it or copy the details to share with your property adviser.</p><pre id="enquiry-summary"></pre><button id="download-enquiry" class="button-large">Download draft <span>↓</span></button><button id="copy-enquiry" class="text-link">Copy details <span>↗</span></button><p id="copy-status" role="status"></p><button id="edit-enquiry" class="text-link">Edit your details <span>←</span></button></div>
+  </dialog>
+</body>
+</html>
