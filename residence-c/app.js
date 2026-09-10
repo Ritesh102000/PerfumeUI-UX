@@ -48,6 +48,8 @@
   };
   const chapterRoom = chapter => rooms.find(r => r.id === (chapter.room_id || chapter.id));
   const firstChapterForRoom = id => manifest?.chapters.find(c => (c.room_id || c.id) === id);
+  const navigationTime = chapter => Number.isFinite(chapter?.navigation_seconds)
+    ? chapter.navigation_seconds : chapter?.start_seconds;
   const sceneStats = () => {
     try { return typeof scene?.stats === 'function' ? scene.stats() : scene?.stats || {}; }
     catch { return {}; }
@@ -233,7 +235,7 @@
   }
   function jumpToRoom(id) {
     const chapter = firstChapterForRoom(id);
-    if (ready && chapter && chapter.start_seconds < duration()) jumpToTime(chapter.start_seconds);
+    if (ready && chapter && navigationTime(chapter) < duration()) jumpToTime(navigationTime(chapter));
   }
   function setScrollLinked(value) {
     const wasVisible = tourVisible();
@@ -275,10 +277,10 @@
   $('#scroll-toggle').addEventListener('click', () => setScrollLinked(!scrollLinked));
   seek.addEventListener('input', () => jumpToTime(Number(seek.value)));
   $('#previous-room').addEventListener('click', () => {
-    if (ready) jumpToTime(manifest.chapters[Math.max(0, activeChapter - 1)].start_seconds);
+    if (ready) jumpToTime(navigationTime(manifest.chapters[Math.max(0, activeChapter - 1)]));
   });
   $('#next-room').addEventListener('click', () => {
-    if (ready) jumpToTime(manifest.chapters[Math.min(manifest.chapters.length - 1, activeChapter + 1)].start_seconds);
+    if (ready) jumpToTime(navigationTime(manifest.chapters[Math.min(manifest.chapters.length - 1, activeChapter + 1)]));
   });
   document.querySelectorAll('[data-room]').forEach(button => button.addEventListener('click', () => jumpToRoom(rooms[Number(button.dataset.room)].id)));
   window.addEventListener('scroll', onScroll, {passive: true});
@@ -318,6 +320,8 @@
         || !Number.isFinite(chapter.start_seconds) || !Number.isFinite(chapter.end_seconds)
         || Math.abs(chapter.start_seconds - previousEnd) > 0.1
         || chapter.end_seconds <= chapter.start_seconds || chapter.end_seconds > data.duration_seconds + 0.1) throw Error('Invalid chapter range');
+      if (chapter.navigation_seconds !== undefined && (!Number.isFinite(chapter.navigation_seconds)
+        || chapter.navigation_seconds < chapter.start_seconds || chapter.navigation_seconds >= chapter.end_seconds)) throw Error('Invalid room navigation pose');
       previousEnd = chapter.end_seconds;
     }
     if (Math.abs(previousEnd - data.duration_seconds) > 0.1) throw Error('The complete camera route is missing');
