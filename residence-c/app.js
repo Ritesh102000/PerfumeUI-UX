@@ -84,6 +84,7 @@
   }
   function controls() {
     const length = duration();
+    stage.classList.toggle('is-playing', playing);
     playButton.disabled = !ready;
     $('#scroll-toggle').disabled = !ready;
     seek.disabled = !ready;
@@ -283,6 +284,14 @@
     if (ready) jumpToTime(navigationTime(manifest.chapters[Math.min(manifest.chapters.length - 1, activeChapter + 1)]));
   });
   document.querySelectorAll('[data-room]').forEach(button => button.addEventListener('click', () => jumpToRoom(rooms[Number(button.dataset.room)].id)));
+  // A return link is an explicit restart, not a long eased rewind from the last room.
+  document.querySelectorAll('a[href="#home"], a[href="#tour"]').forEach(link => {
+    link.addEventListener('click', event => {
+      if (!ready) return;
+      event.preventDefault(); jumpToTime(0);
+      history.replaceState(null, '', link.getAttribute('href'));
+    });
+  });
   window.addEventListener('scroll', onScroll, {passive: true});
   window.addEventListener('wheel', event => { if (event.deltaY) pauseForInput(); }, {passive: true});
   window.addEventListener('touchmove', pauseForInput, {passive: true});
@@ -382,7 +391,7 @@
   document.querySelectorAll('.visit-trigger').forEach(b=>b.addEventListener('click',()=>{returnFocus=b;dialog.showModal();document.body.classList.add('dialog-open');}));
   $('.dialog-close').addEventListener('click',()=>dialog.close());
   dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
-  dialog.addEventListener('close',()=>{document.body.classList.remove('dialog-open');returnFocus?.focus();});
+  dialog.addEventListener('close',()=>{document.body.classList.remove('dialog-open');returnFocus?.focus({preventScroll: true});});
   const nameInput=$('#enquiry-form input[name="name"]');
   nameInput.addEventListener('input',()=>nameInput.setCustomValidity(''));
   $('#enquiry-form').addEventListener('submit',e=>{
