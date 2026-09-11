@@ -1,0 +1,1 @@
+import{r as e}from"./framework-rpA3Y8hQ.js";var t=e();function n({href:e,children:n,...r}){let i=e;if(e?.startsWith(`/`)&&!e.startsWith(`//`)){let t=e.search(/[?#]/),n=t<0?e:e.slice(0,t),r=t<0?``:e.slice(t);i=`/haxxed-grooming-concept`+n+(n.endsWith(`/`)?``:`/`)+r}return(0,t.jsx)(`a`,{...r,href:i,children:n})}export{n as t};
