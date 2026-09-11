@@ -31,6 +31,8 @@ import {mountModelViewer} from './model-view.js';
   const playButton = $('#tour-play');
   const seek = $('#tour-seek');
   const detailsButton = $('#details-toggle');
+  const film = $('#residence-film');
+  function pauseFilm() { if (!film.paused) film.pause(); }
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const debug = new URLSearchParams(location.search).get('debug') === '1';
   let manifest = null, scene = null, ready = false, activeChapter = -1;
@@ -40,7 +42,7 @@ import {mountModelViewer} from './model-view.js';
   let frameWindowStart = 0, frameWindowCount = 0, measuredFps = 0;
   let lastRenderMilliseconds = 0, lastError = null;
   const modelViewer=mountModelViewer({canvas,getScene:()=>scene,
-    onOpen:()=>{scrollEasing=false;pauseForInput();stopLoop();},
+    onOpen:()=>{pauseFilm();scrollEasing=false;pauseForInput();stopLoop();},
     onClose:()=>{positionTourControls();if(ready)renderCurrent();}
   });
   const duration = () => manifest?.duration_seconds || 0;
@@ -239,6 +241,7 @@ import {mountModelViewer} from './model-view.js';
   }
   function jumpToTime(time) {
     if (!ready) return;
+    pauseFilm();
     scrollEasing = false; pauseForInput(); setTime(time); scrollToTime(time);
     if (!scrollLinked) tour.scrollIntoView({behavior: 'instant', block: 'start'});
   }
@@ -280,6 +283,7 @@ import {mountModelViewer} from './model-view.js';
     if (!ready || document.body.classList.contains('dialog-open')) return;
     scrollEasing = false;
     if (playing) { pauseForInput(); return; }
+    pauseFilm();
     if (currentTime >= duration() - 0.03) setTime(0);
     playing = true; scrollToTime(currentTime); controls(); scheduleFrame();
   });
@@ -314,20 +318,27 @@ import {mountModelViewer} from './model-view.js';
     if (scrollLinked && ready && tourVisible() && !document.body.classList.contains('dialog-open')) scrollToTime(currentTime);
   });
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { scrollEasing = false; pauseForInput(); stopLoop(); }
+    if (document.hidden) { pauseFilm(); scrollEasing = false; pauseForInput(); stopLoop(); }
   });
   document.querySelectorAll('.visit-trigger').forEach(button => button.addEventListener('click', () => {
-    scrollEasing = false; pauseForInput();
+    pauseFilm(); scrollEasing = false; pauseForInput();
   }));
   reduced.addEventListener('change', event => setScrollLinked(!event.matches));
   new IntersectionObserver(entries => {
     if (!entries[0].isIntersecting) { scrollEasing = false; pauseForInput(); }
   }).observe(stage);
+  film.addEventListener('play', () => {
+    if (document.hidden || document.body.classList.contains('dialog-open')) { pauseFilm(); return; }
+    scrollEasing = false; pauseForInput(); stopLoop();
+  });
+  new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting) pauseFilm();
+  }).observe(film);
   canvas.addEventListener('webglcontextlost', event => {
     event.preventDefault(); lastError = 'Graphics context lost'; ready = false; playing = false; scrollEasing = false;
     stopLoop(); controls(); loading('The browser paused the 3D scene. Reload it to continue.', true);
   });
-  window.addEventListener('pagehide', () => { playing = false; scrollEasing = false; stopLoop(); });
+  window.addEventListener('pagehide', () => { pauseFilm(); playing = false; scrollEasing = false; stopLoop(); });
 
   function validateManifest(data) {
     if (data.status !== 'realtime_ready') throw Error('The complete 3D tour is not ready yet');
@@ -347,6 +358,7 @@ import {mountModelViewer} from './model-view.js';
   }
   async function loadTour() {
     const generation = ++loadGeneration;
+    const startupLayout = document.body.classList.contains('tour-pending');
     playing = false; scrollEasing = false; ready = false; lastError = null;
     stopLoop(); controls(); loading('Opening your home in 3D…');
     try {
@@ -374,6 +386,18 @@ import {mountModelViewer} from './model-view.js';
       currentTime = targetTime = scrollLinked ? progress() * duration() : clamp(currentTime, 0, duration());
       renderCurrent(); controls();
       if (ready) { $('#tour-loading').hidden = true; stage.setAttribute('aria-busy', 'false'); }
+      if (startupLayout) requestAnimationFrame(() => {
+        if (generation !== loadGeneration || !ready) return;
+        // Pending mode has a short tour; loading expands it to the full scroll
+        // length. Restore the current section fragment once after that layout,
+        // rather than preserving a stale pre-load pixel offset or initial hash.
+        let id;
+        try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+        const target = document.getElementById(id);
+        if (!target?.closest('main') || target === tour || tour.contains(target) || id === 'home') return;
+        scrollEasing = false; pauseForInput(); stopLoop(); ownScrollY = null;
+        target.scrollIntoView({behavior: 'instant', block: 'start'});
+      });
     } catch (error) {
       if (generation !== loadGeneration) return;
       lastError = error?.message || String(error); ready = false; playing = false;

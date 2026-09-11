@@ -18,11 +18,11 @@
   <script type="module" src="app.js"></script>
 </head>
 <body class="tour-pending">
-  <a class="skip" href="#details">Skip the walkthrough</a>
+  <a class="skip" href="#film">Skip to the film</a>
   <header class="header" id="header">
     <a class="brand" href="#home" aria-label="Inside home">inside<span>●</span></a>
     <a class="header-project" href="#home">SPACES TO SEE. PLACES TO FEEL.</a>
-    <nav aria-label="Main navigation"><a href="#tour">Walkthrough</a><a href="#details">The spaces</a><a href="#floorplan">Floor plan</a><button class="visit-trigger button-small">Enquire <span aria-hidden="true">↗</span></button></nav>
+    <nav aria-label="Main navigation"><a href="#tour">Walkthrough</a><a href="#film">Film</a><a href="#floorplan">Floor plan</a><button class="visit-trigger button-small">Enquire <span aria-hidden="true">↗</span></button></nav>
   </header>
   <main>
     <span id="home" class="home-anchor" aria-hidden="true"></span>
@@ -43,23 +43,26 @@
         </aside>
         </div>
         <div class="tour-dock">
-        <div class="tour-top"><div class="tour-playback"><button id="tour-play" class="outline-small" disabled>Play tour</button><button id="scroll-toggle" class="outline-small" aria-pressed="true">Scroll linked</button><button id="details-toggle" class="outline-small" aria-label="Room details" aria-controls="room-information tour-position" aria-pressed="true">Details on</button></div><a class="tour-exit" href="#details">Discover the spaces <span aria-hidden="true">↗</span></a></div>
-        <div class="tour-bottom"><div class="tour-timeline"><input id="tour-seek" type="range" min="0" max="100" step="any" value="0" aria-label="Tour position" disabled><output id="tour-time" for="tour-seek">0:00 / —</output></div><div class="tour-controls"><button id="previous-room" aria-label="Previous part of the tour" disabled>←</button><div id="room-navigation" role="group" aria-label="Jump to a room"></div><button id="next-room" aria-label="Next part of the tour" disabled>→</button></div><div class="tour-hint"><span id="tour-status" role="status">Loading the 3D walkthrough</span><span id="tour-scroll-hint">SCROLL TO WALK THROUGH ↓</span><a class="tour-mobile-exit" href="#details">The spaces ↗</a></div></div>
+        <div class="tour-top"><div class="tour-playback"><button id="tour-play" class="outline-small" disabled>Play tour</button><button id="scroll-toggle" class="outline-small" aria-pressed="true">Scroll linked</button><button id="details-toggle" class="outline-small" aria-label="Room details" aria-controls="room-information tour-position" aria-pressed="true">Details on</button></div><a class="tour-exit" href="#film">Watch the film <span aria-hidden="true">↗</span></a></div>
+        <div class="tour-bottom"><div class="tour-timeline"><input id="tour-seek" type="range" min="0" max="100" step="any" value="0" aria-label="Tour position" disabled><output id="tour-time" for="tour-seek">0:00 / —</output></div><div class="tour-controls"><button id="previous-room" aria-label="Previous part of the tour" disabled>←</button><div id="room-navigation" role="group" aria-label="Jump to a room"></div><button id="next-room" aria-label="Next part of the tour" disabled>→</button></div><div class="tour-hint"><span id="tour-status" role="status">Loading the 3D walkthrough</span><span id="tour-scroll-hint">SCROLL TO WALK THROUGH ↓</span><a class="tour-mobile-exit" href="#film">Watch film ↗</a></div></div>
       </div>
       </div>
     </section>
 
     <section class="introduction section-pad" aria-labelledby="intro-title">
       <div class="section-kicker"><p class="eyebrow">01 / THE RESIDENCE</p><span>A NEW PERSPECTIVE ON HOME</span></div>
-      <div class="intro-layout"><h2 id="intro-title">Good living.<br><em>From the inside out.</em></h2><div class="intro-description"><p>A quiet place to land. A table to gather around. A little room to breathe.</p><p>Residence C brings the everyday into focus. Walk through a furnished two-bedroom concept and discover how each space connects to the next.</p><a class="text-link" href="#floorplan">Get to know the layout <span aria-hidden="true">↗</span></a></div></div>
+      <div class="intro-layout"><h2 id="intro-title">Good living.<br><em>From the inside out.</em></h2><div class="intro-description"><p>A quiet place to land. A table to gather around. A little room to breathe.</p><p>Residence C brings the everyday into focus. Walk through a furnished two-bedroom concept and discover how each space connects to the next.</p><div class="intro-links"><a class="text-link" href="#floorplan">Get to know the layout <span aria-hidden="true">↗</span></a><a class="text-link" href="#film">Watch the film <span aria-hidden="true">↗</span></a></div></div></div>
       <dl class="residence-numbers"><div><dt>Bedrooms</dt><dd>02<span>Space for your own rhythm</span></dd></div><div><dt>Bathrooms</dt><dd>02<span>One ensuite. One shared.</span></dd></div><div><dt>Balcony</dt><dd>01<span>A pause beyond the living room</span></dd></div></dl>
     </section>
 
-    <section class="details section-pad" id="details" aria-labelledby="spaces-title">
-      <div class="section-kicker"><p class="eyebrow">02 / THE SPACES</p><span>FURNISHED. CONNECTED. YOURS TO EXPLORE.</span></div>
-      <div class="details-heading"><h2 id="spaces-title">Life happens<br><em>in the details.</em></h2><p>Follow the light.<br>Find your favourite corner.</p></div>
-      <article class="space-feature"><button class="room-image" data-room="2" aria-label="Explore the master bedroom in the 3D tour"><img src="assets/master.webp" alt="Furnished master bedroom with a soft upholstered bed, artwork and bedside tables" loading="lazy" width="800" height="500"><span class="image-action">Explore in 3D <b aria-hidden="true">↗</b></span></button><div class="space-copy"><span class="space-index">01 <span>/ REST</span></span><h3>A quieter<br><em>kind of luxury.</em></h3><p>Close the door on the day. The master bedroom pairs a soft, restful palette with an ensuite of its own.</p><p class="space-note">Two bedrooms. Room for family, guests, or a chapter still to be written.</p><button class="text-link" data-room="2">Step into the bedroom <span aria-hidden="true">↗</span></button></div></article>
-      <div class="space-pair"><article><button class="room-image" data-room="5" aria-label="Explore the kitchen in the 3D tour"><img src="assets/kitchen.webp" alt="The fitted kitchen with pale cabinetry, stone worktops and a sink" loading="lazy" width="800" height="500"><span class="image-action">Explore in 3D <b aria-hidden="true">↗</b></span></button><div class="pair-heading"><span class="space-index">02 <span>/ GATHER</span></span><h3>For the everyday<br><em>and the occasion.</em></h3></div><p>A kitchen alongside the dining space, with an adjoining utility area to keep everyday life in order.</p></article><article><button class="room-image" data-room="8" aria-label="Explore the balcony in the 3D tour"><img src="assets/balcony.webp" alt="Looking back into the connected living room from the balcony" loading="lazy" width="800" height="500"><span class="image-action">Explore in 3D <b aria-hidden="true">↗</b></span></button><div class="pair-heading"><span class="space-index">03 <span>/ EXHALE</span></span><h3>Let the outside<br><em>be part of your day.</em></h3></div><p>The balcony opens from the living room. A small change of scene, without leaving home.</p></article></div>
+    <section class="residence-film section-pad" id="film" aria-labelledby="film-title">
+      <div class="section-kicker"><p class="eyebrow">THE RESIDENCE / IN MOTION</p><span>2 MIN / 1080P</span></div>
+      <div class="film-heading"><h2 id="film-title">Two minutes.<br><em>Every room.</em></h2><p id="film-description">One continuous walkthrough through the home.<br>From the entrance to the balcony, at your own pace.</p></div>
+      <video id="residence-film" controls playsinline preload="none" muted poster="assets/walkthrough-poster.webp" width="1920" height="1080" aria-label="Two-minute continuous film through the complete furnished flat" aria-describedby="film-description film-note">
+        <source src="assets/residence-c-walkthrough-2min.mp4" type="video/mp4">
+        Your browser cannot play this film. Use the download link below to watch it.
+      </video>
+      <div class="film-footer"><p id="film-note">Room dimensions appear during each reveal. Estimates are marked; plan labels are identified.</p><a class="text-link" href="assets/residence-c-walkthrough-2min.mp4" download="residence-c-walkthrough-2min.mp4">Download the film <span aria-hidden="true">↓</span></a></div>
     </section>
 
     <section class="floorplan section-pad" id="floorplan" aria-labelledby="plan-title">
