@@ -1,3 +1,5 @@
+import {mountModelViewer} from './model-view.js';
+
 (() => {
   'use strict';
   const $ = (s) => document.querySelector(s);
@@ -37,6 +39,10 @@
   let animationFrame = 0, lastFrameTime = 0, renderedFrames = 0, loadGeneration = 0;
   let frameWindowStart = 0, frameWindowCount = 0, measuredFps = 0;
   let lastRenderMilliseconds = 0, lastError = null;
+  const modelViewer=mountModelViewer({canvas,getScene:()=>scene,
+    onOpen:()=>{scrollEasing=false;pauseForInput();stopLoop();},
+    onClose:()=>{positionTourControls();if(ready)renderCurrent();}
+  });
   const duration = () => manifest?.duration_seconds || 0;
   const tourVisible = () => {
     const bounds = stage.getBoundingClientRect();
@@ -83,6 +89,7 @@
         : scrollLinked ? 'Scroll to walk through, or press Play' : 'Press Play or use the timeline to explore';
   }
   function controls() {
+    modelViewer.refresh(ready);
     const length = duration();
     stage.classList.toggle('is-playing', playing);
     playButton.disabled = !ready;
@@ -212,6 +219,7 @@
     scrollEasing = false; renderCurrent(); controls();
   }
   function easeToScrollTime(time) {
+    if(document.body.classList.contains('dialog-open'))return;
     targetTime = clamp(time, 0, duration());
     if (!ready) return;
     if (!tourVisible() || reduced.matches) { setTime(targetTime); return; }
@@ -269,7 +277,7 @@
     if (control && !control.disabled) control.focus({preventScroll: true});
   });
   playButton.addEventListener('click', () => {
-    if (!ready) return;
+    if (!ready || document.body.classList.contains('dialog-open')) return;
     scrollEasing = false;
     if (playing) { pauseForInput(); return; }
     if (currentTime >= duration() - 0.03) setTime(0);
@@ -296,6 +304,7 @@
   window.addEventListener('wheel', event => { if (event.deltaY) pauseForInput(); }, {passive: true});
   window.addEventListener('touchmove', pauseForInput, {passive: true});
   window.addEventListener('keydown', event => {
+    if(document.body.classList.contains('dialog-open'))return;
     if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)
       && !event.target.closest('input,textarea,select,button,dialog')) pauseForInput();
   });

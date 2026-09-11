@@ -65,12 +65,27 @@
     <section class="floorplan section-pad" id="floorplan" aria-labelledby="plan-title">
       <div class="section-kicker"><p class="eyebrow">03 / THE BIG PICTURE</p><span>RESIDENCE C — SPATIAL STUDY</span></div>
       <div class="floorplan-layout"><div class="floorplan-copy"><h2 id="plan-title">One home.<br><em>All connected.</em></h2><p>From a drawing to a place you can walk through. Explore the layout, then step inside any room.</p><dl><div><dt>Living</dt><dd>Combined living &amp; dining</dd></div><div><dt>Private</dt><dd>2 bedrooms · 1 ensuite</dd></div><div><dt>Everyday</dt><dd>Kitchen · utility · common bath</dd></div><div><dt>Outside</dt><dd>Balcony off the living room</dd></div></dl><a class="text-link" href="#tour">Return to the walkthrough <span aria-hidden="true">↗</span></a></div>
-      <div class="plan-panel"><div class="plan-panel-top"><span class="eyebrow">THE FLOOR PLAN</span><div class="plan-toggle" role="group" aria-label="Choose plan view"><button class="active" data-plan="model" aria-pressed="true">Furnished</button><button data-plan="source" aria-pressed="false">Original drawing</button></div></div><div class="plan-image-wrap"><img id="plan-image" src="assets/overview.webp" alt="Cutaway 3D overview of the complete flat" loading="lazy" width="1000" height="750"></div><div class="plan-panel-bottom"><span id="plan-caption">RESIDENCE C / FURNISHED CONCEPT</span><span aria-hidden="true">↗</span></div><p class="concept-note">Illustrative reconstruction from the supplied drawing. Dimensions, finishes and fittings require confirmation.</p></div></div>
+      <div class="plan-panel"><div class="plan-panel-top"><span class="eyebrow">THE FLOOR PLAN</span><div class="plan-toggle" role="group" aria-label="Choose plan view"><button class="active" data-plan="model" aria-pressed="true">Furnished</button><button data-plan="source" aria-pressed="false">Original drawing</button></div></div><div class="model-entry"><button class="outline-small" data-open-model disabled aria-haspopup="dialog" aria-controls="model-dialog">Explore 3D model <span aria-hidden="true">↗</span></button><p id="model-availability">The interactive model becomes available when the 3D home has loaded.</p></div><div class="plan-image-wrap"><img id="plan-image" src="assets/overview.webp" alt="Cutaway 3D overview of the complete flat" loading="lazy" width="1000" height="750"></div><div class="plan-panel-bottom"><span id="plan-caption">RESIDENCE C / FURNISHED CONCEPT</span><span aria-hidden="true">↗</span></div><p class="concept-note">Illustrative reconstruction from the supplied drawing. Dimensions, finishes and fittings require confirmation.</p></div></div>
     </section>
 
     <section class="visit section-pad" id="visit" aria-labelledby="visit-title"><div class="section-kicker"><p class="eyebrow">04 / YOUR NEXT CHAPTER</p><span>IT STARTS WITH A CONVERSATION</span></div><div class="visit-layout"><div><h2 id="visit-title">Could this be<br><em>your kind of home?</em></h2><p>Tell us about the spaces you loved.<br>And the life you would like to make in them.</p><button class="visit-trigger button-large">Start an enquiry <span aria-hidden="true">↗</span></button><small>Concept showcase · Prepare and save an enquiry draft.</small></div><div class="visit-art" aria-hidden="true"><span>C.</span><p>ROOM TO IMAGINE.<br>SPACE TO BELONG.</p><i></i></div></div></section>
   </main>
   <footer><div class="footer-top"><a class="brand" href="#home" aria-label="Inside home">inside<span>●</span></a><p>SPACES TO SEE.<br>PLACES TO FEEL.</p><a href="#home" class="back-top">Back to the beginning <span aria-hidden="true">↑</span></a></div><div class="footer-bottom"><span>© 2026 INSIDE · RESIDENCE C</span><span>AN ARCHITECTURAL CONCEPT</span><a href="../index.html">The showcase ↗</a><a class="texture-credit" href="credits.html">Artists &amp; asset credits ↗</a></div></footer>
+
+  <dialog id="model-dialog" aria-labelledby="model-title" aria-describedby="model-instructions">
+    <div class="model-heading"><div><p class="eyebrow">THE WHOLE HOME / ROOF OFF</p><h2 id="model-title">A new <em>perspective.</em></h2></div><button id="model-close" class="outline-small" aria-label="Close model and return to the page">Close <span aria-hidden="true">×</span></button></div>
+    <div id="model-canvas-mount"></div>
+    <div class="model-controls" role="group" aria-label="3D model controls">
+      <button class="outline-small" data-model-action="left" aria-label="Rotate model left">↶</button>
+      <button class="outline-small" data-model-action="right" aria-label="Rotate model right">↷</button>
+      <button class="outline-small" data-model-action="zoom-out" aria-label="Zoom out">−</button>
+      <button class="outline-small" data-model-action="zoom-in" aria-label="Zoom in">+</button>
+      <button class="outline-small" data-model-action="top">Top view</button>
+      <button class="outline-small" id="model-reset" data-model-action="reset">Reset view</button>
+    </div>
+    <p id="model-instructions">Drag to rotate · Scroll or pinch to zoom · Right-drag or use two fingers to pan. Keyboard: focus the model, use arrows to pan, Shift + arrows to rotate, + / − to zoom and R to reset.</p>
+    <p class="concept-note">The complete furnished concept, with the roof removed for exploration. Your walkthrough stays paused where you left it.</p>
+  </dialog>
 
   <dialog id="enquiry-dialog" aria-labelledby="enquiry-title">
     <button class="dialog-close" aria-label="Close enquiry">×</button>
