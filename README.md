@@ -5,7 +5,6 @@ A framework-free catalogue of independent, interactive website concepts for clie
 ## Structure
 
 - `index.html` - neutral catalogue landing page
-- `aureve/` - standalone luxury perfume storefront concept
 - `voidstep-skate/` - standalone six-page skate commerce, culture and meme-media concept
 - `rf-speciality-foods/` - standalone four-page B2B bakery manufacturing and wholesale concept
 - `koshra-gifting/` - standalone premium dry-fruit and corporate-gifting commerce concept
