@@ -5,6 +5,7 @@ A framework-free catalogue of independent, interactive website concepts for clie
 ## Structure
 
 - `index.html` - neutral catalogue landing page
+- `energy-master-solutions/` - five-page mobile roofing demo with edited hero films, animated roof layers and inspection request previews
 - `voidstep-skate/` - standalone six-page skate commerce, culture and meme-media concept
 - `rf-speciality-foods/` - standalone four-page B2B bakery manufacturing and wholesale concept
 - `koshra-gifting/` - standalone premium dry-fruit and corporate-gifting commerce concept
@@ -37,3 +38,7 @@ Open `http://127.0.0.1:4173`.
 4. Include a `README.md` and `output/pdf/` client guide in the concept folder.
 
 All concepts are front-end demonstrations. Modesi reads its isolated products, collections, metafields and reel media live from the connected Shopify development store. Its cart interface, checkout form and other visitor submissions intentionally remain non-transactional in the public showcase, although Storefront cart creation and the Shopify-hosted checkout handoff have been verified. Other checkout, account, email and backend actions are non-production unless stated otherwise.
+
+## Hosting
+
+Publish showcase concepts through the existing GitHub/Vercel setup at https://websiteshowcase.catapultaiwork.com/. Do not use ChatGPT Sites hosting for these projects.
