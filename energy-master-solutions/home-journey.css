@@ -1,0 +1,163 @@
+.journey-preface {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.35fr .65fr;
+  gap: clamp(30px, 7vw, 130px);
+  align-items: end;
+  padding-top: clamp(70px, 8vw, 120px);
+  padding-bottom: clamp(50px, 6vw, 86px);
+  background: #f0e9df;
+  color: #221d19;
+}
+.journey-preface::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #b7a898;
+  transform: translateY(-50px);
+}
+.journey-preface h2 {
+  max-width: 14ch;
+  margin: 18px 0 0;
+  font: 400 clamp(43px, 5.3vw, 84px)/.98 'EMS Editorial', Georgia, serif;
+  letter-spacing: -.035em;
+}
+.journey-preface h2 em { color: #8d6249; font-weight: 400; }
+.journey-preface > p {
+  max-width: 31ch;
+  margin: 0 0 8px;
+  font: 400 clamp(16px, 1.65vw, 23px)/1.38 var(--body, Arial, sans-serif);
+  letter-spacing: -.025em;
+}
+.journey--home {
+  background: #f0e9df;
+  color: #241f1b;
+  border-color: #b7a898;
+}
+.journey--home .journey-sticky {
+  background: radial-gradient(ellipse at 76% 48%, #faf7f1 0, #f0e9df 52%, #e8ddce 100%);
+}
+.journey--home .journey-ghost { color: #e3d8ca; }
+.journey--home .journey-top .eyebrow { color: #554941; }
+.journey--home .journey-request {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  min-height: 41px;
+  padding: 10px 16px;
+  border: 1px solid #241f1b;
+  border-radius: 2px;
+  background: #241f1b;
+  color: #fffaf3;
+  font: 11px/1.2 var(--mono, monospace);
+  text-decoration: none;
+  transition: transform .2s, background .2s, color .2s;
+}
+.journey--home .journey-request:hover,
+.journey--home .journey-request:focus-visible {
+  transform: translateY(-2px);
+  background: transparent;
+  color: #241f1b;
+}
+.journey--home .journey-ground { background: #bdab98; }
+.journey--home .journey-findings {
+  position: absolute;
+  z-index: 2;
+  right: 8%;
+  bottom: 11%;
+  width: min(50%, 720px);
+  aspect-ratio: 1.52;
+  padding: 10px;
+  background: #fffdf8;
+  box-shadow: 0 22px 70px #4532222b, 0 0 0 1px #c6b4a3;
+  opacity: 0;
+  transform-origin: center bottom;
+  pointer-events: none;
+}
+.journey--home .journey-findings img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.journey--home .journey-captions .eyebrow { color: #795940; }
+.journey--home .journey-captions h2 {
+  max-width: 15ch;
+  font: 400 clamp(31px, 3.3vw, 53px)/1.05 'EMS Editorial', Georgia, serif;
+  letter-spacing: -.025em;
+}
+.journey--home .journey-captions p {
+  max-width: 33ch;
+  color: #534a43;
+  font-size: 14px;
+  line-height: 1.58;
+}
+.journey--home .journey-bottom {
+  background: linear-gradient(0deg, #f0e9df 83%, #f0e9df00);
+}
+.journey--home .journey-steps { gap: 7px; }
+.journey--home .journey-steps button {
+  border: 1px solid transparent;
+  border-top: 1px solid #aa9a89;
+  border-radius: 0;
+  padding: 10px 12px;
+  color: #5b5148;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.journey--home .journey-steps button:hover,
+.journey--home .journey-steps button:focus-visible { background: #e6d9c9; }
+.journey--home .journey-steps button[aria-current="step"] {
+  border-color: #5b3d2d;
+  background: #e1d0bd;
+  color: #32231b;
+}
+.journey--home .journey-steps span { color: inherit; }
+.journey--home .journey-progress-track { background: #cbb9a8; }
+.journey--home .journey-progress { background: #805a43; }
+.journey--home .scene-provenance { color: #766a5e; }
+.journey--home .scene-cross { color: #a38f7a; }
+.journey--home .journey-scan { background: linear-gradient(90deg, transparent, #b17d56, transparent); }
+.journey--home[data-journey-mode="scroll"] { height: 270svh; }
+
+@media (min-width: 800px) {
+  .journey--home[data-journey-mode="scroll"] .journey-house { right: 2%; width: 58%; }
+  .journey--home[data-journey-mode="scroll"] .journey-van { left: 58%; width: 22%; }
+  .journey--home[data-journey-mode="scroll"] .journey-findings { bottom: 7%; width: 53%; }
+  .journey--home[data-journey-mode="scroll"] .journey-captions { top: 39%; width: 39%; }
+}
+
+@media (max-width: 799px) {
+  .journey-preface { display: block; padding-top: 53px; padding-bottom: 41px; }
+  .journey-preface::before { transform: translateY(-27px); }
+  .journey-preface h2 { font-size: clamp(37px, 10vw, 56px); }
+  .journey-preface > p { margin-top: 20px; font-size: 16px; }
+  .journey--home[data-journey-mode="manual"] .journey-sticky { display: flex; flex-direction: column; min-height: 0; }
+  .journey--home .journey-top { order: 0; min-height: 65px; padding-top: 13px; padding-bottom: 12px; }
+  .journey--home .journey-request { gap: 8px; min-height: 38px; padding: 9px; font-size: 9px; white-space: nowrap; }
+  .journey--home .journey-scene { order: 1; height: clamp(285px, 74vw, 440px); flex: none; }
+  .journey--home .journey-ghost { top: 7px; }
+  .journey--home .journey-house { width: 91%; right: -2%; bottom: 7%; }
+  .journey--home .journey-van { width: 39%; left: 51%; bottom: 9%; }
+  .journey--home .journey-stage-layer { width: 91%; right: 2%; }
+  .journey--home .journey-findings { width: 88%; right: 6%; bottom: 8%; padding: 6px; }
+  .journey--home .journey-bottom { order: 2; width: 100%; padding-top: 9px; padding-bottom: 4px; background: none; }
+  .journey--home .journey-steps { gap: 4px; }
+  .journey--home .journey-steps button { padding: 9px 5px; font-size: 10px; min-height: 46px; }
+  .journey--home .journey-steps span { margin-bottom: 4px; font-size: 9px; }
+  .journey--home .scene-provenance { left: 0; right: 0; bottom: 0; z-index: 5; max-width: none; padding: 8px 20px; border-top: 1px solid #c5b7a7; background: #f0e9df; color: #63594f; font-size: 8px; line-height: 1.3; text-align: center; }
+  .journey--home .journey-progress-track { display: none; }
+  .journey--home .journey-captions { order: 3; display: block; min-height: 185px; padding-top: 0; padding-bottom: 20px; }
+  .journey--home .journey-captions article { padding-top: 16px; border-color: #b7a898; }
+  .journey--home .journey-captions h2 { font-size: clamp(28px, 8vw, 38px); }
+  .journey--home .journey-captions p { margin-top: 10px; font-size: 13px; }
+  .journey--home[data-journey-mode="manual"] .journey-captions article[hidden] { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey--home .journey-request,
+  .journey--home .journey-steps button { transition: none; }
+  .journey--home .journey-request:hover { transform: none; }
+}
