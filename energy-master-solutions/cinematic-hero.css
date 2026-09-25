@@ -71,10 +71,10 @@ body[data-page='index.html'] .header-actions{align-items:center}
  .cinema-hero .callout-roof{top:13%;right:19%}
  .cinema-hero .callout-home{display:none}
  .cinema-hero .hero-scrim{background:linear-gradient(180deg,#121312b8,#121312ed 24%,#12131275 75%,#121312)}
- .cinema-hero .hero-credit{order:3;position:relative;bottom:auto;right:auto;align-self:flex-end;text-align:right;max-width:none;padding:0 24px;font-size:7px;line-height:1.5}
- .cinema-hero .hero-bottom{left:24px;right:24px;bottom:10px;padding-top:6px;gap:12px;font-size:7px}
+ .cinema-hero .hero-credit{order:3;position:relative;bottom:auto;right:auto;align-self:flex-end;text-align:right;max-width:none;padding:0 24px;font-size:9px;line-height:1.5}
+ .cinema-hero .hero-bottom{left:24px;right:24px;bottom:10px;padding-top:6px;gap:12px;font-size:9px;line-height:1.5}
  .cinema-hero .hero-bottom>span{max-width:155px}
- .cinema-hero .hero-bottom>a{font-size:7px;gap:4px}
+ .cinema-hero .hero-bottom>a{font-size:9px;gap:4px}
 }
 @media(max-width:360px){
  body[data-page='index.html'] .masthead:not(.is-fixed){padding-inline:19px}
@@ -84,7 +84,7 @@ body[data-page='index.html'] .header-actions{align-items:center}
  .cinema-hero .hero-actions .button{font-size:9px;padding-inline:12px;gap:9px}
  .cinema-hero .hero-link{font-size:8px;gap:6px}
  .cinema-hero .hero-link svg{width:16px}
- .cinema-hero .hero-bottom{left:19px;right:19px;font-size:6px}
- .cinema-hero .hero-credit{padding-inline:19px;font-size:6px}
+ .cinema-hero .hero-bottom{left:19px;right:19px;font-size:9px;line-height:1.5}
+ .cinema-hero .hero-credit{padding-inline:19px;font-size:9px;line-height:1.45}
 }
 @media(prefers-reduced-motion:reduce){.cinema-hero .hero-art{transform:none}.cinema-hero .hero-actions .button:hover{transform:none}}

@@ -1,0 +1,116 @@
+/* Distinct editorial openings, all within the same restrained roofing palette. */
+.page-open{position:relative;isolation:isolate}
+.page-open>div,.page-open>figure{min-width:0}
+.page-open figcaption{text-align:left!important;font-size:9px!important;letter-spacing:.055em}
+
+/* The concern page begins with a tactile drawing instead of another house portrait. */
+body[data-page='roofing.html'] .page-open{background:#ede8df;max-width:none;width:100%;padding-inline:max(64px,calc((100vw - 1600px)/2 + 64px));padding-top:164px;padding-bottom:36px;grid-template-columns:minmax(0,.91fr) minmax(0,1.09fr)}
+body[data-page='roofing.html'] .page-open h1{font-size:clamp(56px,6.1vw,94px);line-height:.98}
+body[data-page='roofing.html'] .page-open figure{align-self:end;overflow:hidden;border:1px solid #a7958060;background:#eee9dd}
+body[data-page='roofing.html'] .page-open figure img{aspect-ratio:1.32;object-fit:cover}
+body[data-page='roofing.html'] .page-open figcaption{margin:0;padding:8px 12px;border-top:1px solid #a7958060}
+
+/* A Swiss property-plan spread gives the visit its own visual language. */
+body[data-page='approach.html'] .page-open{background:#e4dfd6;max-width:none;width:100%;padding-inline:max(64px,calc((100vw - 1600px)/2 + 64px));padding-top:152px;padding-bottom:31px;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:5vw}
+body[data-page='approach.html'] .page-open h1{font-family:'EMS Editorial',Georgia,serif;font-weight:400;text-transform:none;letter-spacing:-.045em;font-size:clamp(54px,5.3vw,86px);line-height:1.03}
+body[data-page='approach.html'] .page-open .lede{max-width:38ch}
+body[data-page='approach.html'] .page-open figure{padding:6px;background:#f2f0ea;border:1px solid #bfb5a7;box-shadow:9px 9px 0 #4b39282b}
+body[data-page='approach.html'] .page-open figure img{aspect-ratio:1.5;object-fit:contain}
+body[data-page='approach.html'] .page-open figcaption{margin:0;padding:3px 8px 6px}
+
+/* The section drawing belongs to a dark technical chapter. */
+body[data-page='roof-system.html'] .masthead:not(.is-fixed){color:#f7f6f2}
+body[data-page='roof-system.html'] .masthead:not(.is-fixed) .utility{border-color:#ffffff2b}
+body[data-page='roof-system.html'] .masthead:not(.is-fixed) .desktop-nav [aria-current=page]{color:#dfc8b9}
+body[data-page='roof-system.html'] .page-open{background:#222220;color:#f4eee5;max-width:none;width:100%;padding-inline:max(64px,calc((100vw - 1600px)/2 + 64px));padding-top:172px;padding-bottom:60px;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr)}
+body[data-page='roof-system.html'] .page-open h1{font-size:clamp(49px,5.3vw,83px);letter-spacing:-.055em}
+body[data-page='roof-system.html'] .page-open .eyebrow{color:#d4bda8}
+body[data-page='roof-system.html'] .page-open .lede{color:#cac7c0}
+body[data-page='roof-system.html'] .page-open figure img{aspect-ratio:1.5;object-fit:contain}
+body[data-page='roof-system.html'] .page-open figcaption{color:#b8ada0;border-top:1px solid #ffffff30;padding-top:9px}
+
+/* The company page is a quiet type-led interlude before its mobile-service scene. */
+body[data-page='about.html'] .page-open{min-height:480px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.7fr);gap:6vw;padding-top:164px;padding-bottom:55px;border-bottom:1px solid #988b7d80}
+body[data-page='about.html'] .page-open:after{content:'AT YOUR PROPERTY';align-self:end;justify-self:end;font:clamp(24px,3vw,45px)/1 'EMS Editorial',Georgia,serif;font-style:italic;color:#816851;border-bottom:1px solid #ad9d8e;padding-bottom:16px}
+body[data-page='about.html'] .page-open h1{font-family:'EMS Editorial',Georgia,serif;font-size:clamp(62px,6.4vw,108px);font-weight:400;text-transform:none;letter-spacing:-.05em;line-height:1.01}
+body[data-page='about.html'] .page-open .lede{max-width:45ch}
+
+/* Field notes is an image-led cover; the underlying footage and provenance follow. */
+body[data-page='field.html'] .page-open{background:#33291f;color:#f7f1e7;max-width:none;width:100%;padding-inline:max(64px,calc((100vw - 1600px)/2 + 64px));padding-top:160px;padding-bottom:44px;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+body[data-page='field.html'] .masthead:not(.is-fixed){color:#f7f1e7}
+body[data-page='field.html'] .masthead:not(.is-fixed) .utility{border-color:#ffffff2b}
+body[data-page='field.html'] .masthead:not(.is-fixed) .desktop-nav [aria-current=page]{color:#dfc8b9}
+body[data-page='field.html'] .page-open .eyebrow{color:#e0c9b7}
+body[data-page='field.html'] .page-open .lede{color:#e0d5ca}
+body[data-page='field.html'] .page-open h1{font-size:clamp(53px,5.8vw,88px)}
+body[data-page='field.html'] .page-open figure{transform:rotate(-1deg);border:9px solid #eee9df;background:#eee9df;box-shadow:10px 15px 35px #0004}
+body[data-page='field.html'] .page-open figure img{aspect-ratio:1.45;object-fit:cover;filter:saturate(.66) contrast(1.08)}
+body[data-page='field.html'] .page-open figcaption{color:#3e3c38;margin:0;padding-top:6px}
+
+/* A magazine-style question sheet leads directly into the searchable guide. */
+body[data-page='guide.html'] .page-open{min-height:440px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.6fr);gap:7vw;padding-top:159px;padding-bottom:45px;border-bottom:1px solid #a7a096}
+body[data-page='guide.html'] .page-open>div{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.6fr);gap:7vw;align-items:end;grid-column:1/-1}
+body[data-page='guide.html'] .page-open .eyebrow{grid-column:1/-1;margin-bottom:-2px}
+body[data-page='guide.html'] .page-open h1{font-family:'EMS Editorial',Georgia,serif;font-size:clamp(62px,6.8vw,111px);font-weight:400;text-transform:none;letter-spacing:-.052em;line-height:1.02}
+body[data-page='guide.html'] .page-open .lede{align-self:end;margin:0 0 8px;font-size:17px;max-width:34ch}
+
+/* Visitors reach the first form choice without scrolling past a poster-sized title. */
+body[data-page='inspection.html'] .page-open{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.78fr);align-items:end;gap:6vw;padding-top:142px;padding-bottom:22px}
+body[data-page='inspection.html'] .page-open h1{font-size:clamp(43px,4.7vw,68px);line-height:1}
+body[data-page='inspection.html'] .page-open .lede{font-size:15px;line-height:1.5;margin:12px 0 4px;max-width:42ch}
+body[data-page='inspection.html'] .page-open .eyebrow{margin-bottom:12px}
+body[data-page='inspection.html'] .request-layout{padding-top:17px}
+body[data-page='inspection.html'] .demo-notice{margin-bottom:19px}
+body[data-page='inspection.html'] .form-progress{margin-bottom:20px}
+.form-explainer{font-size:13px;line-height:1.55;color:#66615c;max-width:60ch;margin:-6px 0 22px}
+
+/* Contextual Remotion films: an inset glass caption on an otherwise solid surface. */
+.system-film{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:6vw;align-items:center;padding-top:48px;padding-bottom:56px;border-top:1px solid #b8afa4}
+.system-film-copy .eyebrow{color:#69503e}
+.system-film h2{font-family:'EMS Editorial',Georgia,serif;font-size:clamp(39px,4vw,64px);font-weight:400;letter-spacing:-.045em;line-height:1.05;text-transform:none}
+.system-film p{font-size:16px;max-width:43ch;margin-top:20px;line-height:1.62}
+.system-film small{display:block;font:11px/1.6 var(--mono);color:#6e6963;max-width:55ch;margin-top:20px}
+.system-film figure{position:relative;min-width:0;background:#242321}
+.system-film video{width:100%;aspect-ratio:16/9;object-fit:cover;background:#242321}
+.system-film figcaption{position:absolute;right:13px;bottom:12px;color:#f9f5ee;font-size:9px;line-height:1.4;margin:0;padding:8px 11px;background:#332f2b9c;border:1px solid #ffffff5c;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.visit-film{border-top:0;padding-top:20px}
+
+.visit-confirm{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:6vw;padding-top:48px;padding-bottom:50px}
+.visit-confirm .eyebrow{color:#69503e}
+.visit-confirm h2{font-family:'EMS Editorial',Georgia,serif;font-size:clamp(38px,4vw,60px);font-weight:400;text-transform:none;letter-spacing:-.04em;line-height:1.08}
+.visit-confirm p{font-size:14px;color:#66615c;margin-top:18px;max-width:38ch}
+.visit-confirm ol{margin:0;padding:0;list-style:none;border-top:1px solid #aea69a}
+.visit-confirm li{display:grid;grid-template-columns:40px 1fr;gap:15px;align-items:center;min-height:61px;padding:12px 0;border-bottom:1px solid #aea69a;font-size:15px;line-height:1.4}
+.visit-confirm li b{font:10px var(--mono);color:#795b44}
+
+.cinema-hero .hero-demo-note{display:block;margin-top:12px;color:#c9c6c0;font:9px/1.45 var(--mono);letter-spacing:.045em;max-width:37ch}
+
+@media(max-width:1100px){
+ body[data-page='roofing.html'] .page-open,body[data-page='approach.html'] .page-open,body[data-page='roof-system.html'] .page-open,body[data-page='field.html'] .page-open{padding-left:38px;padding-right:38px}
+}
+@media(max-width:800px){
+ body[data-page='roofing.html'] .page-open,body[data-page='approach.html'] .page-open,body[data-page='roof-system.html'] .page-open,body[data-page='field.html'] .page-open{padding-left:24px;padding-right:24px;padding-top:135px;padding-bottom:30px;display:block}
+ body[data-page='roofing.html'] .page-open h1,body[data-page='roof-system.html'] .page-open h1,body[data-page='field.html'] .page-open h1{font-size:clamp(47px,10vw,73px)}
+ body[data-page='approach.html'] .page-open h1{font-size:clamp(51px,10.5vw,75px)}
+ body[data-page='roofing.html'] .page-open figure,body[data-page='approach.html'] .page-open figure,body[data-page='roof-system.html'] .page-open figure,body[data-page='field.html'] .page-open figure{margin-top:24px;transform:none}
+ body[data-page='roofing.html'] .page-open figure img,body[data-page='approach.html'] .page-open figure img,body[data-page='roof-system.html'] .page-open figure img,body[data-page='field.html'] .page-open figure img{aspect-ratio:1.5}
+ body[data-page='about.html'] .page-open,body[data-page='guide.html'] .page-open,body[data-page='inspection.html'] .page-open{display:block;min-height:0;padding-top:139px;padding-bottom:28px}
+ body[data-page='guide.html'] .page-open>div{display:block}
+ body[data-page='guide.html'] .page-open .eyebrow{margin-bottom:21px}
+ body[data-page='about.html'] .page-open:after{display:block;width:max-content;margin:25px 0 0 auto;font-size:26px}
+ body[data-page='about.html'] .page-open h1,body[data-page='guide.html'] .page-open h1{font-size:clamp(52px,10.6vw,78px)}
+ body[data-page='guide.html'] .page-open .lede,body[data-page='inspection.html'] .page-open .lede{margin-top:18px}
+ body[data-page='inspection.html'] .page-open{padding-top:128px;padding-bottom:18px}
+ body[data-page='inspection.html'] .page-open h1{font-size:clamp(41px,8.9vw,58px)}
+ .system-film,.visit-confirm{display:block;padding-top:37px;padding-bottom:42px}
+ .system-film figure{margin-top:24px}
+ .visit-confirm ol{margin-top:26px}
+ .visit-confirm li{font-size:14px}
+ .cinema-hero .hero-demo-note{font-size:10px;line-height:1.55;max-width:33ch}
+}
+@media(max-width:360px){
+ body[data-page='roofing.html'] .page-open,body[data-page='approach.html'] .page-open,body[data-page='roof-system.html'] .page-open,body[data-page='field.html'] .page-open{padding-left:19px;padding-right:19px}
+ body[data-page='about.html'] .page-open h1,body[data-page='guide.html'] .page-open h1{font-size:48px}
+ .cinema-hero .hero-demo-note{margin-top:10px;font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){.system-film figcaption{backdrop-filter:none;-webkit-backdrop-filter:none}}
