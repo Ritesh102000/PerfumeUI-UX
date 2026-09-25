@@ -6,21 +6,9 @@ const menu=$('.menu-toggle'),mobileNav=$('#mobile-nav');
 function closeMenu(){if(!menu)return;menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open menu');mobileNav.hidden=true;document.body.classList.remove('menu-open');document.querySelector('main').inert=false;document.querySelector('footer').inert=false;menu.querySelector('span').textContent='MENU';}
 menu?.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')==='true';if(open){closeMenu();return;}menu.setAttribute('aria-expanded','true');menu.setAttribute('aria-label','Close menu');mobileNav.hidden=false;document.body.classList.add('menu-open');document.querySelector('main').inert=true;document.querySelector('footer').inert=true;menu.querySelector('span').textContent='CLOSE';mobileNav.querySelector('a')?.focus();});
 document.addEventListener('keydown',e=>{if(e.key!=='Tab'||menu?.getAttribute('aria-expanded')!=='true')return;const stops=[menu,...$$('a',mobileNav)];const first=stops[0],last=stops.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}});
-let headerFrame;const masthead=$('.masthead');const updateHeader=()=>{masthead?.classList.toggle('is-fixed',scrollY>innerHeight*.7);headerFrame=null;};addEventListener('scroll',()=>{if(!headerFrame)headerFrame=requestAnimationFrame(updateHeader);},{passive:true});updateHeader();
+let headerFrame;const masthead=$('.masthead');const updateHeader=()=>{masthead?.classList.toggle('is-fixed',scrollY>Math.min(160,innerHeight*.2));headerFrame=null;};addEventListener('scroll',()=>{if(!headerFrame)headerFrame=requestAnimationFrame(updateHeader);},{passive:true});updateHeader();
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu?.getAttribute('aria-expanded')==='true'){closeMenu();menu.focus();}});
 $$('#mobile-nav a').forEach(a=>a.addEventListener('click',closeMenu));
-const hero=$('#hero-video'),heroToggle=$('#hero-toggle');let heroUserPaused=false;
-if(hero){
- const source=$('source',hero);source.dataset.src=innerWidth<=800?source.dataset.mobile:source.dataset.desktop;
- hero.poster=innerWidth<=800?'assets/hero-mobile-poster.jpg':'assets/hero-poster.jpg';
- const load=()=>{if(!source.hasAttribute('src')){source.src=source.dataset.src;hero.load();}};
- const sync=()=>{heroToggle.textContent=hero.paused?'Play film':'Pause film';heroToggle.setAttribute('aria-label',hero.paused?'Play background roof film':'Pause background roof film');};
- hero.addEventListener('play',sync);hero.addEventListener('pause',sync);
- heroToggle.addEventListener('click',()=>{if(hero.paused){heroUserPaused=false;load();hero.play().catch(sync);}else{heroUserPaused=true;hero.pause();}});
- if(!motionPreference.matches){load();hero.play().catch(sync);}
- const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)hero.pause();else if(!heroUserPaused&&!motionPreference.matches){load();hero.play().catch(sync);}}},{threshold:.08});observer.observe(hero);
- motionPreference.addEventListener('change',()=>{if(motionPreference.matches){heroUserPaused=true;hero.pause();}});
-}
 const roof=$('#roof-video'),roofButton=$('#roof-replay'),layerImage=$('#layer-image'),scrub=$('#roof-scrub');
 const layers=[['structure','The framework carries the layers above it.','Is the concern limited to the covering, or is there more to understand beneath it?'],['deck','The deck forms a continuous base over the framing.','What is known about the deck, and what cannot be seen yet?'],['weather-barrier','A protective layer sits beneath the outer covering.','How do the layers connect around edges and openings?'],['shingles','The outer covering faces the weather every day.','Which areas show wear, and what does that mean for the proposed work?'],['ridge-drainage','Junctions, roof edges and the ridge connect the system.','What is happening where the roof changes direction or meets another surface?']];
 if(roof){

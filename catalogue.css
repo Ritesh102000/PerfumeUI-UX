@@ -95,12 +95,12 @@ a { color: inherit; text-decoration: none; }
 
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
 
-/* Energy Master property experience direction. */
-@font-face { font-family: "EMS Sora"; src: url("energy-master-solutions/assets/journey-sora-700.ttf") format("truetype"); font-weight: 700; font-display: swap; }
-.concept-energy-master .concept-preview { background: #161817; }
-.concept-energy-master .concept-preview img { object-fit: contain; object-position: center 38%; padding: 5% 3% 25%; }
-.concept-energy-master .concept-preview::after { background: linear-gradient(0deg, #161817, rgba(22,24,23,.24) 28%, transparent 48%); }
-.preview-wordmark.energy-master-wordmark { color: #f4f3ef; font-family: "EMS Sora", var(--sans); font-weight: 700; font-size: clamp(30px, 4.8vw, 74px); line-height: 1.02; letter-spacing: -.065em; text-transform: uppercase; text-align: left; text-shadow: none; }
-.preview-wordmark.energy-master-wordmark span { color: #c77852; }
-.concept-energy-master .concept-meta h2 { color: #a25432; }
+/* Energy Master Section / 01 direction. */
+@font-face { font-family: "EMS Inter"; src: url("energy-master-solutions/assets/section-inter.ttf") format("truetype"); font-weight: 100 900; font-display: swap; }
+.concept-energy-master .concept-preview { background: #111; }
+.concept-energy-master .concept-preview img { object-fit: cover; object-position: center; padding: 0; }
+.concept-energy-master .concept-preview::after { background: linear-gradient(0deg, #111111d9, #11111124 65%); }
+.preview-wordmark.energy-master-wordmark { color: #f4f3ef; font-family: "EMS Inter", var(--sans); font-weight: 700; font-size: clamp(30px, 4.8vw, 74px); line-height: 1.02; letter-spacing: -.065em; text-transform: uppercase; text-align: left; text-shadow: none; }
+.preview-wordmark.energy-master-wordmark span { color: #e2d5c9; }
+.concept-energy-master .concept-meta h2 { color: #5a4033; }
 @media (max-width: 800px) { .preview-wordmark.energy-master-wordmark { font-size: clamp(27px, 8vw, 62px); } }
