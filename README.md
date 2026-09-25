@@ -5,7 +5,7 @@ A framework-free catalogue of independent, interactive website concepts for clie
 ## Structure
 
 - `index.html` - neutral catalogue landing page
-- `energy-master-solutions/` - five-page mobile roofing demo with edited hero films, animated roof layers and inspection request previews
+- `energy-master-solutions/` - eight-page mobile roofing demo with edited hero films, architectural artwork, Motion/vgpu effects, Remotion roof layers and inspection request previews
 - `voidstep-skate/` - standalone six-page skate commerce, culture and meme-media concept
 - `rf-speciality-foods/` - standalone four-page B2B bakery manufacturing and wholesale concept
 - `koshra-gifting/` - standalone premium dry-fruit and corporate-gifting commerce concept

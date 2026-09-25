@@ -1,0 +1,61 @@
+(()=>{
+'use strict';
+const $=(s,root=document)=>root.querySelector(s), $$=(s,root=document)=>[...root.querySelectorAll(s)];
+const motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
+const menu=$('.menu-toggle'),mobileNav=$('#mobile-nav');
+function closeMenu(){if(!menu)return;menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open menu');mobileNav.hidden=true;}
+menu?.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')==='true';menu.setAttribute('aria-expanded',String(!open));menu.setAttribute('aria-label',open?'Open menu':'Close menu');mobileNav.hidden=open;});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu?.getAttribute('aria-expanded')==='true'){closeMenu();menu.focus();}});
+$$('#mobile-nav a').forEach(a=>a.addEventListener('click',closeMenu));
+const hero=$('#hero-video'),heroToggle=$('#hero-toggle');let heroUserPaused=false;
+if(hero){
+ const source=$('source',hero);source.dataset.src=innerWidth<=800?source.dataset.mobile:source.dataset.desktop;
+ hero.poster=innerWidth<=800?'assets/hero-mobile-poster.jpg':'assets/hero-poster.jpg';
+ const load=()=>{if(!source.hasAttribute('src')){source.src=source.dataset.src;hero.load();}};
+ const sync=()=>{heroToggle.textContent=hero.paused?'Play film':'Pause film';heroToggle.setAttribute('aria-label',hero.paused?'Play background roof film':'Pause background roof film');};
+ hero.addEventListener('play',sync);hero.addEventListener('pause',sync);
+ heroToggle.addEventListener('click',()=>{if(hero.paused){heroUserPaused=false;load();hero.play().catch(sync);}else{heroUserPaused=true;hero.pause();}});
+ if(!motionPreference.matches){load();hero.play().catch(sync);}
+ const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)hero.pause();else if(!heroUserPaused&&!motionPreference.matches){load();hero.play().catch(sync);}}},{threshold:.08});observer.observe(hero);
+ motionPreference.addEventListener('change',()=>{if(motionPreference.matches){heroUserPaused=true;hero.pause();}});
+}
+const roof=$('#roof-video'),roofButton=$('#roof-replay'),layerImage=$('#layer-image'),scrub=$('#roof-scrub');
+const layers=[['structure','The framework carries the layers above it.','Is the concern limited to the covering, or is there more to understand beneath it?'],['deck','The deck forms a continuous base over the framing.','What is known about the deck, and what cannot be seen yet?'],['weather-barrier','A protective layer sits beneath the outer covering.','How do the layers connect around edges and openings?'],['shingles','The outer covering faces the weather every day.','Which areas show wear, and what does that mean for the proposed work?'],['ridge-drainage','Junctions, roof edges and the ridge connect the system.','What is happening where the roof changes direction or meets another surface?']];
+if(roof){
+ const load=()=>{const source=$('source[data-src]',roof);if(source){source.src=source.dataset.src;source.removeAttribute('data-src');roof.load();}};
+ const sync=()=>{roofButton.textContent=roof.paused?'Play assembly':'Pause assembly';roofButton.setAttribute('aria-label',roof.paused?'Play roof assembly':'Pause roof assembly');};
+ const play=()=>{load();if(roof.hidden||roof.ended)roof.currentTime=0;roof.hidden=false;layerImage.hidden=true;roof.play().catch(sync);};
+ roof.addEventListener('play',sync);roof.addEventListener('pause',sync);
+ roofButton.addEventListener('click',()=>roof.paused?play():roof.pause());
+ const tabs=$$('[data-layer]');
+ function selectLayer(index){roof.pause();roof.hidden=true;layerImage.hidden=false;layerImage.src='assets/diagram-'+layers[index][0]+'.svg';layerImage.alt=tabs[index].textContent.replace(/\s+/g,' ').trim()+' — concept illustration';tabs.forEach((t,i)=>{t.setAttribute('aria-selected',String(i===index));t.tabIndex=i===index?0:-1;});$('#layer-description').textContent=layers[index][1];$('#layer-question').textContent=layers[index][2];$('#layer-panel').setAttribute('aria-labelledby',tabs[index].id);}
+ tabs.forEach((t,index)=>{t.addEventListener('click',()=>selectLayer(index));t.addEventListener('keydown',e=>{let i=index;if(['ArrowDown','ArrowRight'].includes(e.key))i=(i+1)%tabs.length;else if(['ArrowUp','ArrowLeft'].includes(e.key))i=(i+tabs.length-1)%tabs.length;else if(e.key==='Home')i=0;else if(e.key==='End')i=tabs.length-1;else return;e.preventDefault();selectLayer(i);tabs[i].focus();});});
+ const clock=n=>'0:'+String(Math.floor(n)).padStart(2,'0');
+ function updateTime(){const duration=Number.isFinite(roof.duration)?roof.duration:12;scrub.max=duration;scrub.value=roof.currentTime;$('#roof-time').textContent=clock(roof.currentTime)+' / '+clock(duration);scrub.setAttribute('aria-valuetext',Math.floor(roof.currentTime)+' seconds of '+Math.round(duration));}
+ roof.addEventListener('loadedmetadata',updateTime);roof.addEventListener('timeupdate',updateTime);
+ scrub.addEventListener('input',()=>{const value=Number(scrub.value);load();roof.pause();roof.hidden=false;layerImage.hidden=true;if(roof.readyState>=1){roof.currentTime=Math.min(value,roof.duration);updateTime();}else roof.addEventListener('loadedmetadata',()=>{roof.currentTime=Math.min(value,roof.duration);updateTime();},{once:true});});
+ motionPreference.addEventListener('change',()=>{if(motionPreference.matches)roof.pause();});
+ if(!motionPreference.matches)play();
+}
+const reviews=$('.reviews'),reviewsToggle=$('#reviews-toggle');
+reviewsToggle?.addEventListener('click',()=>{const paused=reviews.classList.toggle('is-paused');reviewsToggle.textContent=paused?'Play reviews':'Pause reviews';reviewsToggle.setAttribute('aria-pressed',String(paused));$$('.review-row').forEach((row,i)=>{row.tabIndex=paused?0:-1;row.setAttribute('role','region');row.setAttribute('aria-label','Sample reviews row '+(i+1)+(paused?'. Scroll to read each review.':''));row.scrollLeft=0;});});
+const galleryFilters=$$('[data-filter]');galleryFilters.forEach(button=>button.addEventListener('click',()=>{galleryFilters.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));$$('[data-category]').forEach(item=>{item.hidden=button.dataset.filter!=='all'&&item.dataset.category!==button.dataset.filter;});}));
+const imageDialog=$('#image-dialog');let lastGalleryButton;
+$$('.image-open').forEach(button=>button.addEventListener('click',()=>{lastGalleryButton=button;$('#lightbox-image').src=button.dataset.image;$('#lightbox-image').alt=button.dataset.caption;$('#lightbox-caption').textContent=button.dataset.caption;imageDialog.showModal();}));
+$('.dialog-close')?.addEventListener('click',()=>imageDialog.close());imageDialog?.addEventListener('close',()=>lastGalleryButton?.focus());imageDialog?.addEventListener('click',e=>{if(e.target===imageDialog){const r=imageDialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)imageDialog.close();}});
+const detailButtons=$$('[data-detail]');const detailContent={ridge:['The ridge is the upper line where two sloping roof surfaces meet.','57%','20%'],course:['Shingle courses are the overlapping rows of the outer covering.','72%','46%'],edge:['The roof edge is where the covering ends, above the eave and gutter.','67%','71%']};
+function selectDetail(button){const [copy,x,y]=detailContent[button.dataset.detail];$('#detail-copy').textContent=copy;$('#detail-marker').style.left=x;$('#detail-marker').style.top=y;detailButtons.forEach(b=>{b.setAttribute('aria-selected',String(b===button));b.tabIndex=b===button?0:-1;});}
+detailButtons.forEach((button,index)=>{button.addEventListener('click',()=>selectDetail(button));button.addEventListener('keydown',e=>{let next=index;if(e.key==='ArrowRight')next=(index+1)%3;else if(e.key==='ArrowLeft')next=(index+2)%3;else if(e.key==='Home')next=0;else if(e.key==='End')next=2;else return;e.preventDefault();selectDetail(detailButtons[next]);detailButtons[next].focus();});});
+const search=$('#faq-search');search?.addEventListener('input',()=>{const term=search.value.trim().toLowerCase();let count=0;$$('[data-faq]').forEach(faq=>{faq.hidden=!faq.textContent.toLowerCase().includes(term);if(!faq.hidden)count++;});$('#faq-result').textContent=term?count+' matching '+(count===1?'question':'questions'):'';$('#faq-empty').hidden=count!==0;});
+const form=$('#inspection-form');
+if(form){
+ form.noValidate=true;let currentStep=1,requestText='';const preview=$('#request-preview');
+ const options=$$('input[name=concern]',form);const concern=new URLSearchParams(location.search).get('concern');const selected=options.find(input=>input.value===concern);if(selected)selected.checked=true;
+ function step(n){currentStep=n;$$('[data-step]',form).forEach(panel=>panel.hidden=Number(panel.dataset.step)!==n);$$('[data-progress]').forEach(item=>{item.classList.toggle('active',Number(item.dataset.progress)===n);item.setAttribute('aria-current',Number(item.dataset.progress)===n?'step':'false');});form.hidden=n===3;preview.hidden=n!==3;if(n!==3){const panel=$('[data-step="'+n+'"]',form);const target=$('input',panel);target?.focus({preventScroll:true});panel.scrollIntoView({behavior:motionPreference.matches?'auto':'smooth',block:'start'});}else{$('#request-preview-title').focus({preventScroll:true});preview.scrollIntoView({behavior:motionPreference.matches?'auto':'smooth',block:'start'});}}
+ function valid(n){for(const input of $$('input,textarea',$('[data-step="'+n+'"]',form))){if(!input.checkValidity()){input.reportValidity();return false;}}return true;}
+ $$('[data-next]').forEach(button=>button.addEventListener('click',()=>{if(valid(currentStep))step(Number(button.dataset.next));}));$$('[data-back]').forEach(button=>button.addEventListener('click',()=>step(Number(button.dataset.back))));
+ form.addEventListener('submit',e=>{e.preventDefault();if(currentStep===1){if(valid(1))step(2);return;}if(!valid(2))return;const values=new FormData(form),summary=$('#request-summary');summary.replaceChildren();const lines=['ENERGY MASTER SOLUTIONS — INSPECTION REQUEST PREVIEW','Nothing has been sent or booked.',''];for(const [key,label]of [['concern','Concern'],['message','Notes'],['name','Name'],['email','Email'],['area','Property area'],['phone','Phone']]){const value=String(values.get(key)||'').trim();if(!value)continue;const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value;summary.append(dt,dd);lines.push(label+': '+value);}requestText=lines.join('\n');$('#copy-status').textContent='';step(3);});
+ $('#copy-request').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(requestText);$('#copy-status').textContent='Request text copied. Nothing has been sent.';}catch{$('#copy-status').textContent='Copy is unavailable in this browser. Select the preview text, or download it below.';}});
+ $('#download-request').addEventListener('click',()=>{const url=URL.createObjectURL(new Blob([requestText],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='energy-master-inspection-request.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('#copy-status').textContent='Request downloaded to your device. Nothing has been sent.';});
+}
+})();
