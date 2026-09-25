@@ -1,0 +1,393 @@
+/* Compact page rhythm and an action hierarchy. Typography is intentionally inherited. */
+:root{--action-walnut:#60452f;--action-edge:#35251b;--action-cream:#eee8de}
+
+/* Inspection actions feel like physical controls; navigation stays lighter. */
+.button,.residence-request>button{
+  min-height:48px;padding:13px 20px;border:1px solid #6e513b;border-radius:5px;
+  background:var(--action-walnut);color:#fff8ed;
+  box-shadow:0 3px 0 var(--action-edge),inset 0 1px 0 #ffffff21;
+  transition:background .2s,box-shadow .2s,transform .2s;
+}
+.concern-chapter .button,.visit-prep .button{background:var(--action-walnut);color:#fff8ed}
+.button:active,.residence-request>button:active{transform:translateY(2px);box-shadow:0 1px 0 var(--action-edge),inset 0 1px 2px #0002}
+.section-home .section-button-light{min-height:50px;padding:14px 22px;border-radius:3px;background:#f4ede2;color:#35271e;border:1px solid #e8dece;box-shadow:4px 4px 0 #17110da6}
+.section-home .section-button-light:active{transform:translate(3px,3px);box-shadow:1px 1px 0 #17110da6}
+.outline-button,.section-home .section-button-outline{
+  min-height:46px;padding:11px 18px;border-radius:100px;border:1px solid currentColor;
+  background:transparent;box-shadow:none;transition:background .2s,transform .2s;
+}
+.header-cta,body[data-page='index.html'] .header-cta{
+  min-height:44px;padding:10px 15px;border-radius:4px;border:1px solid currentColor;
+  background:transparent;color:inherit;box-shadow:none;gap:15px;
+}
+.masthead.is-fixed .header-cta{background:transparent;color:#f5efe5;border-color:#b7a795}
+.text-link,.section-home .section-text-link,.text-button{
+  min-height:44px;gap:16px;margin-top:17px;padding:9px 0;border-bottom-color:#9d8c7b;
+  transition:border-color .2s,color .2s;
+}
+.text-link>span,.section-home .section-text-link>span{
+  display:grid;place-items:center;flex:none;width:30px;height:30px;
+  border:1px solid #9d8c7b66;border-radius:50%;transition:background .2s,border-color .2s;
+}
+.text-link svg,.section-home .section-text-link svg{width:17px;height:17px}
+.text-button{margin:0;min-height:44px}
+.ui-icon{display:inline-block;width:20px;height:20px;flex:none;vertical-align:middle}
+.header-cta .ui-icon,.residence-request>button .ui-icon{width:20px;height:20px}
+.footer-round .ui-icon{width:32px;height:32px}
+
+/* View choices and filters are quiet, recessed controls. */
+.residence-views{gap:2px;background:#1d1712a6;border-color:#a38d7159;box-shadow:inset 0 2px 5px #0003}
+.residence-views button{min-height:44px;transition:background .2s,color .2s,box-shadow .2s}
+.residence-views button[aria-pressed=true]{box-shadow:0 1px 3px #0003,inset 0 1px 0 #fff7}
+.gallery-filters,.annotation-tabs{gap:6px}
+.gallery-filters button,.annotation-tabs button{
+  min-height:44px;padding:10px 15px;background:#ede9e2;border-color:#cfc6b9;
+  box-shadow:inset 0 1px 2px #5a403312;transition:background .2s,color .2s,box-shadow .2s;
+}
+.gallery-filters button[aria-pressed=true],.annotation-tabs button[aria-selected=true]{
+  background:#3c2f26;color:#fff8ed;border-color:#3c2f26;box-shadow:inset 0 2px 3px #0004;
+}
+.layer-tabs{display:grid;gap:5px}
+.layer-tabs>button{
+  min-height:50px;padding:10px 14px;border:1px solid #a9937d36;border-radius:3px;
+  background:#ffffff03;transition:background .2s,color .2s,border-color .2s;
+}
+.layer-tabs>button[aria-selected=true],.section-home .section-assembly .layer-tabs>button[aria-selected=true]{
+  background:#70543f;color:#fff8ed;border-color:#ae907557;box-shadow:inset 3px 0 0 #dac1a7;
+}
+[data-roof-explorer] .re-tabs{gap:6px;padding-top:9px}
+[data-roof-explorer] .re-tabs>button,[data-roof-explorer] .re-tabs>button+button{
+  min-height:56px;padding:12px 15px;border:1px solid #d7cfc3;border-radius:3px;
+  background:#f1ede7;transition:background .2s,border-color .2s;
+}
+[data-roof-explorer] .re-tabs>button[aria-selected=true]{background:#e1d7ca;border-color:#b09b86;box-shadow:inset 0 2px 4px #5a403314}
+[data-roof-explorer] .re-tabs>button[aria-selected=true]::before{display:none}
+[data-roof-explorer] .re-reading-line>a{min-height:44px}
+.journey-steps button{min-height:44px;border-bottom:2px solid transparent;transition:background .2s,border-color .2s}
+.journey-steps button[aria-current='step']{border-bottom-color:#73523a;color:#5a4033}
+
+/* Small responses make the existing controls easier to read and operate. */
+.section-home .section-concern summary,.faq summary{transition:background .2s}
+.section-home .section-concern summary{min-height:70px}
+.section-home .section-concern-chevron{width:10px;height:10px}
+.section-home .section-concern[open] summary{box-shadow:inset 3px 0 0 #60452f}
+.faq summary>span{display:grid;place-items:center;width:30px;height:30px;border:1px solid #a8958066;border-radius:50%}
+.faq[open] summary{color:#5a4033}
+.concern-options label>span{min-height:58px;padding-top:14px;padding-bottom:14px;border-radius:3px}
+.concern-options input:checked+span{background:#403127;box-shadow:inset 3px 0 0 #ab8566}
+.residence-select select{min-height:46px;border-radius:3px;padding-left:10px;background:#ffffff38;transition:background .2s,box-shadow .2s}
+.residence-select select:focus,.field-grid input:focus,#inspection-form textarea:focus,.search-line:focus-within{
+  background:#fffdf7;box-shadow:0 2px 0 #806044;
+}
+.field-grid input{padding-left:9px;padding-right:9px;transition:background .2s,box-shadow .2s}
+#inspection-form textarea{border-radius:3px;transition:background .2s,box-shadow .2s}
+.search-line{border-radius:3px 3px 0 0;padding-left:8px;padding-right:8px;transition:background .2s,box-shadow .2s}
+.field-grid input:user-invalid,#inspection-form textarea:user-invalid{border-color:#8e493b;background:#fcf4f0}
+.image-open{border-radius:3px;box-shadow:0 1px 0 #5a403319}
+.image-open>span{backdrop-filter:blur(8px)}
+#image-dialog .dialog-close{width:44px;height:44px;display:grid;place-items:center;border-radius:50%;background:#e9e1d5}
+.footer-grid nav a{width:fit-content;min-height:44px;display:inline-flex;align-items:center;border-bottom:1px solid transparent;transition:border-color .2s,color .2s}
+.footer-round{box-shadow:0 4px 0 #211a15;transition:background .2s,transform .2s,box-shadow .2s}
+.footer-round:active{transform:translateY(3px);box-shadow:0 1px 0 #211a15}
+
+/* Shared page and footer spacing, with header clearance preserved. */
+.eyebrow{margin-bottom:22px}
+.page-open{padding-top:185px;padding-bottom:64px}
+.page-open .lede{margin-top:24px}
+.page-open.has-art{gap:34px}
+.closing{padding-top:62px;padding-bottom:68px;gap:8%}
+.closing .button{margin-top:19px}
+.footer{padding-top:58px}
+.footer-top{padding-bottom:46px}
+.footer-round{bottom:58px}
+.footer-grid{padding-top:42px;padding-bottom:42px;gap:28px}
+.footer-grid nav{gap:3px}
+.footer-grid>div>p{margin-top:16px}
+.footer-bottom{padding-top:18px}
+.reviews{padding-top:67px;padding-bottom:74px}
+.reviews-title p{margin-top:16px}
+.review-strips{margin-top:42px;gap:13px}
+.review-card{padding:22px;min-height:180px}
+.review-card blockquote{margin-top:12px;margin-bottom:15px}
+.review-group{gap:13px;padding-right:13px}
+.roof-studio{padding:65px 0}
+.studio-heading{gap:34px;margin-bottom:28px}
+.studio-grid{gap:44px}
+.studio-controls{padding-top:13px;gap:13px}
+.roof-sidebar #layer-panel{padding-top:18px;min-height:125px}
+.roof-sidebar #layer-question{margin-top:13px}
+.roof-studio .text-link{margin-top:26px}
+.faq summary{min-height:58px;padding-top:20px;padding-bottom:20px}
+.faq>p{padding-bottom:20px}
+.weather-study{padding-top:68px;padding-bottom:72px;gap:55px}
+.weather-copy>p{margin-top:18px}
+.layer-glossary{padding-bottom:70px}
+.glossary-grid{gap:54px;margin-top:38px}
+.glossary-grid article{padding-top:20px}
+.glossary-grid h3{margin-top:18px;margin-bottom:13px}
+
+/* Homepage: closer sections and a more concentrated editorial panel. */
+.residence-note{padding-top:24px;padding-bottom:22px}
+.residence-note-heading{padding-bottom:17px}
+.residence-editorial{padding-top:20px;padding-bottom:20px}
+.residence-eyebrow{margin-bottom:12px}
+.section-home .residence-hero h1{margin-bottom:16px}
+.residence-editorial>p+p{margin-top:11px}
+.residence-request{padding-top:16px}
+.residence-request>button{margin-top:13px;min-height:49px}
+.residence-mobile-note{margin-top:17px;gap:10px}
+.residence-mobile-note>a{min-height:44px;display:inline-flex;align-items:center}
+.residence-scene-top{gap:12px}
+.residence-scene-bottom{grid-template-columns:1fr auto;gap:12px;padding-top:10px;min-height:54px}
+.residence-scene-bottom>a{min-height:44px}
+.section-home .section-kicker{margin-bottom:18px}
+.section-home .section-intro{padding-top:57px;padding-bottom:52px;gap:27px}
+.section-home .section-intro-copy>p+p{margin-top:12px}
+.section-home .section-intro-facts{margin-top:9px;gap:20px}
+.section-home .section-intro-facts b{margin-bottom:5px}
+.section-home .section-concerns{padding-top:66px;padding-bottom:68px;gap:7%}
+.section-home .section-concerns-heading>p{margin-top:19px}
+.section-home .section-concern-content{gap:18px;padding-top:18px;padding-bottom:22px}
+.section-home .section-concern-content .section-concern-prompt{margin-top:12px;padding-top:12px}
+.section-home .section-small-note{margin-top:14px}
+.section-home .section-visit{padding-top:58px;padding-bottom:49px}
+.section-home .section-visit-opening{gap:34px}
+.section-home .section-visit-opening>div>p{margin-top:18px}
+.section-home .section-visit-steps{margin-top:35px;padding-top:22px;gap:29px}
+.section-home .section-visit-steps li{gap:13px}
+.section-home .section-visit-steps p{margin-top:11px}
+.section-home .section-assembly .studio-heading{padding-bottom:20px}
+.section-home .section-guide{padding-top:68px;padding-bottom:68px;gap:7%}
+.section-home .section-guide>div>p{margin-top:18px}
+.section-home .section-guide .faq summary{padding-top:20px;padding-bottom:20px}
+.section-home .section-closing{padding-top:58px;padding-bottom:58px}
+.section-home .section-closing-grid{gap:7%}
+.section-home .section-closing .section-button{margin-top:20px}
+.section-home .section-closing-grid>div>.section-closing-note{margin-top:17px}
+[data-roof-explorer] .re-copy h2,[data-roof-explorer][data-re-ready=true] .re-copy h2{margin-bottom:20px}
+[data-roof-explorer] [data-re-panel]>p.re-question{margin-top:13px}
+[data-roof-explorer] .re-reading-line{padding-top:8px}
+[data-roof-explorer] .re-progress-track{margin-top:8px}
+
+/* Inner pages use the same compact rhythm without flattening their layouts. */
+.roofing-brief{padding-top:31px;padding-bottom:49px;gap:4.5vw}
+.concern-directory{padding-top:56px}
+.concern-directory-grid{gap:4.5vw}
+.concern-rail>.eyebrow{margin-bottom:16px}
+.concern-rail a{min-height:46px;padding-top:13px;padding-bottom:13px}
+.concern-chapter{padding-bottom:62px;margin-bottom:54px;gap:3vw}
+.concern-chapter h2{margin-top:17px;margin-bottom:18px}
+.concern-chapter .button{margin-top:18px}
+.observation-prompt{margin-top:22px;padding-top:14px}
+.inner-material{padding-top:79px;padding-bottom:75px;gap:6vw}
+.inner-material h2{margin-top:19px;margin-bottom:19px}
+.visit-chapters{padding-top:68px;padding-bottom:26px}
+.visit-chapters article{padding-top:44px;padding-bottom:44px;gap:3.8vw}
+.visit-chapters article>div:last-child{padding-top:19px}
+.visit-prep{padding:62px 0}
+.visit-prep-grid{gap:7vw}
+.visit-prep h2{margin-top:17px;margin-bottom:17px}
+.preparation-sheet{padding:29px 32px}
+.sheet-top{padding-bottom:15px}
+.preparation-sheet h3{margin-top:24px;margin-bottom:19px}
+.preparation-sheet li{padding-top:14px;padding-bottom:22px}
+.preparation-sheet p{margin-top:22px}
+.mobile-company{padding-top:42px;padding-bottom:69px}
+.mobile-company figcaption{padding-bottom:22px}
+.mobile-company-copy{margin-top:42px;gap:3vw}
+.about-facts{padding:68px 0}
+.about-facts-grid{gap:7vw}
+.about-facts h2{margin-top:18px}
+.about-facts article{padding:22px 0;gap:22px}
+.about-facts h3{margin-bottom:10px}
+.about-final{padding-top:68px;padding-bottom:62px;gap:3vw}
+.provenance{padding-top:20px;padding-bottom:23px;gap:4vw}
+.notebook-film{padding-bottom:62px}
+.notebook-film figcaption{padding-top:14px}
+.annotated-study{padding-top:36px;padding-bottom:79px;gap:5vw}
+.annotated-study h2{margin-top:18px;margin-bottom:18px}
+.annotation-tabs{margin-top:21px;margin-bottom:14px}
+.annotated-study #detail-copy{padding-top:15px}
+.notebook-gallery{padding-bottom:70px}
+.gallery-heading{gap:23px;margin-bottom:31px}
+.gallery-grid{gap:32px 20px}
+.gallery-grid figcaption{padding-top:11px}
+.gallery-grid figcaption small{margin-bottom:7px}
+.guide-content{gap:6vw;padding-top:39px;padding-bottom:76px}
+.guide-sidebar label{margin-top:17px;margin-bottom:13px}
+.guide-sidebar .text-link{margin-top:26px}
+.guide-sidebar .fineprint{margin-top:17px}
+.guide-answer-heading{padding-bottom:16px}
+.guide-answers summary{padding-top:20px;padding-bottom:20px}
+.guide-answers .faq>p{margin-bottom:22px}
+.questions-work{padding:61px 0}
+.questions-work-heading{gap:6vw}
+.question-columns{gap:34px;margin-top:43px}
+.question-columns article{padding-top:18px}
+.question-columns h3{margin-top:18px;margin-bottom:12px}
+.source-note{margin-top:34px;padding-top:17px}
+.request-layout{gap:6vw;padding-top:23px;padding-bottom:80px}
+.demo-notice{gap:22px;margin-bottom:28px}
+.form-progress{margin-bottom:30px}
+.form-progress li{padding-top:13px;padding-bottom:13px}
+#inspection-form legend{margin-bottom:18px}
+.concern-options{margin-bottom:25px}
+.field-label{margin-bottom:9px}
+#inspection-form [data-next]{margin-top:20px}
+.field-grid{gap:24px 20px}
+.field-grid label{margin-bottom:10px}
+.field-grid small{margin-top:7px}
+.form-actions{margin-top:31px;gap:16px}
+.request-aside{padding-left:26px}
+.request-aside figure{margin-top:25px;margin-bottom:22px}
+.request-aside h3{margin-top:16px;margin-bottom:10px}
+.request-aside-note{padding-top:19px;margin-top:22px}
+.request-aside .fineprint{margin-top:24px}
+#request-summary{margin-top:22px;margin-bottom:22px}
+#request-summary dt,#request-summary dd{padding-top:12px;padding-bottom:12px}
+.preview-actions{gap:12px}
+.design-studies{gap:39px 28px;padding-bottom:70px}
+.design-studies figure{padding:22px}
+.design-studies figcaption{padding-top:15px}
+
+@media(hover:hover){
+  .button:hover,.residence-request>button:hover{background:#4e3626;border-color:#5c3d29;transform:translateY(-1px);box-shadow:0 4px 0 var(--action-edge),inset 0 1px 0 #ffffff21}
+  .section-home .section-button-light:hover{background:#fff8ec;transform:translate(-1px,-1px);box-shadow:5px 5px 0 #17110da6}
+  .outline-button:hover,.section-home .section-button-outline:hover{background:#aa958421}
+  .header-cta:hover{background:#aa958421}
+  .text-link:hover,.section-home .section-text-link:hover,.text-button:hover{border-bottom-color:currentColor}
+  .text-link:hover>span,.section-home .section-text-link:hover>span{background:#ad967321;border-color:currentColor}
+  .text-link:hover svg,.section-home .section-text-link:hover svg{transform:translateX(2px)}
+  .gallery-filters button:hover,.annotation-tabs button:hover{border-color:#80644c}
+  .layer-tabs>button:hover{background:#96725124;border-color:#ae90757a}
+  [data-roof-explorer] .re-tabs>button:hover{background:#e9e1d6;border-color:#b09b86}
+  .journey-steps button:hover{background:#bca68b16}
+  .section-home .section-concern summary:hover,.faq summary:hover{background:#ae927211}
+  .concern-options label>span:hover{background:#e9e0d4}
+  .concern-options input:checked+span:hover{background:#403127}
+  .footer-grid nav a:hover{color:#fff8ed;border-color:#9d8c7b}
+  .footer-round:hover{background:#75573f;transform:translateY(-2px);box-shadow:0 6px 0 #211a15}
+}
+.button:active,.residence-request>button:active{transform:translateY(2px);box-shadow:0 1px 0 var(--action-edge),inset 0 1px 2px #0002}
+.section-home .section-button-light:active{transform:translate(3px,3px);box-shadow:1px 1px 0 #17110da6}
+.footer-round:active{transform:translateY(3px);box-shadow:0 1px 0 #211a15}
+
+@media(max-width:1050px){
+  .request-layout{gap:32px}.guide-content{gap:34px}.studio-grid{gap:28px}
+  .mobile-company-copy{gap:23px}.section-home .section-intro{gap:23px 35px}
+  .concern-directory-grid{gap:24px}.concern-chapter{gap:22px}
+  .demo-notice{gap:8px}
+}
+@media(max-width:800px){
+  .page-open{padding-top:151px;padding-bottom:40px}.page-open .lede{margin-top:20px}
+  .page-open.has-art figure{margin-top:20px}
+  .eyebrow{margin-bottom:17px}
+  .residence-editorial{padding:20px 25px 18px;margin:0}
+  .residence-eyebrow{margin-bottom:7px}
+  .section-home .residence-hero h1{margin-bottom:10px}
+  .residence-request{padding:16px 25px 20px}.residence-request>button{margin-top:10px}
+  .residence-select select{min-height:44px}
+  .residence-scene-bottom{grid-template-columns:1fr;gap:0;padding-top:4px;padding-bottom:7px;min-height:64px}
+  .residence-scene-bottom>a{grid-column:1;grid-row:1;justify-content:space-between;min-height:44px}
+  .residence-credit{grid-column:1;grid-row:2}
+  .section-home .section-kicker{margin-bottom:16px}
+  .section-home .section-intro{padding-top:42px;padding-bottom:40px}
+  .section-home .section-intro>.section-kicker{margin-bottom:17px}
+  .section-home .section-intro-copy{margin-top:19px}
+  .section-home .section-intro-facts{gap:16px;margin-top:22px}
+  .section-home .section-concerns{padding-top:43px;padding-bottom:43px}
+  .section-home .section-concerns-heading>p{margin-top:17px}
+  .section-home .section-concerns-list{margin-top:24px}
+  .section-home .section-concern summary{min-height:65px}
+  .section-home .section-concern-content{gap:12px;padding-top:15px;padding-bottom:18px}
+  .section-home .section-concern-content .section-concern-prompt{margin-top:11px;padding-top:11px}
+  .section-home .section-visit{padding:43px 0 39px}
+  .section-home .section-visit-opening>div>p{margin-top:17px}
+  .section-home .section-visit-opening figure{margin-top:21px}
+  .section-home .section-visit-steps{margin-top:21px;padding-top:0}
+  .section-home .section-visit-steps li{gap:13px;padding:18px 0}
+  .section-home .section-visit-steps p{margin-top:8px}
+  .section-home .section-guide{padding-top:45px;padding-bottom:45px}
+  .section-home .section-guide .faq-list{margin-top:22px}
+  .section-home .section-guide .faq summary{padding:17px 0}
+  .section-home .section-closing{padding:43px 0}
+  .section-home .section-closing-grid>div+div{margin-top:22px}
+  .section-home .section-closing .section-button{margin-top:18px}
+  .section-home .section-closing-grid>div>.section-closing-note{margin-top:14px}
+  [data-roof-explorer] .re-copy h2,[data-roof-explorer][data-re-ready=true] .re-copy h2{margin-bottom:13px}
+  [data-roof-explorer] .re-tabs{gap:4px;padding-top:7px}
+  [data-roof-explorer] .re-tabs>button,[data-roof-explorer] .re-tabs>button+button{min-height:53px;padding:8px 9px;gap:6px}
+  [data-roof-explorer] .re-reading-line{align-items:center;padding-top:4px}
+  [data-roof-explorer] .re-reading-line>a{gap:7px;min-height:44px}
+  [data-roof-explorer] .re-progress-track{margin-top:4px}
+  .reviews{padding:46px 0}.review-strips{margin-top:29px;gap:10px}
+  .review-card{padding:19px;min-height:195px}.review-group{gap:10px;padding-right:10px}
+  .roof-studio{padding:44px 0}.studio-heading{margin-bottom:17px}
+  .studio-heading>p{margin-top:17px}.roof-sidebar{margin-top:24px}
+  .roof-sidebar #layer-panel{min-height:0;padding-top:17px}
+  .roof-sidebar .fineprint{margin-top:17px}.roof-studio .text-link{margin-top:22px}
+  .layer-tabs>button{min-height:48px}
+  .weather-study{padding:45px 24px}.weather-picture{margin-top:22px}
+  .layer-glossary{padding-bottom:45px}.glossary-grid{margin-top:28px}
+  .glossary-grid article+article{margin-top:23px}
+  .faq summary{padding-top:17px;padding-bottom:17px;min-height:56px}
+  .faq>p{padding-bottom:18px}
+  .closing{padding-top:43px;padding-bottom:45px}.closing>div>p{margin-top:18px}
+  .footer{padding-top:43px}.footer-top{padding-bottom:29px}.footer-round{margin-top:22px}
+  .footer-grid{gap:25px 20px;padding:29px 0}.footer-grid nav{gap:2px}
+  .footer-grid nav a{min-height:44px}.footer-bottom{gap:8px}
+}
+@media(max-width:760px){
+  .roofing-brief{gap:15px;padding-top:21px;padding-bottom:30px}
+  .concern-directory{padding-top:19px}.concern-rail{padding-bottom:15px;margin-bottom:25px}
+  .concern-rail a{min-height:44px;padding:11px 13px}
+  .concern-rail a:hover,.concern-rail a:focus-visible,.concern-rail a.is-active{padding:11px 13px}
+  .concern-chapter{gap:19px;padding-bottom:32px;margin-bottom:32px}
+  .concern-chapter h2{margin-top:13px;margin-bottom:15px}
+  .inner-material{padding-top:43px;padding-bottom:46px;gap:25px}
+  .visit-chapters{padding-top:35px;padding-bottom:8px}
+  .visit-chapters article{gap:15px;padding-top:28px;padding-bottom:28px}
+  .visit-chapters article>div:last-child{padding-top:0}
+  .visit-prep{padding:40px 0}.visit-prep-grid{gap:31px}
+  .preparation-sheet{padding:22px}.preparation-sheet h3{margin-top:23px;margin-bottom:17px}
+  .preparation-sheet li{padding-top:13px;padding-bottom:20px}
+  .mobile-company{padding-top:24px;padding-bottom:40px}
+  .mobile-company figcaption{padding-bottom:15px}.mobile-company-copy{margin-top:25px;gap:16px}
+  .about-facts{padding:43px 0}.about-facts-grid{gap:27px}.about-facts article{padding:19px 0;gap:15px}
+  .about-final{padding-top:43px;padding-bottom:40px;gap:18px}
+  .provenance{padding-top:17px;padding-bottom:19px;gap:10px}
+  .notebook-film{padding-bottom:32px}.notebook-film figcaption{gap:5px}
+  .annotated-study{gap:20px;padding-top:20px;padding-bottom:46px}
+  .annotation-tabs{margin-top:18px;margin-bottom:13px}
+  .gallery-heading{margin-bottom:22px;gap:17px}.gallery-grid{gap:25px 13px}
+  .gallery-filters button{padding:10px 12px}
+  .notebook-gallery{padding-bottom:45px}
+  .guide-content{gap:27px;padding-top:26px;padding-bottom:46px}
+  .guide-sidebar label{margin-top:14px;margin-bottom:8px}
+  .guide-sidebar .text-link{margin-top:12px}.guide-sidebar .fineprint{margin-top:12px}
+  .guide-answers summary{padding-top:18px;padding-bottom:18px}
+  .guide-answers .faq>p{margin-bottom:18px}
+  .questions-work{padding:43px 0}.questions-work-heading{gap:17px}
+  .question-columns{gap:19px;margin-top:27px}.question-columns h3{margin-top:13px;margin-bottom:10px}
+  .source-note{margin-top:25px}
+  .request-layout{gap:38px;padding-top:20px;padding-bottom:49px}
+  .demo-notice{margin-bottom:22px;gap:8px}.form-progress{margin-bottom:23px}
+  .concern-options{margin-bottom:22px}.concern-options label>span{padding:13px 7px;min-height:58px}
+  .field-grid{gap:21px}.form-actions{margin-top:25px}
+  .request-aside{padding:23px 0 0}.request-aside figure{margin:17px 0}
+  .request-aside .fineprint{margin-top:20px}.request-aside-note{margin-top:17px;padding-top:17px}
+  .design-studies{gap:18px;padding-bottom:43px}.design-studies figure{padding:12px}
+  .preview-actions{gap:10px}
+}
+@media(max-width:360px){
+  .residence-editorial{padding:18px 21px 16px}.residence-request{padding:15px 21px 19px}
+  .weather-study{padding-left:19px;padding-right:19px}
+  [data-roof-explorer] .re-tabs>button,[data-roof-explorer] .re-tabs>button+button{padding-inline:7px}
+  .visit-chapters article{gap:12px}
+  .button{padding-left:16px;padding-right:16px;gap:15px}
+}
+@media(prefers-reduced-motion:reduce){
+  .button,.residence-request>button,.section-home .section-button-light,.footer-round{transition:none;transform:none!important}
+}
+
+@media(min-width:801px){.section-home .residence-hero{height:88svh;min-height:720px;max-height:860px}}

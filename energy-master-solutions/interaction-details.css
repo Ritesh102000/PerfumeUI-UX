@@ -1,0 +1,56 @@
+/* Content controls and original signs; typography and tracking are inherited. */
+.ui-icon{display:inline-block;width:24px;height:24px;flex:0 0 auto;vertical-align:middle}
+a>span:has(.ui-icon),button>span:has(.ui-icon){display:inline-flex;align-items:center;justify-content:center}
+.residence-views button{display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.residence-views .ui-icon{width:17px;height:17px}
+.residence-scene-bottom a .ui-icon{width:23px;height:23px}
+.residence-select>span{display:flex;align-items:center;justify-content:center}
+.residence-select .ui-icon{width:18px;height:18px}
+.section-concern-number .ui-icon{width:24px;height:24px}
+.re-tab-symbol .ui-icon,.re-reading-line .ui-icon{width:20px;height:20px}
+.footer-round .ui-icon{width:35px;height:35px}
+.footer-bottom .ui-icon{width:14px;height:14px;margin-left:5px}
+.studio-detail-label{display:inline-flex;gap:8px;align-items:center;flex:none;color:#c6b8a9}
+.studio-detail-label .ui-icon{width:18px;height:18px}
+.studio-controls[hidden]{display:none}
+.studio-controls input{min-height:44px;cursor:ew-resize}
+.layer-tabs small .ui-icon{width:15px;height:15px}
+.layer-tabs button>span .ui-icon{width:18px;height:18px;transition:transform .2s}
+.layer-tabs button[aria-selected=true]>span .ui-icon-plus{transform:rotate(45deg)}
+.faq summary>span{display:inline-flex;align-items:center;justify-content:center;flex:none}
+.faq summary>span .ui-icon{width:20px;height:20px}
+.concern-options label>span>b{display:flex;opacity:0;transition:opacity .18s}
+.concern-options input:checked+span>b{opacity:1}
+.concern-options label>span>b .ui-icon{width:19px;height:19px}
+.text-button{display:inline-flex;align-items:center;gap:9px}
+.preview-actions .ui-icon{width:19px;height:19px}
+.review-row:hover .review-track,.review-row.is-reading .review-track{animation-play-state:paused}
+.review-row:focus-visible{outline:2px solid #765240;outline-offset:-2px}
+.review-row:focus{overflow-x:auto;scrollbar-width:thin}
+.review-row:focus .review-track{animation:none;transform:none}
+.review-row:focus .review-group[aria-hidden=true]{display:none}
+#image-dialog{padding:12px 20px 18px;width:min(980px,92vw);max-width:92vw}
+.lightbox-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:12px}
+.lightbox-navigation{display:flex;align-items:center;gap:6px}
+.lightbox-navigation button,#image-dialog .dialog-close{position:static;display:grid;place-items:center;min-width:44px;height:44px;padding:10px;border:1px solid #2222;background:transparent;cursor:pointer;color:inherit}
+.lightbox-navigation button:hover{background:#e4ddd4;border-color:#887466}
+.lightbox-navigation .dialog-close{margin-left:10px;background:#1d1916;color:#fff}
+#lightbox-count{color:#625044;font-variant-numeric:tabular-nums}
+#lightbox-image{width:100%;max-width:100%;height:65vh;max-height:65vh;object-fit:contain;background:#ece8e1;touch-action:pan-y pinch-zoom}
+#lightbox-caption{min-height:2.6em}
+.image-open b{display:flex;align-items:center}
+.image-open .ui-icon{width:18px;height:18px}
+.search-line>svg{margin-right:4px}
+#faq-result{margin-top:8px}
+#faq-clear{display:grid;place-items:center;min-width:44px;min-height:44px;background:none;border:0;cursor:pointer;color:inherit}
+#faq-clear[hidden]{display:none}
+#faq-search::-webkit-search-cancel-button{display:none}
+@media(max-width:800px){
+ .studio-detail-label{gap:5px}
+ .studio-detail-label .ui-icon{display:none}
+ .residence-views button{gap:5px}
+ .residence-views .ui-icon{width:15px;height:15px}
+ #image-dialog{padding:9px 12px 14px;width:94vw;max-width:94vw}
+ #lightbox-image{height:55vh;max-height:55vh}
+}
+@media(prefers-reduced-motion:reduce){.layer-tabs button>span .ui-icon,.concern-options label>span>b{transition:none}}
