@@ -1,5 +1,9 @@
 # Energy Master Solutions
 
-Static roofing experience for the existing showcase: eight business pages and a visual-notes page, a generated conceptual house/vehicle/property scene, edited supplied reference films, a four-chapter property journey, three Remotion roof diagrams, Motion/vgpu, and a local inspection request preview.
+Static mobile-roofing showcase at https://websiteshowcase.catapultaiwork.com/energy-master-solutions/.
 
-Open `index.html` through a static server. All paths are relative to this folder. Hero and contextual films autoplay muted when in view, with reduced-motion stills and no playback controls. The Home journey is scroll-driven on desktop and tappable on mobile; the Visit page provides practical preparation guidance. The request flow does not submit or store data; it prepares copy/download text. Reviews are labelled fictional examples, and concept/reference media are not verified company project evidence. Exact contact details and service area are pending. Asset/library notices are in `licenses/`.
+The homepage uses native scroll to move a house and service van, pan and zoom roof imagery, separate four selectable SVG roof layers, and lead into an inspection request. The supplied edited film plays muted behind the hero. Reduced-motion and no-JavaScript visitors receive the seven-scene ordinary-flow version.
+
+The existing roofing, approach, roof-system, about, field, guide, inspection and design-directions routes remain available. Inspection requests validate and produce local previews; they do not send or book an inspection. Generated house, van and material images are illustrative, not completed projects, staff or company fleet. Roof layers are conceptual.
+
+`scroll-story/` holds the homepage's static runtime and assets. Shared inner-page runtime and assets remain in the concept root and `assets/`. Relevant licenses are included in `licenses/` and `scroll-story/assets/`. No build step is required to host this folder.
